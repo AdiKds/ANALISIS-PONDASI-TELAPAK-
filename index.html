@@ -30,7 +30,7 @@
         /* Light Mode Optimizations */
         .light-mode { background-color: #f8fafc; filter: invert(1) hue-rotate(180deg); }
         /* HAPUS #canvas-container dari list di bawah agar visual 3D otomatis mengikuti tema light */
-        .light-mode img, .light-mode .no-invert, .light-mode button.no-invert, .light-mode #floatingChatPanel, .light-mode #voiceSettingsModal {
+        .light-mode img, .light-mode .no-invert, .light-mode button.no-invert, .light-mode #floatingChatPanel, .light-mode #voiceSettingsModal, .light-mode #projectModal {
             filter: invert(1) hue-rotate(180deg);
         }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased; }
@@ -51,7 +51,7 @@
             z-index: -1; background-size: 100% 3px, 6px 100%; pointer-events: none;
         }
 
-        #canvas-container { width: 100%; height: 100%; border-radius: 0.5rem; overflow: hidden; background: #020617; position: relative; }
+        #canvas-container { width: 100%; height: 100%; border-radius: 0.5rem; overflow: hidden; background: #020617; position: relative; transition: background-color 0.2s ease; }
 
         @keyframes floatUp { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         @keyframes loadingBar { 0% { width: 0%; } 100% { width: 100%; } }
@@ -99,8 +99,13 @@
                 <button onclick="toggleTheme()" class="no-invert bg-slate-800 border border-slate-600 text-xs font-mono px-3 py-2 rounded hover:bg-slate-700 text-white flex items-center gap-1 shadow-md transition-colors" title="Dark/Light Mode">
                     <i class="fa-solid fa-moon" id="themeIcon"></i>
                 </button>
+                
+                <button onclick="openProjectModal()" class="bg-indigo-900/80 border border-indigo-500/60 text-xs font-mono font-bold px-3 py-2 rounded hover:bg-indigo-800 text-indigo-300 flex items-center gap-1 shadow-md transition-colors">
+                    <i class="fa-solid fa-database"></i> Data Project
+                </button>
+
                 <button onclick="exportToWord(this)" class="bg-blue-900/80 border border-blue-500/60 text-xs font-mono font-bold px-3 py-2 rounded hover:bg-blue-800 text-blue-300 flex items-center gap-1 transition-colors">
-                    <i class="fa-solid fa-file-word"></i> Word
+                    <i class="fa-solid fa-floppy-disk"></i> Save to Word
                 </button>
                 <button onclick="document.getElementById('helpModal').classList.remove('hidden')" class="bg-amber-900/80 border border-amber-500/60 text-xs font-mono font-bold px-3 py-2 rounded hover:bg-amber-800 text-amber-300 flex items-center gap-1 shadow-md transition-colors">
                     <i class="fa-solid fa-circle-info"></i> Help & System
@@ -114,7 +119,16 @@
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-5">
             
             <!-- LEFT PANEL: INPUTS -->
-            <div class="xl:col-span-3 flex flex-col gap-4 xl:sticky xl:top-[90px] xl:h-[calc(100vh-120px)] z-20">
+            <div class="xl:col-span-3 flex flex-col gap-4 xl:sticky xl:top-[90px] xl:h-[calc(100vh-120px)] z-20 overflow-y-auto custom-scroll pr-2">
+                <!-- Data Projek -->
+                <section class="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
+                    <h2 class="text-sm font-black text-fuchsia-400 cyber-font uppercase mb-3 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-building"></i> Informasi Projek</h2>
+                    <div class="grid grid-cols-1 gap-3 font-mono text-sm">
+                        <div><label class="block text-slate-400 mb-1">Nama Projek</label><input type="text" id="proj_name" value="Gudang Logistik" class="w-full p-2 rounded font-bold"></div>
+                        <div><label class="block text-slate-400 mb-1">Lokasi Projek</label><input type="text" id="proj_loc" value="Jakarta Selatan" class="w-full p-2 rounded font-bold"></div>
+                        <div><label class="block text-slate-400 mb-1">Kapasitas Gudang</label><input type="text" id="proj_cap" value="5000 Ton" class="w-full p-2 rounded font-bold"></div>
+                    </div>
+                </section>
                 <!-- Beban & Kolom -->
                 <section class="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
                     <h2 class="text-sm font-black text-cyan-400 cyber-font uppercase mb-3 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-weight-hanging"></i> Beban & Kolom</h2>
@@ -271,7 +285,13 @@
                         <h3 class="text-sm font-black font-mono text-cyan-400 uppercase mb-2 flex-shrink-0 z-10 absolute top-4 left-4 bg-slate-950/90 px-3 py-1.5 rounded shadow-lg border border-cyan-800">
                             <i class="fa-solid fa-cube"></i> Visual 3D HUD & Litologi
                         </h3>
-                        <div id="canvas-container" class="flex-grow border border-slate-800 rounded bg-slate-950/50"></div>
+                        <div id="canvas-container" class="flex-grow border border-slate-800 rounded bg-slate-950/50 transition-colors duration-200"></div>
+                        <!-- Panduan Kontrol 3D -->
+                        <div class="absolute bottom-6 left-6 z-10 bg-slate-950/80 p-2.5 rounded-lg border border-slate-700 font-mono text-[10px] text-slate-300 space-y-1.5 shadow-lg pointer-events-none">
+                            <p><b class="text-cyan-400"><i class="fa-solid fa-hand-pointer"></i> KIRI + GESER:</b> Putar Visual</p>
+                            <p><b class="text-cyan-400"><i class="fa-solid fa-arrows-up-down-left-right"></i> KANAN + GESER:</b> Pindah/Pan</p>
+                            <p><b class="text-cyan-400"><i class="fa-solid fa-magnifying-glass"></i> SCROLL:</b> Zoom In/Out</p>
+                        </div>
                     </div>
                     
                     <!-- Formula Log -->
@@ -365,6 +385,32 @@
         </div>
     </div>
 
+    <!-- PROJECT MANAGER MODAL -->
+    <div id="projectModal" class="fixed inset-0 z-[10005] hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-indigo-500 rounded-2xl w-full max-w-md p-6 shadow-[0_0_30px_rgba(99,102,241,0.5)] relative flex flex-col font-sans">
+            <button onclick="closeProjectModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors cursor-pointer z-10"><i class="fa-solid fa-xmark text-xl"></i></button>
+            
+            <h3 class="text-indigo-400 text-base sm:text-lg font-black cyber-font mb-2 flex items-center gap-2 mt-2 sm:mt-0 tracking-widest uppercase"><i class="fa-solid fa-database text-indigo-400"></i> Data Project Manager</h3>
+            <p class="text-sm text-slate-400 mb-5 font-mono">Simpan (Export) state project saat ini, atau Muat (Import) data file project sebelumnya.</p>
+            
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-5">
+                <label class="block text-slate-400 mb-2 text-xs font-bold font-mono">Nama File Backup (Tanpa .json)</label>
+                <input type="text" id="exportFileName" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-white outline-none focus:border-indigo-500 font-mono" placeholder="Backup_Project_1">
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="executeExport()" class="flex-1 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-black py-3 rounded-xl uppercase cyber-font text-xs flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95">
+                    <i class="fa-solid fa-download"></i> EXPORT DATA
+                </button>
+                
+                <label class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black py-3 rounded-xl uppercase cyber-font text-xs flex items-center justify-center gap-2 shadow-lg cursor-pointer transition-all active:scale-95">
+                    <i class="fa-solid fa-upload"></i> IMPORT DATA
+                    <input type="file" id="importFile" class="hidden" accept=".json" onchange="restoreProject(event)">
+                </label>
+            </div>
+        </div>
+    </div>
+    
     <!-- VOICE MODAL -->
     <div id="voiceSettingsModal" class="fixed inset-0 z-[10005] hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-slate-900 border-2 border-cyan-500 rounded-2xl w-full max-w-sm p-6 shadow-[0_0_30px_rgba(6,182,212,0.5)] relative flex flex-col font-sans">
@@ -492,7 +538,118 @@
             setTimeout(loadVoices, 500); // Load Siri voices for Chatbot
         });
 
+        
+        /* --- PROJECT MANAGER MODAL & LOGIC --- */
+        function openProjectModal() {
+            const safeName = `Backup_${document.getElementById('proj_name').value || 'Project'}`.replace(/[^a-zA-Z0-9_-]/g, '_');
+            document.getElementById('exportFileName').value = safeName;
+            document.getElementById('projectModal').classList.remove('hidden');
+        }
+
+        function closeProjectModal() {
+            document.getElementById('projectModal').classList.add('hidden');
+        }
+
+        function executeExport() {
+            const data = {
+                projName: document.getElementById('proj_name').value,
+                projLoc: document.getElementById('proj_loc').value,
+                projCap: document.getElementById('proj_cap').value,
+                pu: document.getElementById('pu').value,
+                mu: document.getElementById('mu').value,
+                colB: document.getElementById('col_b').value,
+                colD: document.getElementById('col_d').value,
+                fLen: document.getElementById('f_len').value,
+                fWid: document.getElementById('f_wid').value,
+                fThk: document.getElementById('f_thk').value,
+                fck: document.getElementById('fck').value,
+                fy: document.getElementById('fy').value,
+                pileCount: document.getElementById('pile_count').value,
+                pileType: document.getElementById('pile_type').value,
+                pileDim: document.getElementById('pile_dim').value,
+                soilLayers: []
+            };
+
+            const rows = document.getElementById('soil-body').children;
+            for(let i=0; i<rows.length; i++) {
+                data.soilLayers.push({
+                    thk: rows[i].querySelector('.layer-thk').value,
+                    spt: rows[i].querySelector('.layer-spt').value
+                });
+            }
+
+            let fileName = document.getElementById('exportFileName').value.trim();
+            if (!fileName) fileName = "Backup_Project";
+            if (!fileName.endsWith('.json')) fileName += '.json';
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            speakBot("Data project berhasil diekspor.");
+            closeProjectModal();
+        }
+
+        function restoreProject(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if(data.projName !== undefined) document.getElementById('proj_name').value = data.projName;
+                    if(data.projLoc !== undefined) document.getElementById('proj_loc').value = data.projLoc;
+                    if(data.projCap !== undefined) document.getElementById('proj_cap').value = data.projCap;
+                    
+                    if(data.pu) document.getElementById('pu').value = data.pu;
+                    if(data.mu) document.getElementById('mu').value = data.mu;
+                    if(data.colB) document.getElementById('col_b').value = data.colB;
+                    if(data.colD) document.getElementById('col_d').value = data.colD;
+                    if(data.fLen) document.getElementById('f_len').value = data.fLen;
+                    if(data.fWid) document.getElementById('f_wid').value = data.fWid;
+                    if(data.fThk) document.getElementById('f_thk').value = data.fThk;
+                    if(data.fck) document.getElementById('fck').value = data.fck;
+                    if(data.fy) document.getElementById('fy').value = data.fy;
+                    if(data.pileCount) document.getElementById('pile_count').value = data.pileCount;
+                    if(data.pileType) document.getElementById('pile_type').value = data.pileType;
+                    if(data.pileDim) document.getElementById('pile_dim').value = data.pileDim;
+
+                    if(data.soilLayers && data.soilLayers.length > 0) {
+                        const tbody = document.getElementById('soil-body');
+                        tbody.innerHTML = '';
+                        data.soilLayers.forEach(layer => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td class="p-1.5 border-b border-slate-800"><input type="number" value="${layer.thk}" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                <td class="p-1.5 border-b border-slate-800"><input type="number" value="${layer.spt}" class="w-full p-1.5 rounded layer-spt font-bold"></td>
+                                <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                    alert("Data proyek berhasil dimuat ulang!");
+                    closeProjectModal();
+                    runAnalysis(); // auto refresh analysis
+                    
+                    // Reset file input so same file can be selected again
+                    event.target.value = '';
+                } catch (err) {
+                    alert("Gagal membaca file backup. Pastikan file JSON valid.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
         /* --- DYNAMIC SOIL TABLE --- */
+
         function addLayer() {
             const tbody = document.getElementById('soil-body');
             const tr = document.createElement('tr');
@@ -731,6 +888,7 @@
             const rows = document.getElementById('soil-body').children;
             
             let logText = "";
+            let wordLogText = ""; // Khusus MS Word
             let htmlSummary = `<div class="space-y-4">`; 
 
             // COLLECT SOIL DATA FOR 3D
@@ -744,6 +902,7 @@
 
             // 1. GEOTECHNICAL
             logText += `<div class="mb-4 border-b border-slate-800 pb-3"><span class="text-emerald-400 font-bold block mb-2 text-base">>>> TAHAP 1: ANALISIS GEOTEKNIK (N-SPT)</span>`;
+            wordLogText += `<h3>>>> TAHAP 1: ANALISIS GEOTEKNIK (N-SPT)</h3>`;
             
             let totalDepth = 0; let Rs_ult = 0; let N_tip = 0;
             let Ap = pDim * pDim; let Perim = 4 * pDim;
@@ -764,6 +923,10 @@
                 logText += `\\[ Q_{ult} = (A_p \\times 40N) + \\sum (As_i \\times 2N_i) \\]<br>`;
                 logText += `\\[ Q_{all} = \\frac{Q_{ult} \\times n}{SF} = \\frac{${Q_single.toFixed(1)} \\times ${nPiles}}{2.5} = ${Q_all.toFixed(1)} \\text{ kN} \\]<br>`;
                 
+                wordLogText += `<p>Kapasitas Daya Dukung Tiang Pancang dihitung berdasarkan Tahanan Friksi dan End-Bearing:</p>`;
+                wordLogText += `<p>Q<sub>ult</sub> = (A<sub>p</sub> &times; 40N) + &Sigma;(As<sub>i</sub> &times; 2N<sub>i</sub>)</p>`;
+                wordLogText += `<p>Q<sub>all</sub> = (Q<sub>ult</sub> &times; n) / SF = (${Q_single.toFixed(1)} &times; ${nPiles}) / 2.5 = <b>${Q_all.toFixed(1)} kN</b></p>`;
+
                 document.getElementById('out-qall').innerText = Q_all.toFixed(1) + " kN";
                 document.getElementById('out-fos').innerText = FoS.toFixed(2);
                 
@@ -774,6 +937,7 @@
                     document.getElementById('out-fos').className = "text-3xl font-black text-red-500 cyber-font block mt-1 animate-pulse";
                     geoColor = "text-red-400"; geoBorder = "border-red-500"; geoStatus = "Kapasitas KRITIS";
                 }
+                wordLogText += `<p><b>Status:</b> Kapasitas Daya Dukung <b>${FoS >= 2.5 ? 'Aman' : 'Kritis'}</b> (FoS = ${FoS.toFixed(2)})</p>`;
                 geoDesc = `Sistem pondasi memadai. AI mengevaluasi pemancangan menghasilkan nilai kuat dukung kelompok <b>FoS = ${FoS.toFixed(2)}</b> pada total kedalaman penetrasi ${totalDepth}m. ${FoS < 2.5 ? 'Gaya vertikal kritis. Rekomendasi teknis: Perbanyak titik tiang (pile count).' : 'Gaya terdistribusi secara seimbang ke seluruh lapisan litologi.'}`;
             } else {
                 let topNSPT = soilData.length > 0 ? soilData[0].spt : 5;
@@ -784,6 +948,10 @@
                 logText += `\\[ q_{net} = \\frac{P_u}{B \\times L} = \\frac{${Pu}}{${B} \\times ${L}} = ${qnet_actual.toFixed(1)} \\text{ kPa} \\]<br>`;
                 logText += `\\[ SBC \\approx 12.5 \\times N_{spt} = ${SBC_soil.toFixed(1)} \\text{ kPa} \\]<br>`;
                 
+                wordLogText += `<p>Kapasitas Tanah (SBC) diestimasi dari parameter N-SPT Dangkal (Terzaghi & Meyerhof):</p>`;
+                wordLogText += `<p>q<sub>net</sub> = P<sub>u</sub> / (B &times; L) = ${Pu} / (${B} &times; ${L}) = ${qnet_actual.toFixed(1)} kPa</p>`;
+                wordLogText += `<p>SBC &approx; 12.5 &times; N<sub>spt</sub> = ${SBC_soil.toFixed(1)} kPa</p>`;
+
                 document.getElementById('out-qall').innerText = SBC_soil.toFixed(1) + " kPa";
                 document.getElementById('out-fos').innerText = FoS.toFixed(2);
                 
@@ -794,6 +962,7 @@
                     document.getElementById('out-fos').className = "text-3xl font-black text-red-500 cyber-font block mt-1 animate-pulse";
                     geoColor = "text-red-400"; geoBorder = "border-red-500"; geoStatus = "Tegangan Dasar KRITIS";
                 }
+                wordLogText += `<p><b>Status:</b> Tegangan Dasar <b>${FoS >= 1.0 ? 'Aman' : 'Kritis'}</b> (FoS = ${FoS.toFixed(2)})</p>`;
                 geoDesc = `Pengecekan tegangan kontak dasar menunjukkan <b>q-net = ${qnet_actual.toFixed(1)} kPa</b>. ${qnet_actual > SBC_soil ? 'Segera lebarkan dimensi BxL telapak beton atau terapkan sistem pondasi Tiang Pancang dalam desain ini.' : 'Daya dukung dangkal diprediksi stabil meredam reaksi tekanan murni.'}`;
             }
             logText += `</div>`;
@@ -810,12 +979,18 @@
 
             // 2. EKSENTRISITAS
             logText += `<div class="mb-4 border-b border-slate-800 pb-3"><span class="text-amber-400 font-bold block mb-2 text-base">>>> TAHAP 2: EKSENTRISITAS (GULING)</span>`;
+            wordLogText += `<h3>>>> TAHAP 2: EKSENTRISITAS (GULING)</h3>`;
+            
             const e = Pu > 0 ? (Mu / Pu) : 0;
             const L6 = L / 6;
             logText += `<br>Pengendalian stabilitas zona tekan (<i>Middle-Third Rule</i>):<br>`;
             logText += `\\[ e = \\frac{M_u}{P_u} = \\frac{${Mu}}{${Pu}} = ${e.toFixed(3)} \\text{ m} \\]<br>`;
             logText += `\\[ \\text{Batas } e_{max} = \\frac{L}{6} = \\frac{${L}}{6} = ${L6.toFixed(3)} \\text{ m} \\]<br>`;
             
+            wordLogText += `<p>Pengendalian stabilitas zona tekan (Middle-Third Rule):</p>`;
+            wordLogText += `<p>e = M<sub>u</sub> / P<sub>u</sub> = ${Mu} / ${Pu} = ${e.toFixed(3)} m</p>`;
+            wordLogText += `<p>Batas e<sub>max</sub> = L / 6 = ${L} / 6 = ${L6.toFixed(3)} m</p>`;
+
             document.getElementById('out-e').innerText = e.toFixed(2) + " m";
             
             let eccStatus = ""; let eccDesc = ""; let eccColor = ""; let eccBorder = "";
@@ -824,11 +999,13 @@
                 document.getElementById('out-e-stat').className = "text-xs font-bold text-red-500 mt-1 block";
                 eccColor = "text-amber-500"; eccBorder = "border-amber-500"; eccStatus = "Peringatan Eksentrisitas Tinggi";
                 eccDesc = `Momen lentur eksternal terlalu ekstrem (<b>e &gt; L/6</b>). Fondasi mengalami tegangan tarik (uplift) di area pinggir. <b>Instruksi AI:</b> Wajib alihkan beban dengan Opsi Tiang Pancang untuk memaku fondasi.`;
+                wordLogText += `<p><b>Status:</b> RAWAN GULING (e &gt; L/6)</p>`;
             } else {
                 document.getElementById('out-e-stat').innerText = "AMAN (e < L/6)";
                 document.getElementById('out-e-stat').className = "text-xs font-bold text-emerald-500 mt-1 block";
                 eccColor = "text-emerald-400"; eccBorder = "border-emerald-500"; eccStatus = "Stabilitas Momen Terjaga";
                 eccDesc = `Resultan pembebanan (<b>e &le; L/6</b>) terkonsentrasi aman di sepertiga tengah penampang (<i>Middle-Third Core</i>). Struktur tidak akan mengalami rotasi fatal.`;
+                wordLogText += `<p><b>Status:</b> AMAN GULING (e &le; L/6)</p>`;
             }
             logText += `</div>`;
 
@@ -844,6 +1021,8 @@
 
             // 3. GESER PONS & TULANGAN
             logText += `<div class="mb-2"><span class="text-fuchsia-400 font-bold block mb-2 text-base">>>> TAHAP 3: STRUKTUR BETON (IS 456)</span>`;
+            wordLogText += `<h3>>>> TAHAP 3: STRUKTUR BETON (IS 456)</h3>`;
+            
             const qnet = Pu / (B * L);
             const d = (Df * 1000) - 50 - 6; 
             const d_m = d / 1000;
@@ -858,6 +1037,11 @@
             logText += `\\[ V_u = q_{net} \\times [ (B \\times L) - (b_c + d)(D_c + d) ] = ${Vu_2.toFixed(1)} \\text{ kN} \\]<br>`;
             logText += `\\[ \\tau_v = \\frac{V_u}{b_o \\times d} = \\frac{${Vu_2.toFixed(1)} \\times 10^3}{${(perimeter_bo*1000).toFixed(0)} \\times ${d.toFixed(0)}} = ${tau_v2.toFixed(3)} \\text{ MPa} \\]<br>`;
             logText += `\\[ \\tau_c = 0.25\\sqrt{f_{ck}} = 0.25\\sqrt{${fck}} = ${tau_c.toFixed(3)} \\text{ MPa} \\]<br>`;
+            
+            wordLogText += `<p>Evaluasi kegagalan Punching Shear (Geser Pons) 2-Arah pada jarak d/2:</p>`;
+            wordLogText += `<p>V<sub>u</sub> = q<sub>net</sub> &times; [ (B &times; L) - (b<sub>c</sub> + d)(D<sub>c</sub> + d) ] = ${Vu_2.toFixed(1)} kN</p>`;
+            wordLogText += `<p>&tau;<sub>v</sub> = V<sub>u</sub> / (b<sub>o</sub> &times; d) = (${Vu_2.toFixed(1)} &times; 10&sup3;) / (${(perimeter_bo*1000).toFixed(0)} &times; ${d.toFixed(0)}) = ${tau_v2.toFixed(3)} MPa</p>`;
+            wordLogText += `<p>&tau;<sub>c</sub> = 0.25&radic;f<sub>ck</sub> = 0.25&radic;${fck} = ${tau_c.toFixed(3)} MPa</p>`;
 
             let shearStatus = ""; let shearDesc = ""; let shearColor = ""; let shearBorder = "";
             if(tau_v2 <= tau_c) {
@@ -865,12 +1049,14 @@
                 document.getElementById('out-shear-status').className = "text-2xl font-black text-emerald-400 cyber-font block mt-1";
                 shearColor = "text-emerald-400"; shearBorder = "border-emerald-500"; shearStatus = "Integritas Geser Lolos";
                 shearDesc = `Kapasitas geser material beton murni mengungguli tegangan geser terfaktor (<b>&tau;<sub>v</sub> &le; &tau;<sub>c</sub></b>) tanpa perlu desain sengkang (shear reinforcement) di zona pilar.`;
+                wordLogText += `<p><b>Status Geser Pons:</b> SAFE / AMAN (&tau;<sub>v</sub> &le; &tau;<sub>c</sub>)</p>`;
             } else {
                 let d_needed = Math.ceil((Vu_2 * 1000) / (perimeter_bo * tau_c * 1000)) * 1000;
                 document.getElementById('out-shear-status').innerText = "FAIL (KRITIS)";
                 document.getElementById('out-shear-status').className = "text-2xl font-black text-rose-500 cyber-font block mt-1 animate-pulse";
                 shearColor = "text-rose-400"; shearBorder = "border-rose-500"; shearStatus = "Bahaya Retak Pons (Punching)";
                 shearDesc = `Tegangan geser melampaui kemampuan plat beton murni (<b>&tau;<sub>v</sub> &gt; &tau;<sub>c</sub></b>). <b>Saran Resolusi AI:</b> Wajib menambahkan tebal Df minimum menjadi <b>${(d_needed+56)} mm</b> atau rakit sengkang khusus di perbatasan muka kolom.`;
+                wordLogText += `<p><b>Status Geser Pons:</b> FAIL / KRITIS (&tau;<sub>v</sub> &gt; &tau;<sub>c</sub>)</p>`;
             }
 
             const l_eff_m = (B - bc)/2;
@@ -881,8 +1067,11 @@
             logText += `<br>Kebutuhan Luas Penampang Tulangan (Steel Area):<br>`;
             logText += `\\[ A_{st} = \\frac{M_u}{0.87 f_y z} = \\frac{${(Mu_steel*1000000).toFixed(0)}}{0.87 \\times ${fy} \\times ${z.toFixed(0)}} = ${Ast_req.toFixed(0)} \\text{ mm}^2/\\text{m} \\]<br></div>`;
             
-            document.getElementById('out-steel').innerText = `\u03C616 @ 150`;
-            document.getElementById('out-steel-req').innerText = `Req: ${Ast_req.toFixed(0)} mm\u00B2/m`;
+            wordLogText += `<p>Kebutuhan Luas Penampang Tulangan (Steel Area):</p>`;
+            wordLogText += `<p>A<sub>st</sub> = M<sub>u</sub> / (0.87 &times; f<sub>y</sub> &times; z) = ${(Mu_steel*1000000).toFixed(0)} / (0.87 &times; ${fy} &times; ${z.toFixed(0)}) = <b>${Ast_req.toFixed(0)} mm&sup2;/m</b></p>`;
+
+            document.getElementById('out-steel').innerText = `φ16 @ 150`;
+            document.getElementById('out-steel-req').innerText = `Req: ${Ast_req.toFixed(0)} mm²/m`;
 
             // Append Structural & Rebar Summary
             htmlSummary += `
@@ -905,8 +1094,8 @@
             </div>
             </div>`; 
 
-            // Simpan log asli tanpa render mathjax untuk Export Document
-            window.rawCalcLog = logText;
+            // Simpan log HTML standar untuk Word Document agar tidak rusak/berantakan
+            window.rawCalcLog = wordLogText;
 
             document.getElementById('calc-log').innerHTML = logText;
             document.getElementById('conclusion-text').innerHTML = htmlSummary;
@@ -916,7 +1105,7 @@
                 MathJax.typesetPromise([document.getElementById('calc-log')]).catch(err => console.log(err));
             }
             
-            update3DModel(L, B, Df, totalDepth, document.getElementById('pile_type').value, pDim, nPiles, bc, D_col, soilData);
+            update3DModel(L, B, Df, totalDepth, document.getElementById('pile_type').value, pDim, nPiles, bc, D_col, soilData, Pu, Mu);
         }
 
         /* --- EXPORT DOC W/ HTML2CANVAS --- */
@@ -930,29 +1119,33 @@
                 
                 // Capture Container including HTML labels
                 const container = document.getElementById('canvas-container');
+                
+                // Force container styling to pure white temporarily
+                const originalBgColor = container.style.backgroundColor;
+                const originalClass = container.className;
+                container.style.backgroundColor = '#ffffff';
+                container.classList.remove('bg-slate-950/50'); // hapus class tailwind transparent
+                
                 const canvasCapture = await html2canvas(container, {
-                    backgroundColor: '#020617', // Match the DOM's default theme
-                    useCORS: true
+                    backgroundColor: '#ffffff', // Force white background for document export
+                    useCORS: true,
+                    scale: 2 // resolusi tinggi agar rapi di word
                 });
                 
-                let canvasDataUrl = canvasCapture.toDataURL('image/png');
+                // Revert style
+                container.style.backgroundColor = originalBgColor;
+                container.className = originalClass;
 
-                // Jika ekspor dipanggil saat Light Mode, inversi manual gambar canvasnya
-                // sehingga gambar di MS Word mengikuti bentuk dan visual "Terang" di layar
-                if (!isDarkMode) {
-                    const offCanvas = document.createElement('canvas');
-                    offCanvas.width = canvasCapture.width;
-                    offCanvas.height = canvasCapture.height;
-                    const ctx = offCanvas.getContext('2d');
-                    ctx.filter = 'invert(1) hue-rotate(180deg)';
-                    ctx.drawImage(canvasCapture, 0, 0);
-                    canvasDataUrl = offCanvas.toDataURL('image/png');
-                }
+                let canvasDataUrl = canvasCapture.toDataURL('image/png');
 
                 // Extract Input Value Data
                 const val = id => document.getElementById(id) ? document.getElementById(id).value : '';
                 const txt = id => document.getElementById(id) ? document.getElementById(id).innerText : '';
                 
+                const projName = val('proj_name') || 'Projek';
+                const projLoc = val('proj_loc') || 'Lokasi';
+                const projCap = val('proj_cap') || 'Kapasitas';
+
                 const pTypeNode = document.getElementById('pile_type');
                 const pTypeStr = pTypeNode.options[pTypeNode.selectedIndex].text;
 
@@ -971,21 +1164,29 @@
                     <meta charset='utf-8'>
                     <title>Laporan Analisis Geostruktur</title>
                     <style>
-                        body { font-family: 'Times New Roman', serif; font-size: 11pt; color: #000; line-height: 1.5; }
-                        h1 { font-size: 16pt; text-align: center; font-weight: bold; margin-bottom: 5px; }
-                        .subtitle { text-align: center; font-size: 11pt; margin-bottom: 25px; }
-                        h2 { font-size: 12pt; border-bottom: 1.5px solid #000; padding-bottom: 3px; margin-top: 25px; text-transform: uppercase; }
-                        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-                        th, td { border: 1px solid #000; padding: 6px; vertical-align: middle; }
-                        th { background-color: #f2f2f2; text-align: left; }
-                        .img-container { text-align: center; margin: 20px 0; }
-                        img { max-width: 100%; border: 1px solid #000; }
-                        .calc-log { background-color: #f8f9fa; border: 1px dashed #777; padding: 15px; font-family: 'Courier New', monospace; font-size: 10pt; }
+                        body { font-family: 'Times New Roman', serif; font-size: 11pt; color: #000; line-height: 1.3; margin: 0; padding: 0; }
+                        p { margin: 4px 0; padding: 0; } /* Better paragraph spacing */
+                        h1 { font-size: 16pt; text-align: center; font-weight: bold; margin: 10px 0 5px 0; }
+                        .subtitle { text-align: center; font-size: 11pt; margin-bottom: 15px; }
+                        h2 { font-size: 12pt; border-bottom: 1.5px solid #000; padding-bottom: 2px; margin: 20px 0 8px 0; text-transform: uppercase; }
+                        h3 { font-size: 11pt; margin: 15px 0 5px 0; text-decoration: underline; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 11pt; }
+                        th, td { border: 1px solid #000; padding: 5px 8px; vertical-align: middle; }
+                        th { background-color: #e5e5e5; text-align: left; font-weight: bold; }
+                        .img-container { text-align: center; margin: 15px 0; background-color: #fff; padding: 10px; border: 1px solid #000; }
+                        img { max-width: 100%; height: auto; }
+                        .calc-log { background-color: #fcfcfc; border: 1px solid #000; padding: 15px; font-family: 'Cambria', serif; font-size: 11pt; margin-bottom: 15px; }
+                        .calc-log p { margin-bottom: 6px; margin-left: 10px; }
+                        .calc-log b { font-weight: bold; }
+                        .summary-box { border-left: 4px solid #000; padding-left: 10px; margin-bottom: 15px; }
                     </style>
                 </head>
                 <body>
                     <h1>LAPORAN ANALISIS PONDASI TELAPAK DAN TIANG PANCANG</h1>
                     <div class="subtitle">
+                        <strong>Nama Projek:</strong> ${projName}<br>
+                        <strong>Lokasi Projek:</strong> ${projLoc}<br>
+                        <strong>Kapasitas Gudang:</strong> ${projCap}<br><br>
                         <strong>Dihasilkan oleh:</strong> APN Geostructural AI Engine<br>
                         <strong>Engineer:</strong> Mohamad Hartadi
                     </div>
@@ -1055,7 +1256,8 @@
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = 'Laporan_Analisis_APN.doc';
+                const safeName = `Laporan_${projName}_${projLoc}_${projCap}`.replace(/[^a-zA-Z0-9_-]/g, '_');
+                link.download = safeName + '.doc';
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -1091,6 +1293,7 @@
             
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true; controls.target.set(0, -2, 0); 
+
             
             scene.add(new THREE.AmbientLight(0xffffff, 0.7));
             const dir = new THREE.DirectionalLight(0xffffff, 0.5); dir.position.set(10,20,10); scene.add(dir);
@@ -1132,7 +1335,7 @@
             foundationGroup.add(label);
         }
 
-        function update3DModel(fl, fw, ft, pDepth, pType, pDim, nPiles, cb, cd, soilData) {
+        function update3DModel(fl, fw, ft, pDepth, pType, pDim, nPiles, cb, cd, soilData, Pu, Mu) {
             while(foundationGroup.children.length > 0) foundationGroup.remove(foundationGroup.children[0]); 
             
             // DRAW FOOTING
@@ -1199,6 +1402,33 @@
 
                     currentDepth -= layer.thk;
                 });
+            }
+
+            // GAYA BEBAN (FORCES)
+            const colTopY = ft + colHeight;
+            if (Pu > 0) {
+                // Tanda Panah Merah untuk Beban Aksial (Pu)
+                const dir = new THREE.Vector3(0, -1, 0);
+                const origin = new THREE.Vector3(0, colTopY + 1.5, 0);
+                const arrowHelper = new THREE.ArrowHelper(dir, origin, 1.5, 0xef4444, 0.3, 0.2);
+                foundationGroup.add(arrowHelper);
+                
+                // Label Teks Pu
+                const divPu = document.createElement('div');
+                divPu.className = 'text-[11px] font-black text-rose-400 font-mono bg-slate-950/80 px-2 py-1 rounded border border-rose-500/50 whitespace-nowrap shadow-lg mt-1 z-20';
+                divPu.innerHTML = `<i class="fa-solid fa-arrow-down"></i> Pu = ${Pu} kN`;
+                const labelPu = new THREE.CSS2DObject(divPu);
+                labelPu.position.set(0, colTopY + 1.7, 0);
+                foundationGroup.add(labelPu);
+            }
+            if (Mu > 0) {
+                // Label Teks untuk Momen (Mu)
+                const divMu = document.createElement('div');
+                divMu.className = 'text-[11px] font-black text-amber-400 font-mono bg-slate-950/80 px-2 py-1 rounded border border-amber-500/50 whitespace-nowrap shadow-lg z-20';
+                divMu.innerHTML = `<i class="fa-solid fa-rotate-right"></i> Mu = ${Mu} kNm`;
+                const labelMu = new THREE.CSS2DObject(divMu);
+                labelMu.position.set(cb/2 + 0.4, colTopY + 0.5, 0);
+                foundationGroup.add(labelMu);
             }
 
             // DIMENSIONS FOR FOOTING
