@@ -10,10 +10,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Three.js -->
+    <!-- Three.js & html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS2DRenderer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- MathJax for Formulas -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -28,7 +29,8 @@
         
         /* Light Mode Optimizations */
         .light-mode { background-color: #f8fafc; filter: invert(1) hue-rotate(180deg); }
-        .light-mode #canvas-container, .light-mode img, .light-mode .no-invert, .light-mode button.no-invert, .light-mode #floatingChatPanel, .light-mode #voiceSettingsModal {
+        /* HAPUS #canvas-container dari list di bawah agar visual 3D otomatis mengikuti tema light */
+        .light-mode img, .light-mode .no-invert, .light-mode button.no-invert, .light-mode #floatingChatPanel, .light-mode #voiceSettingsModal {
             filter: invert(1) hue-rotate(180deg);
         }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased; }
@@ -97,7 +99,7 @@
                 <button onclick="toggleTheme()" class="no-invert bg-slate-800 border border-slate-600 text-xs font-mono px-3 py-2 rounded hover:bg-slate-700 text-white flex items-center gap-1 shadow-md transition-colors" title="Dark/Light Mode">
                     <i class="fa-solid fa-moon" id="themeIcon"></i>
                 </button>
-                <button onclick="exportToWord()" class="bg-blue-900/80 border border-blue-500/60 text-xs font-mono font-bold px-3 py-2 rounded hover:bg-blue-800 text-blue-300 flex items-center gap-1 transition-colors">
+                <button onclick="exportToWord(this)" class="bg-blue-900/80 border border-blue-500/60 text-xs font-mono font-bold px-3 py-2 rounded hover:bg-blue-800 text-blue-300 flex items-center gap-1 transition-colors">
                     <i class="fa-solid fa-file-word"></i> Word
                 </button>
                 <button onclick="document.getElementById('helpModal').classList.remove('hidden')" class="bg-amber-900/80 border border-amber-500/60 text-xs font-mono font-bold px-3 py-2 rounded hover:bg-amber-800 text-amber-300 flex items-center gap-1 shadow-md transition-colors">
@@ -117,10 +119,10 @@
                 <section class="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
                     <h2 class="text-sm font-black text-cyan-400 cyber-font uppercase mb-3 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-weight-hanging"></i> Beban & Kolom</h2>
                     <div class="grid grid-cols-2 gap-3 font-mono text-sm">
-                        <div><label class="block text-slate-400 mb-1">Aksial Pu [kN]</label><input type="number" id="pu" value="120" class="w-full p-2 rounded font-bold"></div>
-                        <div><label class="block text-slate-400 mb-1">Momen Mu [kNm]</label><input type="number" id="mu" value="15" class="w-full p-2 rounded font-bold"></div>
-                        <div><label class="block text-slate-400 mb-1">Lbr Kol(bc) [m]</label><input type="number" id="col_b" value="0.3" step="0.05" class="w-full p-2 rounded font-bold"></div>
-                        <div><label class="block text-slate-400 mb-1">Pjg Kol(D) [m]</label><input type="number" id="col_d" value="0.45" step="0.05" class="w-full p-2 rounded font-bold"></div>
+                        <div><label class="block text-slate-400 mb-1">Aksial Pu [kN]</label><input type="number" id="pu" value="110" class="w-full p-2 rounded font-bold"></div>
+                        <div><label class="block text-slate-400 mb-1">Momen Mu [kNm]</label><input type="number" id="mu" value="230" class="w-full p-2 rounded font-bold"></div>
+                        <div><label class="block text-slate-400 mb-1">Lbr Kol(bc) [m]</label><input type="number" id="col_b" value="0.6" step="0.05" class="w-full p-2 rounded font-bold"></div>
+                        <div><label class="block text-slate-400 mb-1">Pjg Kol(D) [m]</label><input type="number" id="col_d" value="0.6" step="0.05" class="w-full p-2 rounded font-bold"></div>
                     </div>
                 </section>
                 
@@ -128,9 +130,9 @@
                 <section class="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
                     <h2 class="text-sm font-black text-blue-400 cyber-font uppercase mb-3 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-layer-group"></i> Dimensi & Material</h2>
                     <div class="grid grid-cols-3 gap-3 font-mono text-sm mb-3">
-                        <div><label class="block text-slate-400 mb-1">Pjg(L) [m]</label><input type="number" id="f_len" value="2.4" class="w-full p-2 rounded font-bold"></div>
-                        <div><label class="block text-slate-400 mb-1">Lbr(B) [m]</label><input type="number" id="f_wid" value="2.4" class="w-full p-2 rounded font-bold"></div>
-                        <div><label class="block text-slate-400 mb-1">Tbl(Df) [m]</label><input type="number" id="f_thk" value="0.55" step="0.05" class="w-full p-2 rounded font-bold"></div>
+                        <div><label class="block text-slate-400 mb-1">Pjg(L) [m]</label><input type="number" id="f_len" value="1.1" class="w-full p-2 rounded font-bold"></div>
+                        <div><label class="block text-slate-400 mb-1">Lbr(B) [m]</label><input type="number" id="f_wid" value="0.8" class="w-full p-2 rounded font-bold"></div>
+                        <div><label class="block text-slate-400 mb-1">Tbl(Df) [m]</label><input type="number" id="f_thk" value="0.50" step="0.05" class="w-full p-2 rounded font-bold"></div>
                     </div>
                     <div class="grid grid-cols-2 gap-3 font-mono text-sm">
                         <div><label class="block text-slate-400 mb-1">Mutu Beton fck</label><input type="number" id="fck" value="25" class="w-full p-2 rounded font-bold"></div>
@@ -155,13 +157,63 @@
                             </thead>
                             <tbody id="soil-body">
                                 <tr>
-                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="2.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
-                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="4" class="w-full p-1.5 rounded layer-spt font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="5" class="w-full p-1.5 rounded layer-spt font-bold"></td>
                                     <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
                                 </tr>
                                 <tr>
-                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="4.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="10" class="w-full p-1.5 rounded layer-spt font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
                                     <td class="p-1.5 border-b border-slate-800"><input type="number" value="18" class="w-full p-1.5 rounded layer-spt font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="26" class="w-full p-1.5 rounded layer-spt font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="18" class="w-full p-1.5 rounded layer-spt font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="10" class="w-full p-1.5 rounded layer-spt font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="11" class="w-full p-1.5 rounded layer-spt font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="13" class="w-full p-1.5 rounded layer-spt font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="33" class="w-full p-1.5 rounded layer-spt font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="54" class="w-full p-1.5 rounded layer-spt font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="57" class="w-full p-1.5 rounded layer-spt font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                                    <td class="p-1.5 border-b border-slate-800"><input type="number" value="60" class="w-full p-1.5 rounded layer-spt font-bold"></td>
                                     <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
                                 </tr>
                             </tbody>
@@ -173,7 +225,7 @@
                 <section class="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
                     <h2 class="text-sm font-black text-amber-400 cyber-font uppercase mb-3 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-bars-staggered"></i> Opsi Tiang Pancang</h2>
                     <div class="grid grid-cols-3 gap-3 font-mono text-sm mb-4">
-                        <div><label class="block text-slate-400 mb-1">Jml (0=Dgl)</label><input type="number" id="pile_count" value="4" class="w-full p-2 rounded font-bold accent-amber-500"></div>
+                        <div><label class="block text-slate-400 mb-1">Jml (0=Dgl)</label><input type="number" id="pile_count" value="2" class="w-full p-2 rounded font-bold accent-amber-500"></div>
                         <div><label class="block text-slate-400 mb-1">Bentuk</label><select id="pile_type" class="w-full p-2 rounded font-bold"><option value="square">Persegi</option><option value="circle">Bulat</option></select></div>
                         <div><label class="block text-slate-400 mb-1">Dim [m]</label><input type="number" id="pile_dim" value="0.3" step="0.05" class="w-full p-2 rounded font-bold"></div>
                     </div>
@@ -445,7 +497,7 @@
             const tbody = document.getElementById('soil-body');
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td class="p-1.5 border-b border-slate-800"><input type="number" value="2.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
+                <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
                 <td class="p-1.5 border-b border-slate-800"><input type="number" value="30" class="w-full p-1.5 rounded layer-spt font-bold"></td>
                 <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
             `;
@@ -708,7 +760,7 @@
                 const Q_all = Q_group / 2.5;
                 const FoS = Pu > 0 ? (Q_group / Pu) : 0;
                 
-                logText += `Kapasitas Daya Dukung Tiang Pancang dihitung berdasarkan Tahanan Friksi dan End-Bearing:<br>`;
+                logText += `<br>Kapasitas Daya Dukung Tiang Pancang dihitung berdasarkan Tahanan Friksi dan End-Bearing:<br>`;
                 logText += `\\[ Q_{ult} = (A_p \\times 40N) + \\sum (As_i \\times 2N_i) \\]<br>`;
                 logText += `\\[ Q_{all} = \\frac{Q_{ult} \\times n}{SF} = \\frac{${Q_single.toFixed(1)} \\times ${nPiles}}{2.5} = ${Q_all.toFixed(1)} \\text{ kN} \\]<br>`;
                 
@@ -728,7 +780,7 @@
                 let SBC_soil = topNSPT * 12.5; 
                 const qnet_actual = Pu / (B * L);
                 const FoS = SBC_soil / qnet_actual;
-                logText += `Kapasitas Tanah (SBC) diestimasi dari parameter N-SPT Dangkal (Terzaghi & Meyerhof):<br>`;
+                logText += `<br>Kapasitas Tanah (SBC) diestimasi dari parameter N-SPT Dangkal (Terzaghi & Meyerhof):<br>`;
                 logText += `\\[ q_{net} = \\frac{P_u}{B \\times L} = \\frac{${Pu}}{${B} \\times ${L}} = ${qnet_actual.toFixed(1)} \\text{ kPa} \\]<br>`;
                 logText += `\\[ SBC \\approx 12.5 \\times N_{spt} = ${SBC_soil.toFixed(1)} \\text{ kPa} \\]<br>`;
                 
@@ -760,7 +812,7 @@
             logText += `<div class="mb-4 border-b border-slate-800 pb-3"><span class="text-amber-400 font-bold block mb-2 text-base">>>> TAHAP 2: EKSENTRISITAS (GULING)</span>`;
             const e = Pu > 0 ? (Mu / Pu) : 0;
             const L6 = L / 6;
-            logText += `Pengendalian stabilitas zona tekan (<i>Middle-Third Rule</i>):<br>`;
+            logText += `<br>Pengendalian stabilitas zona tekan (<i>Middle-Third Rule</i>):<br>`;
             logText += `\\[ e = \\frac{M_u}{P_u} = \\frac{${Mu}}{${Pu}} = ${e.toFixed(3)} \\text{ m} \\]<br>`;
             logText += `\\[ \\text{Batas } e_{max} = \\frac{L}{6} = \\frac{${L}}{6} = ${L6.toFixed(3)} \\text{ m} \\]<br>`;
             
@@ -802,7 +854,7 @@
             let tau_c = 0.25 * Math.sqrt(fck); 
             if(tau_c > 1.8) tau_c = 1.8;
 
-            logText += `Evaluasi kegagalan <i>Punching Shear</i> (Geser Pons) 2-Arah pada jarak $d/2$:<br>`;
+            logText += `<br>Evaluasi kegagalan <i>Punching Shear</i> (Geser Pons) 2-Arah pada jarak $d/2$:<br>`;
             logText += `\\[ V_u = q_{net} \\times [ (B \\times L) - (b_c + d)(D_c + d) ] = ${Vu_2.toFixed(1)} \\text{ kN} \\]<br>`;
             logText += `\\[ \\tau_v = \\frac{V_u}{b_o \\times d} = \\frac{${Vu_2.toFixed(1)} \\times 10^3}{${(perimeter_bo*1000).toFixed(0)} \\times ${d.toFixed(0)}} = ${tau_v2.toFixed(3)} \\text{ MPa} \\]<br>`;
             logText += `\\[ \\tau_c = 0.25\\sqrt{f_{ck}} = 0.25\\sqrt{${fck}} = ${tau_c.toFixed(3)} \\text{ MPa} \\]<br>`;
@@ -851,7 +903,10 @@
                     Estimasi cerdas di atas mengekstraksi teori <i>Terzaghi-Meyerhof Bearing Capacity</i> untuk rasionalisasi parameter litologi geoteknik. Verifikasi komponen gaya dan reduksi bahan pelat divalidasi langsung melalui referensi struktur bangunan global <b>Standar IS 456:2000 (Klausul 31.6)</b>.
                 </p>
             </div>
-            </div>`; // end space-y-4
+            </div>`; 
+
+            // Simpan log asli tanpa render mathjax untuk Export Document
+            window.rawCalcLog = logText;
 
             document.getElementById('calc-log').innerHTML = logText;
             document.getElementById('conclusion-text').innerHTML = htmlSummary;
@@ -864,9 +919,154 @@
             update3DModel(L, B, Df, totalDepth, document.getElementById('pile_type').value, pDim, nPiles, bc, D_col, soilData);
         }
 
-        /* --- EXPORT DOC --- */
-        function exportToWord() {
-            alert("Mengekspor laporan ke Microsoft Word...");
+        /* --- EXPORT DOC W/ HTML2CANVAS --- */
+        async function exportToWord(btnElement) {
+            const originalHTML = btnElement.innerHTML;
+            btnElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Mengekspor...`;
+            
+            try {
+                // Ensure 3D Canvas updates frame buffer explicitly
+                renderer.render(scene, camera);
+                
+                // Capture Container including HTML labels
+                const container = document.getElementById('canvas-container');
+                const canvasCapture = await html2canvas(container, {
+                    backgroundColor: '#020617', // Match the DOM's default theme
+                    useCORS: true
+                });
+                
+                let canvasDataUrl = canvasCapture.toDataURL('image/png');
+
+                // Jika ekspor dipanggil saat Light Mode, inversi manual gambar canvasnya
+                // sehingga gambar di MS Word mengikuti bentuk dan visual "Terang" di layar
+                if (!isDarkMode) {
+                    const offCanvas = document.createElement('canvas');
+                    offCanvas.width = canvasCapture.width;
+                    offCanvas.height = canvasCapture.height;
+                    const ctx = offCanvas.getContext('2d');
+                    ctx.filter = 'invert(1) hue-rotate(180deg)';
+                    ctx.drawImage(canvasCapture, 0, 0);
+                    canvasDataUrl = offCanvas.toDataURL('image/png');
+                }
+
+                // Extract Input Value Data
+                const val = id => document.getElementById(id) ? document.getElementById(id).value : '';
+                const txt = id => document.getElementById(id) ? document.getElementById(id).innerText : '';
+                
+                const pTypeNode = document.getElementById('pile_type');
+                const pTypeStr = pTypeNode.options[pTypeNode.selectedIndex].text;
+
+                const qall = txt('out-qall');
+                const ecc = txt('out-e') + " (" + txt('out-e-stat') + ")";
+                const fos = txt('out-fos');
+                const shear = txt('out-shear-status');
+                const steel = txt('out-steel') + " (" + txt('out-steel-req') + ")";
+                
+                let logHtml = window.rawCalcLog || "Silakan jalankan fungsi (AI PROCESS ANALYSIS) terlebih dahulu untuk memuat log kalkulasi.";
+                let sumText = txt('conclusion-text').replace(/\n/g, '<br>');
+
+                const wordContent = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>Laporan Analisis Geostruktur</title>
+                    <style>
+                        body { font-family: 'Times New Roman', serif; font-size: 11pt; color: #000; line-height: 1.5; }
+                        h1 { font-size: 16pt; text-align: center; font-weight: bold; margin-bottom: 5px; }
+                        .subtitle { text-align: center; font-size: 11pt; margin-bottom: 25px; }
+                        h2 { font-size: 12pt; border-bottom: 1.5px solid #000; padding-bottom: 3px; margin-top: 25px; text-transform: uppercase; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+                        th, td { border: 1px solid #000; padding: 6px; vertical-align: middle; }
+                        th { background-color: #f2f2f2; text-align: left; }
+                        .img-container { text-align: center; margin: 20px 0; }
+                        img { max-width: 100%; border: 1px solid #000; }
+                        .calc-log { background-color: #f8f9fa; border: 1px dashed #777; padding: 15px; font-family: 'Courier New', monospace; font-size: 10pt; }
+                    </style>
+                </head>
+                <body>
+                    <h1>LAPORAN ANALISIS PONDASI TELAPAK DAN TIANG PANCANG</h1>
+                    <div class="subtitle">
+                        <strong>Dihasilkan oleh:</strong> APN Geostructural AI Engine<br>
+                        <strong>Engineer:</strong> Mohamad Hartadi
+                    </div>
+                    
+                    <h2>1. Parameter Input Desain</h2>
+                    <table>
+                        <tr><th colspan="2">Beban & Kolom</th><th colspan="2">Dimensi & Material</th></tr>
+                        <tr>
+                            <td>Aksial (Pu)</td><td>${val('pu')} kN</td>
+                            <td>Panjang (L)</td><td>${val('f_len')} m</td>
+                        </tr>
+                        <tr>
+                            <td>Momen (Mu)</td><td>${val('mu')} kNm</td>
+                            <td>Lebar (B)</td><td>${val('f_wid')} m</td>
+                        </tr>
+                        <tr>
+                            <td>Lebar Kolom (bc)</td><td>${val('col_b')} m</td>
+                            <td>Tebal Telapak (Df)</td><td>${val('f_thk')} m</td>
+                        </tr>
+                        <tr>
+                            <td>Panjang Kolom (D)</td><td>${val('col_d')} m</td>
+                            <td>Mutu Beton (fck)</td><td>${val('fck')} MPa</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Opsi Tiang Pancang</th>
+                            <td>Mutu Baja (fy)</td><td>${val('fy')} MPa</td>
+                        </tr>
+                        <tr>
+                            <td>Jumlah Tiang</td><td>${val('pile_count')} buah</td>
+                            <td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td>Bentuk</td><td>${pTypeStr}</td>
+                            <td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td>Dimensi Tiang</td><td>${val('pile_dim')} m</td>
+                            <td></td><td></td>
+                        </tr>
+                    </table>
+
+                    <h2>2. Visualisasi Model 3D & Litologi Tanah</h2>
+                    <div class="img-container">
+                        <img src="${canvasDataUrl}" alt="3D Foundation & Lithology Model" />
+                    </div>
+
+                    <h2>3. Urutan Analisis & Log Kalkulasi Matematika</h2>
+                    <div class="calc-log">
+                        ${logHtml}
+                    </div>
+
+                    <h2>4. Kesimpulan Hasil Desain</h2>
+                    <table>
+                        <tr><th style="width: 40%;">Kapasitas Daya Dukung (Qall)</th><td>${qall}</td></tr>
+                        <tr><th>Faktor Keamanan (FoS)</th><td>${fos}</td></tr>
+                        <tr><th>Eksentrisitas (Gaya Guling)</th><td>${ecc}</td></tr>
+                        <tr><th>Status Geser Pons 2-Arah</th><td>${shear}</td></tr>
+                        <tr><th>Kebutuhan Tulangan Utama</th><td>${steel}</td></tr>
+                    </table>
+                    
+                    <h3>Saran Rekomendasi AI:</h3>
+                    <p style="text-align: justify;">${sumText}</p>
+                </body>
+                </html>`;
+
+                const blob = new Blob(['\ufeff', wordContent], { type: 'application/msword' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'Laporan_Analisis_APN.doc';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                btnElement.innerHTML = originalHTML;
+            } catch(e) {
+                console.error(e);
+                alert("Terjadi kesalahan sistem saat mengekspor laporan dokumen. Pastikan browser mendukung html2canvas.");
+                btnElement.innerHTML = originalHTML;
+            }
         }
 
         /* --- THREE.JS INITIALIZATION & UPDATE --- */
@@ -878,7 +1078,7 @@
             camera = new THREE.PerspectiveCamera(45, container.clientWidth/container.clientHeight, 0.1, 1000);
             camera.position.set(7, 6, 9); 
             
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
             container.appendChild(renderer.domElement);
 
