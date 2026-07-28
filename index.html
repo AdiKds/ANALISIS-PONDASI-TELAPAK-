@@ -67,6 +67,10 @@
         .signature-text { position: fixed; bottom: 10px; left: 10px; z-index: 40; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: rgba(255, 255, 255, 0.3); pointer-events: none; }
         .leaf-icon { color: rgba(16, 185, 129, 0.8); }
         .audio-speaking { box-shadow: 0 0 15px rgba(6, 182, 212, 0.8), 0 0 30px rgba(6, 182, 212, 0.4); border-color: #00ffff !important; }
+        
+        /* Wisdom Quote Anim */
+        @keyframes fadeWisdom { 0% { opacity: 0; transform: translateY(10px); } 10% { opacity: 1; transform: translateY(0); } 90% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-10px); } }
+        .wisdom-active { animation: fadeWisdom 10s ease-in-out forwards; }
     </style>
 </head>
 <body class="selection:bg-cyan-500 selection:text-black relative pb-8" style="background-color: #020617;">
@@ -106,7 +110,7 @@
 
     <div class="scanline-overlay"></div>
 
-    <!-- WRAPPER UNTUK TEMA (Mengisi celah kolom dgn bg solid & tidak merusak modal z-index) -->
+    <!-- WRAPPER UNTUK TEMA -->
     <div id="theme-wrapper" class="w-full min-h-screen transition-colors duration-300 bg-[#020617]">
         
         <!-- HEADER -->
@@ -143,8 +147,23 @@
             </div>
         </header>
 
-        <!-- MAIN GRID -->
-        <main class="w-full mx-auto px-4 py-6 relative z-10">
+        <!-- MAIN GRID (Ini yang akan di-capture untuk Word Export) -->
+        <main id="main-dashboard-app" class="w-full mx-auto px-4 py-6 relative z-10">
+            
+            <!-- PANEL HARI & WAKTU (TOP CENTER) -->
+            <div class="w-full mb-6 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-cyan-500/30 rounded-xl p-3 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 shadow-[0_0_20px_rgba(6,182,212,0.15)] backdrop-blur-md relative overflow-hidden">
+                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-20 pointer-events-none"></div>
+                <div class="flex items-center gap-2 text-cyan-400 font-black cyber-font tracking-widest text-xs uppercase z-10">
+                    <i class="fa-solid fa-satellite-dish animate-pulse"></i> LIVE SERVER
+                </div>
+                <div class="hidden sm:block h-6 w-px bg-slate-600 z-10"></div>
+                <div class="flex items-center gap-3 z-10">
+                    <span id="mainDashboardDate" class="text-sm md:text-base font-bold text-slate-300 font-mono tracking-wide"></span>
+                    <span class="text-cyan-500 font-bold">|</span>
+                    <span id="mainDashboardTime" class="text-xl md:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 cyber-font tracking-widest drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 xl:grid-cols-12 gap-5">
                 
                 <!-- LEFT PANEL: INPUTS -->
@@ -279,7 +298,7 @@
                         </div>
                     </div>
 
-                    <!-- Middle Section: 3D Canvas & Log -->
+                    <!-- Middle Section: 3D Canvas & Chart & Log -->
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
                         <!-- Canvas & Chart -->
                         <div class="lg:col-span-7 xl:col-span-8 bg-[var(--bg-card)] p-3 rounded-xl border border-cyan-500 shadow-xl flex flex-col relative h-[500px]">
@@ -294,7 +313,7 @@
                                         <p><b class="text-cyan-400"><i class="fa-solid fa-hand-pointer"></i> KIRI + GESER:</b> Putar Visual</p>
                                         <p><b class="text-cyan-400"><i class="fa-solid fa-arrows-up-down-left-right"></i> KANAN + GESER:</b> Pindah/Pan</p>
                                         <p><b class="text-cyan-400"><i class="fa-solid fa-magnifying-glass"></i> SCROLL:</b> Zoom In/Out</p>
-                                        <p><b class="text-emerald-400"><i class="fa-solid fa-pen-to-square"></i> DBL-CLICK LAPISAN:</b> Edit N-SPT</p>
+                                        <p><b class="text-emerald-400"><i class="fa-solid fa-pen-to-square"></i> KLIK 2x (TEXT/BLOK):</b> Edit N-SPT</p>
                                     </div>
                                 </div>
                                 <!-- Grafik Chart N-SPT -->
@@ -345,8 +364,12 @@
                 </div>
                 <div>
                     <h4 class="text-xs font-black tracking-wider cyber-font text-white uppercase">JARVIS AI</h4>
-                    <p class="text-[9px] hacker-font text-emerald-400 uppercase tracking-widest flex items-center gap-1">
-                        <span id="chatTime" class="text-cyan-200"></span> | ONLINE
+                    <p class="text-[9px] hacker-font text-emerald-400 uppercase tracking-widest flex items-center gap-1 mt-0.5">
+                        <i class="fa-regular fa-clock text-cyan-500"></i>
+                        <span id="chatDate" class="text-emerald-300 font-sans"></span>&nbsp;
+                        <span id="chatTime" class="text-cyan-200 font-bold font-sans"></span>
+                        <span class="text-slate-500 mx-1">|</span> 
+                        <span class="animate-pulse">ONLINE</span>
                     </p>
                 </div>
             </div>
@@ -388,8 +411,8 @@
 
     <!-- ACTION BUTTONS (Always visible Bottom Right) -->
     <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9999] pointer-events-none no-invert">
-        <div class="flex items-center relative w-max ml-auto pointer-events-auto">
-            <div id="floatingButtonsGroup" class="flex items-center gap-2 sm:gap-3 transition-all duration-500 ease-in-out transform origin-right translate-x-0 opacity-100 pr-[3.5rem] sm:pr-[4.5rem]">
+        <div class="flex flex-row flex-nowrap items-center gap-2 sm:gap-3 pointer-events-auto relative w-max ml-auto mt-auto">
+            <div id="floatingButtonsGroup" class="flex flex-row flex-nowrap items-center gap-2 sm:gap-3 transition-all duration-500 ease-in-out transform origin-right translate-x-0 opacity-100 pr-[3.5rem] sm:pr-[4.5rem]">
                 <button type="button" onclick="runAnalysis()" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white border border-fuchsia-400 h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-[0_0_20px_rgba(192,38,211,0.6)] flex items-center justify-center transition-transform hover:scale-110 shrink-0" title="Proses Analisis Aktual">
                     <i class="fa-solid fa-calculator text-base sm:text-lg"></i>
                 </button>
@@ -405,6 +428,25 @@
             <button type="button" onclick="toggleFloatingButtons()" class="absolute right-0 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 h-9 w-9 sm:h-10 sm:w-10 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.5)] flex items-center justify-center transition-transform hover:scale-110 z-50 shrink-0">
                 <i id="toggleFloatingIcon" class="fa-solid fa-angles-right text-xs sm:text-base"></i>
             </button>
+        </div>
+    </div>
+
+    <!-- N-SPT EDIT MODAL -->
+    <div id="editSptModal" class="fixed inset-0 z-[10010] hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 pointer-events-auto no-invert">
+        <div class="bg-slate-900 border-2 border-emerald-500 rounded-2xl w-full max-w-sm p-6 shadow-[0_0_30px_rgba(16,185,129,0.5)] relative flex flex-col font-sans">
+            <button onclick="closeEditSptModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors cursor-pointer z-10"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h3 class="text-emerald-400 text-base sm:text-lg font-black cyber-font mb-2 flex items-center gap-2 mt-2 sm:mt-0 tracking-widest uppercase"><i class="fa-solid fa-pen-to-square text-emerald-400"></i> Edit N-SPT</h3>
+            <p class="text-sm text-slate-400 mb-4 font-mono">Ubah parameter N-SPT untuk Lapis Tanah Ke-<span id="editSptLayerIdx" class="text-white font-bold"></span>.</p>
+            
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-6">
+                <label class="block text-slate-400 mb-2 text-xs font-bold font-mono">Nilai N-SPT Baru</label>
+                <input type="number" id="editSptInput" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-base text-white outline-none focus:border-emerald-400 font-bold" min="0" step="1" onkeydown="if(event.key === 'Enter') saveEditSpt()">
+            </div>
+            
+            <div class="flex gap-3">
+                <button onclick="closeEditSptModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-black py-3 rounded-xl uppercase cyber-font text-xs transition-all active:scale-95 border border-slate-600">Batal</button>
+                <button onclick="saveEditSpt()" class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black py-3 rounded-xl uppercase cyber-font text-xs shadow-[0_0_15px_rgba(16,185,129,0.4)] transition-all active:scale-95">Update Data</button>
+            </div>
         </div>
     </div>
 
@@ -470,10 +512,10 @@
                         <ul class="list-disc pl-5 space-y-1 text-slate-300">
                             <li><b>Estimasi Penurunan & Konsolidasi:</b> Analisis komprehensif <i>Immediate Settlement</i> & <i>Primary Consolidation</i>.</li>
                             <li><b>Data Project Manager:</b> Fitur ekspor/impor state project ke format JSON (Backup/Restore).</li>
-                            <li><b>Interaksi 3D Lanjutan:</b> Klik Kiri (Putar), Klik Kanan (Geser/Pan), Scroll (Zoom), dan <b>Double-Click</b> pada lapisan tanah untuk mengedit N-SPT secara langsung.</li>
-                            <li><b>Grafik Boring Log:</b> Menampilkan grafik <i>Scatter Line</i> dari nilai uji N-SPT lapangan.</li>
-                            <li><b>Ekspor Laporan Cerdas:</b> Laporan MS Word otomatis rapi dengan penomoran halaman dan background gambar putih solid.</li>
-                            <li><b>Keterangan Notasi:</b> Dilengkapi legenda notasi variabel yang elegan dan berwarna pada setiap log formula matematika.</li>
+                            <li><b>Interaksi 3D Lanjutan:</b> Klik Kiri (Putar), Klik Kanan (Geser/Pan), Scroll (Zoom), dan <b>Double-Click</b> pada lapisan tanah atau teks notasi label untuk mengedit N-SPT secara langsung melalui Interface UI khusus.</li>
+                            <li><b>Grafik Boring Log:</b> Menampilkan grafik <i>Scatter Line</i> dari nilai uji N-SPT lapangan secara Real-time.</li>
+                            <li><b>Ekspor Laporan Cerdas:</b> Ekspor tangkapan keseluruhan antarmuka sistem secara utuh (Landscape A4) dan merender grafik+3D sebagai gambar HD murni.</li>
+                            <li><b>Antarmuka Floating (Melayang):</b> Tombol akses cepat Chatbot, Screensaver, dan Analisis yang responsif.</li>
                         </ul>
                     </div>
 
@@ -525,21 +567,28 @@
         </div>
     </div>
 
-    <!-- SCREENSAVER -->
+    <!-- SCREENSAVER (3D Earth & Siri Wisdom Quotes) -->
     <div id="screensaverScreen" class="bg-slate-950/95 transition-all duration-500 cursor-pointer backdrop-blur-md p-4 pointer-events-auto no-invert" onclick="document.getElementById('screensaverScreen').style.display='none'">
-        <div class="relative z-10 flex flex-col items-center text-center w-full">
-            <!-- 3D Earth Container -->
-            <div id="earth-container" class="w-56 h-56 mb-4 flex items-center justify-center relative">
-                <!-- SVG ring as background -->
-                <svg viewBox="0 0 200 200" width="100%" height="100%" class="absolute inset-0 pointer-events-none">
-                    <circle cx="100" cy="100" r="95" fill="none" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="8 12" class="animate-[spin_20s_linear_infinite]"/>
-                </svg>
+        <div class="relative z-10 flex flex-col items-center justify-center text-center w-full h-full max-w-4xl mx-auto">
+            
+            <!-- Waktu & Tanggal (Melayang di atas bumi) -->
+            <div class="absolute top-10 flex flex-col items-center justify-center w-full z-20">
+                <div class="cyber-font font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-cyan-500 drop-shadow-[0_0_15px_rgba(6,182,212,0.8)] text-6xl sm:text-8xl mb-2" id="scTime">00:00:00</div>
+                <div class="font-mono text-emerald-400 font-bold text-xl sm:text-2xl tracking-widest bg-slate-900/60 px-6 py-2 rounded-full border border-emerald-500/30 backdrop-blur-sm" id="scDate">Hari, Tanggal</div>
+            </div>
+
+            <!-- 3D Earth Container (Diperbesar) -->
+            <div id="earth-container" class="w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] mb-8 flex items-center justify-center relative drop-shadow-[0_0_40px_rgba(14,165,233,0.3)] z-10 mt-20">
             </div>
             
-            <div class="cyber-font font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 text-5xl mb-2" id="scTime">00:00:00</div>
-            <div class="font-mono text-emerald-400 text-lg tracking-widest mb-6" id="scDate">Hari, Tanggal</div>
-            
-            <div class="hacker-font text-sm text-emerald-400 bg-slate-900 border border-emerald-500/40 px-6 py-2 rounded-lg tracking-widest mt-2 shadow-[0_0_15px_rgba(16,185,129,0.3)]">SYSTEM STANDBY</div>
+            <!-- Wisdom Quotes -->
+            <div class="absolute bottom-16 w-full px-6 z-20">
+                <div id="wisdomQuoteContainer" class="text-xl sm:text-3xl font-black font-sans leading-relaxed tracking-wide min-h-[100px] flex items-center justify-center drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)] px-4 py-6 rounded-2xl backdrop-blur-md border-t-2 border-b-2">
+                    <span id="wisdomQuoteText" class="text-white">"Sistem Geostructural AI Siap Beroperasi."</span>
+                </div>
+            </div>
+
+            <div class="absolute bottom-4 hacker-font text-xs text-slate-500 tracking-widest uppercase">Tekan sembarang area untuk kembali</div>
         </div>
     </div>
 
@@ -547,6 +596,69 @@
     <div class="signature-text w-full">Newbie AI editing <span class="leaf-icon">🌿</span></div>
 
     <script>
+        // --- 20 Kata Bijak (Wisdom Quotes) ---
+        const wisdomQuotes = [
+            "Ilmu adalah jembatan emas menuju peradaban yang kokoh.",
+            "Pondasi yang kuat berawal dari perhitungan yang teliti dan jiwa yang jujur.",
+            "Setiap inci struktur yang Anda bangun adalah warisan bagi generasi masa depan.",
+            "Teknologi hadir bukan untuk menggantikan nalar, melainkan menajamkan visi.",
+            "Kesalahan terbesar seorang Insinyur adalah berhenti meragukan hasil kerjanya sendiri.",
+            "Kekuatan sebuah bangunan tidak diukur dari tingginya, tapi dari kedalaman akar pijakannya.",
+            "Keamanan adalah prioritas mutlak; keindahan arsitektur adalah bonus dari presisi.",
+            "Tanah tempat kita berpijak menyimpan berjuta rahasia alam yang harus dipahami.",
+            "Kecerdasan Buatan (AI) adalah pelayan yang baik, namun tuan yang buruk. Kendalikanlah.",
+            "Inovasi sejati lahir saat pengetahuan teknis bertabrakan dengan imajinasi kreatif.",
+            "Jangan pernah meremehkan kekuatan air dan alam; rancanglah struktur yang bersinergi dengannya.",
+            "Detail kecil yang diabaikan hari ini, adalah bencana besar yang menunggu esok hari.",
+            "Bangunlah karir Anda seperti membangun bendungan: Sabar, tahan tekanan, dan memberi manfaat luas.",
+            "Ketekunan mengalahkan kepintaran yang tidak pernah diasah.",
+            "Setiap garis pada cetak biru Anda adalah wujud tanggung jawab kemanusiaan.",
+            "Data tanpa interpretasi yang benar hanyalah kumpulan angka yang membisu.",
+            "Seorang ahli melihat risiko sebelum bahaya itu benar-benar terwujud.",
+            "Hargai proses belajar. Bahkan struktur terkuat pun dibangun bata demi bata.",
+            "Alam tidak pernah berkompromi dengan desain yang mengabaikan hukum fisikanya.",
+            "Dedikasi dan integritas adalah baja tulangan untuk jiwa seorang profesional."
+        ];
+
+        let wisdomInterval = null;
+        const wisdomColors = [
+            "from-emerald-900/80 to-teal-900/80 border-emerald-400 text-emerald-100",
+            "from-blue-900/80 to-cyan-900/80 border-cyan-400 text-cyan-100",
+            "from-fuchsia-900/80 to-purple-900/80 border-fuchsia-400 text-fuchsia-100",
+            "from-amber-900/80 to-orange-900/80 border-amber-400 text-amber-100",
+            "from-rose-900/80 to-red-900/80 border-rose-400 text-rose-100"
+        ];
+
+        // --- N-SPT Edit Modal Logic ---
+        let currentEditLayerIdx = null;
+
+        function openEditSptModal(idx, oldSpt) {
+            currentEditLayerIdx = idx;
+            document.getElementById('editSptLayerIdx').innerText = idx + 1;
+            document.getElementById('editSptInput').value = oldSpt;
+            document.getElementById('editSptModal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('editSptInput').focus(), 150);
+        }
+
+        function closeEditSptModal() {
+            document.getElementById('editSptModal').classList.add('hidden');
+            currentEditLayerIdx = null;
+        }
+
+        function saveEditSpt() {
+            if (currentEditLayerIdx === null) return;
+            const newSpt = document.getElementById('editSptInput').value;
+            if (newSpt !== null && newSpt.trim() !== "" && !isNaN(newSpt)) {
+                const rows = document.getElementById('soil-body').children;
+                if (rows[currentEditLayerIdx]) {
+                    rows[currentEditLayerIdx].querySelector('.layer-spt').value = newSpt;
+                    runAnalysis(); // re-calculate, re-render chart & 3D automatically
+                    if(typeof speakBot === 'function') speakBot("Sistem telah memperbarui nilai N SPT. Grafik dan Analisis Geostruktur telah disesuaikan otomatis.");
+                }
+            }
+            closeEditSptModal();
+        }
+
         // --- Live Date Time Update ---
         function updateDateTime() {
             const now = new Date();
@@ -567,6 +679,12 @@
             const ldDate = document.getElementById('loaderDate');
             if(ldDate) ldDate.innerText = dateStr;
             
+            // Main Dashboard Update
+            const mainTime = document.getElementById('mainDashboardTime');
+            if(mainTime) mainTime.innerText = timeStr;
+            const mainDate = document.getElementById('mainDashboardDate');
+            if(mainDate) mainDate.innerText = dateStr;
+
             // Screensaver update
             const scTime = document.getElementById('scTime');
             if(scTime) scTime.innerText = timeStr;
@@ -576,6 +694,8 @@
             // Chat update
             const chatTime = document.getElementById('chatTime');
             if(chatTime) chatTime.innerText = timeStr;
+            const chatDateElem = document.getElementById('chatDate');
+            if(chatDateElem) chatDateElem.innerText = dateStr;
         }
         setInterval(updateDateTime, 1000);
         updateDateTime(); // Call immediately
@@ -591,7 +711,7 @@
                 document.getElementById('themeIcon').className = 'fa-solid fa-moon text-white';
             } else {
                 wrapper.classList.add('light-mode');
-                document.body.style.backgroundColor = '#fdf4e3'; /* Light golden brown matching inverted wrapper */
+                document.body.style.backgroundColor = '#fdf4e3'; 
                 document.getElementById('themeIcon').className = 'fa-solid fa-sun text-amber-400';
             }
         }
@@ -601,7 +721,47 @@
             const ss = document.getElementById('screensaverScreen');
             ss.style.display = 'flex';
             setTimeout(() => ss.style.opacity = 1, 50);
+            
+            // Start Wisdom Quote Cycle
+            if(wisdomInterval) clearInterval(wisdomInterval);
+            cycleWisdomQuote(); // Call immediately
+            wisdomInterval = setInterval(cycleWisdomQuote, 10000); // Change every 10 seconds
         }
+
+        function cycleWisdomQuote() {
+            const quoteContainer = document.getElementById('wisdomQuoteContainer');
+            const quoteText = document.getElementById('wisdomQuoteText');
+            
+            // Random Quote & Color
+            const randomQuote = wisdomQuotes[Math.floor(Math.random() * wisdomQuotes.length)];
+            const randomColorClass = wisdomColors[Math.floor(Math.random() * wisdomColors.length)];
+            
+            // Reset Animation
+            quoteContainer.classList.remove('wisdom-active');
+            void quoteContainer.offsetWidth; // Trigger reflow
+            
+            // Apply new styling and text
+            quoteContainer.className = `text-xl sm:text-3xl font-black font-sans leading-relaxed tracking-wide min-h-[100px] flex items-center justify-center drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)] px-4 py-6 rounded-2xl backdrop-blur-md border-t-2 border-b-2 bg-gradient-to-r wisdom-active ${randomColorClass}`;
+            quoteText.innerText = `"${randomQuote}"`;
+            
+            // Speak Quote using Siri
+            if(!isMuted && document.getElementById('screensaverScreen').style.display !== 'none') {
+                speakBot(randomQuote);
+            }
+        }
+
+        // Disable Wisdom Cycle when Screensaver closes
+        const ssElement = document.getElementById('screensaverScreen');
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (ssElement.style.display === 'none') {
+                    if(wisdomInterval) clearInterval(wisdomInterval);
+                    if(synth) synth.cancel(); // Stop talking
+                }
+            });
+        });
+        observer.observe(ssElement, { attributes: true, attributeFilter: ['style'] });
+
 
         window.addEventListener('load', () => {
             setTimeout(() => { 
@@ -619,14 +779,11 @@
             const grp = document.getElementById('floatingButtonsGroup');
             const icon = document.getElementById('toggleFloatingIcon');
             
-            // Check current state by seeing if it's translated out
             if (grp.classList.contains('translate-x-[150%]')) {
-                // Show it
                 grp.classList.remove('translate-x-[150%]', 'opacity-0', 'pointer-events-none');
                 grp.classList.add('translate-x-0', 'opacity-100');
                 icon.className = 'fa-solid fa-angles-right text-xs sm:text-base';
             } else {
-                // Hide it
                 grp.classList.remove('translate-x-0', 'opacity-100');
                 grp.classList.add('translate-x-[150%]', 'opacity-0', 'pointer-events-none');
                 icon.className = 'fa-solid fa-angles-left text-xs sm:text-base';
@@ -634,25 +791,84 @@
         }
 
         // --- EARTH 3D FOR SCREENSAVER ---
-        let earthScene, earthCamera, earthRenderer, earthMesh;
+        let earthScene, earthCamera, earthRenderer, earthMesh, cloudMesh;
+        let earthGroup;
         function initEarth() {
             const container = document.getElementById('earth-container');
             if(!container) return;
+            
+            // Fixed initial dimensions for reliable rendering
+            const W = 500;
+            const H = 500;
+            
             earthScene = new THREE.Scene();
-            earthCamera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-            earthCamera.position.z = 3.5;
+            earthCamera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+            earthCamera.position.z = 4.5;
+            
             earthRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            earthRenderer.setSize(180, 180);
+            earthRenderer.setSize(W, H);
+            
+            // Use ResizeObserver for perfect responsive scaling
+            const resizeObserver = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    const { width, height } = entry.contentRect;
+                    if(width > 0 && height > 0) {
+                        earthCamera.aspect = width / height;
+                        earthCamera.updateProjectionMatrix();
+                        earthRenderer.setSize(width, height);
+                    }
+                }
+            });
+            resizeObserver.observe(container);
+            
             container.appendChild(earthRenderer.domElement);
 
-            const geo = new THREE.SphereGeometry(1, 24, 24);
-            const mat = new THREE.MeshBasicMaterial({ color: 0x0ea5e9, wireframe: true, transparent: true, opacity: 0.6 });
-            earthMesh = new THREE.Mesh(geo, mat);
-            earthScene.add(earthMesh);
+            earthGroup = new THREE.Group();
+            earthScene.add(earthGroup);
 
-            const innerGeo = new THREE.SphereGeometry(0.96, 32, 32);
-            const innerMat = new THREE.MeshBasicMaterial({ color: 0x0f172a });
-            earthScene.add(new THREE.Mesh(innerGeo, innerMat));
+            // Realistic Ocean/Earth Sphere using reliable CDN unpkg
+            const tl = new THREE.TextureLoader();
+            tl.setCrossOrigin('anonymous'); 
+            
+            const earthTex = tl.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg', function(){
+                if(earthMesh) earthMesh.material.needsUpdate = true;
+            });
+            const specTex = tl.load('https://unpkg.com/three-globe/example/img/earth-water.png');
+            const cloudTex = tl.load('https://unpkg.com/three-globe/example/img/earth-clouds.png');
+
+            const earthGeo = new THREE.SphereGeometry(1.5, 64, 64);
+            const earthMat = new THREE.MeshPhongMaterial({ 
+                map: earthTex,
+                specularMap: specTex,
+                specular: new THREE.Color(0x333333),
+                shininess: 15
+            });
+            earthMesh = new THREE.Mesh(earthGeo, earthMat);
+            earthGroup.add(earthMesh);
+
+            // Cloud Layer
+            const cloudGeo = new THREE.SphereGeometry(1.52, 64, 64);
+            const cloudMat = new THREE.MeshPhongMaterial({
+                map: cloudTex,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending,
+                side: THREE.FrontSide,
+                depthWrite: false
+            });
+            cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
+            earthGroup.add(cloudMesh);
+
+            // Lighting
+            const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+            earthScene.add(ambient);
+            const spotLight = new THREE.SpotLight(0xffffff, 2.5);
+            spotLight.position.set(5, 3, 5);
+            earthScene.add(spotLight);
+            
+            const backLight = new THREE.SpotLight(0x0284c7, 0.5);
+            backLight.position.set(-5, -3, -5);
+            earthScene.add(backLight);
             
             animateEarth();
         }
@@ -660,8 +876,11 @@
         function animateEarth() {
             requestAnimationFrame(animateEarth);
             if(earthMesh) {
-                earthMesh.rotation.y += 0.01;
-                earthMesh.rotation.x += 0.005;
+                earthMesh.rotation.y += 0.002;
+                earthMesh.rotation.x = 0.2; 
+            }
+            if(cloudMesh) {
+                cloudMesh.rotation.y += 0.0025; 
             }
             if(document.getElementById('screensaverScreen').style.display !== 'none') {
                 earthRenderer.render(earthScene, earthCamera);
@@ -885,6 +1104,48 @@
             }
         }
 
+        /* 38 MY APLIKASI DIRECTORY */
+        const myAppsDir = [
+            {u:"https://adikds.github.io/jarvis-ai/",i:"fa-robot",n:"JARVIS AI"},
+            {u:"https://adikds.github.io/edu-market-pro/",i:"fa-graduation-cap",n:"EduMarket Pro"},
+            {u:"https://adikds.github.io/iptv-terminal/",i:"fa-tv",n:"IPTV Terminal"},
+            {u:"https://adikds.github.io/TV-streaming-live/",i:"fa-signal",n:"TV Streaming Live"},
+            {u:"https://adikds.github.io/Al-Quran-Karim/",i:"fa-book-quran",n:"Al-Quran Karim"},
+            {u:"https://adikds.github.io/-MEGA-ATLAS-FKG/",i:"fa-tooth",n:"Mega Atlas FKG"},
+            {u:"https://adikds.github.io/SISTEM-MONITORING-SEISMIK-PERINGATAN-TSUNAMI/",i:"fa-wave-square",n:"Tsunami Alert"},
+            {u:"https://adikds.github.io/MONITORING-PREDIKSI-STATUS-EI-NI-O-LA-NI-A/",i:"fa-temperature-half",n:"El Nino La Nina"},
+            {u:"https://adikds.github.io/MONITORING-PREDIKSI-ANGIN-MUSON-INDONESIA/",i:"fa-wind",n:"Angin Muson"},
+            {u:"https://adikds.github.io/INTEGRATED-DAM-ANALYTICS-ASSESSMENT-SYSTEM/",i:"fa-water",n:"Dam Analytics"},
+            {u:"https://adikds.github.io/WAY-APU-DAM/",i:"fa-building-shield",n:"Way Apu Dam"},
+            {u:"https://adikds.github.io/EVENT-DRIVEN-ARCHITECTURE-FOR-AI-AGENTS/",i:"fa-sitemap",n:"EDA AI Agents"},
+            {u:"https://adikds.github.io/GeoStructPro-15-Essential-Geotechnical-Formulas/",i:"fa-mountain",n:"GeoStructPro 15"},
+            {u:"https://adikds.github.io/GEOSTRUCT-PRO-20-FORMULA-GEOTECHNICAL/",i:"fa-layer-group",n:"GeoStruct Pro 20"},
+            {u:"https://adikds.github.io/UNIFIED-SOIL-CLASSIFICATION-SYSTEM/",i:"fa-cubes",n:"USCS Soil"},
+            {u:"https://adikds.github.io/AERORADAR-PRO/",i:"fa-plane",n:"AeroRadar Pro"},
+            {u:"https://adikds.github.io/HYDRACANAL-PRO-GEOMETRIC-DESIGN/",i:"fa-water-ladder",n:"HydraCanal Pro"},
+            {u:"https://adikds.github.io/financial-planner/",i:"fa-chart-line",n:"Financial Planner"},
+            {u:"https://adikds.github.io/business-suite/",i:"fa-chart-bar",n:"Business Suite"},
+            {u:"https://adikds.github.io/stock-manager/",i:"fa-boxes-stacked",n:"Stock Manager"},
+            {u:"https://adikds.github.io/Aplikasi_Point_of_Sale_-POS-_atau_sistem_kasir/",i:"fa-cash-register",n:"POS Terminal Pro"},
+            {u:"https://adikds.github.io/KEUANGANKU/",i:"fa-cash-register",n:"Keuanganku"},
+            {u:"https://adikds.github.io/DARUSSYIFA-MEDIKA/",i: "fa-hospital",n:"DARUSSYIFA"},
+            {u:"https://adikds.github.io/SKIN_SYIFA_AI/",i: "fa-magnifying-glass-chart",n:"SKIN SYIFA"},
+            {u:"https://adikds.github.io/NEURO-PSYCH_AI/",i: "fa-brain",n:"NEURO-PSYCH"},
+            {u:"https://adikds.github.io/SMILE-SYIFA-AI/",i: "fa-face-smile",n:"SMILE SYIFA"},
+            {u:"https://adikds.github.io/DOKTER-AI/",i: "fa-user-doctor",n:"DOKTER AI"},
+            {u: "https://www.f15library.com/", i: "fa-book-open-reader",n: "F15 Library"},
+            {u: "https://adikds.github.io/ATLAS-GEOTEKNIK/", i: "fa-earth-americas",n: "Geotechnical"},
+            {u: "https://adikds.github.io/STATISTICS_for_ENGINEERS-/", i: "fa-chart-pie",n: "Stats Engineers"},
+            {u: "https://famelack.com/radio/id", i: "fa-radio", n: "Radio Online"},
+            {u: "https://famelack.com/tv/id", i: "fa-tv",n: "TV Famelack"},
+            {u: "https://adikds.github.io/Mega-Atlas-Kedokteran-Neurologi-Bedah-Syaraf/", i: "fa-brain",n: "Neurology"},
+            {u: "https://adikds.github.io/Adi_Newbie/", i: "fa-user-astronaut",n: "Adi Newbie" },
+            {u: "https://adikds.github.io/-Doa-Digital-Pro/", i: "fa-hands-praying", n: "Kumpulan Doa Digital Pro"},
+            {u: "https://adikds.github.io/AASHTO-SOIL-CLASSIFIER/", i: "fa-road", n: "AASHTO Soil"},
+            {u: "https://adikds.github.io/APEX-Foundations-v3.1-Geotechnical-AI-/", i: "fa-layer-group", n: "APN FOUNDATIONS"},
+            {u: "https://adikds.github.io/ANALISIS-PONDASI-TELAPAK-/", i: "fa-layer-group", n: "APN FOUNDATIONS"}
+        ];
+
         function triggerChatShortcut(action) {
             try {
                 const chatBox = document.getElementById('chatContainer');
@@ -982,7 +1243,7 @@
                         });
                         appsHtml += '</div>';
                         reply = `<div class="mb-2 text-amber-400 font-bold uppercase text-[11px]"><i class="fa-solid fa-layer-group"></i> Direktori My Aplikasi (${myAppsDir.length} Apps)</div><div class="max-h-60 overflow-y-auto custom-scroll pr-2 pb-1">${appsHtml}</div>`;
-                        ttsOutput = `Menampilkan seluruh ${myAppsDir.length} daftar ekosistem My Aplikasi portofolio pengembangan Anda.`;
+                        ttsOutput = `Menampilkan seluruh ${myAppsDir.length} daftar ekosistem My Aplikasi dari portofolio pengembangan Anda.`;
                     }
                     
                     // 4. Print jawaban bot
@@ -1462,18 +1723,33 @@
                     sptChartInstance.update('none');
                 }
                 
+                // Change 3D text labels to black text on white background
+                const labels = document.querySelectorAll('#canvas-container div[style*="position: absolute"]');
+                const oldLabelStyles = [];
+                labels.forEach(label => {
+                    oldLabelStyles.push({
+                        bg: label.style.backgroundColor,
+                        color: label.style.color,
+                        borderColor: label.style.borderColor
+                    });
+                    label.style.backgroundColor = '#ffffff';
+                    label.style.color = '#000000';
+                    label.style.borderColor = '#000000';
+                });
+                
                 renderer.render(scene, camera);
                 
                 // Capture Container including HTML labels
                 const container = document.getElementById('export-visual-container');
                 const c1 = document.getElementById('canvas-container');
                 const c2 = document.getElementById('chart-bg-container');
+                const c2Title = c2.querySelector('h4');
                 
                 // Force container styling to pure white temporarily
                 const originalBgColor = container.style.backgroundColor;
                 const originalClass = container.className;
                 container.style.backgroundColor = '#ffffff';
-                container.classList.remove('bg-slate-950/50'); // hapus class tailwind transparent
+                container.classList.remove('bg-slate-950/50'); 
                 
                 const origBgCol1 = c1.style.backgroundColor;
                 const origClass1 = c1.className;
@@ -1485,20 +1761,56 @@
                 c2.style.backgroundColor = '#ffffff';
                 c2.classList.remove('bg-slate-950/80');
                 
+                const origTitleCol = c2Title.style.color;
+                c2Title.style.color = '#000000';
+                
+                // BULLETPROOF CANVAS TO IMAGE (FIX FOR WEBGL/CHART MISSING)
+                const canvases = container.querySelectorAll('canvas');
+                const canvasReplacements = [];
+                canvases.forEach(c => {
+                    const img = document.createElement('img');
+                    img.src = c.toDataURL('image/png');
+                    img.style.width = c.style.width || c.clientWidth + 'px';
+                    img.style.height = c.style.height || c.clientHeight + 'px';
+                    img.style.position = window.getComputedStyle(c).position;
+                    img.style.left = window.getComputedStyle(c).left;
+                    img.style.top = window.getComputedStyle(c).top;
+                    img.className = c.className;
+                    c.parentNode.insertBefore(img, c);
+                    c.style.display = 'none'; // Hide canvas
+                    canvasReplacements.push({ canvas: c, img: img });
+                });
+
+                // Tunggu sebentar agar DOM selesai me-render image pengganti
+                await new Promise(r => setTimeout(r, 150));
+
                 const canvasCapture = await html2canvas(container, {
                     backgroundColor: '#ffffff', 
                     useCORS: true,
-                    scale: 2 
+                    scale: 2,
+                    allowTaint: true
                 });
                 
-                // Revert style & 3D background
+                // RESTORE CANVASES & STYLES
+                canvasReplacements.forEach(r => {
+                    r.canvas.style.display = '';
+                    r.img.remove();
+                });
+
                 scene.background = oldBg;
                 c1.style.backgroundColor = origBgCol1;
                 c1.className = origClass1;
                 c2.style.backgroundColor = origBgCol2;
                 c2.className = origClass2;
+                c2Title.style.color = origTitleCol;
                 container.style.backgroundColor = originalBgColor;
                 container.className = originalClass;
+                
+                labels.forEach((label, i) => {
+                    label.style.backgroundColor = oldLabelStyles[i].bg;
+                    label.style.color = oldLabelStyles[i].color;
+                    label.style.borderColor = oldLabelStyles[i].borderColor;
+                });
                 
                 if(sptChartInstance) {
                     sptChartInstance.options.scales.x.ticks.color = '#64748b';
@@ -1533,7 +1845,14 @@
                 const set = txt('out-settlement') + " (" + txt('out-set-stat') + ")";
                 
                 let logHtml = window.rawCalcLog || "Silakan jalankan fungsi (AI PROCESS ANALYSIS) terlebih dahulu untuk memuat log kalkulasi.";
-                let sumText = txt('conclusion-text').replace(/\n/g, '<br>');
+                
+                // Get conclusions text
+                const conclusionTextRaw = document.getElementById('conclusion-text').innerText;
+                const conclusionHTML = conclusionTextRaw.split('\n').map(p => {
+                    if (p.trim() === '') return '';
+                    if (p.toUpperCase() === p && p.length > 10) return `<p style="margin-top:12.0pt; margin-bottom:4.0pt; text-align:justify; font-weight:bold; font-size:11.5pt;">${p}</p>`;
+                    return `<p style="margin-top:0pt; margin-bottom:6.0pt; text-align:justify; line-height:130%; font-size:11pt;">${p}</p>`;
+                }).join('');
 
                 const wordContent = `
                 <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas-microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">
@@ -1551,24 +1870,24 @@
                     <![endif]-->
                     <style>
                         @page WordSection1 {
-                            size: 8.27in 11.69in; /* A4 */
-                            margin: 1.0in 1.0in 1.0in 1.0in;
+                            size: 8.27in 11.69in; /* A4 Portrait */
+                            margin: 1.0in;
                             mso-header-margin: .5in;
                             mso-footer-margin: .5in;
                         }
                         div.WordSection1 { page: WordSection1; }
                         body { font-family: 'Times New Roman', serif; font-size: 11pt; color: #000; line-height: 1.3; margin: 0; padding: 0; }
                         p { margin: 4px 0; padding: 0; } 
-                        h1 { font-size: 16pt; text-align: center; font-weight: bold; margin: 10px 0 5px 0; }
-                        .subtitle { text-align: center; font-size: 11pt; margin-bottom: 15px; border-bottom: 2px solid #000; padding-bottom: 10px; }
-                        h2 { font-size: 12pt; border-bottom: 1px solid #000; padding-bottom: 2px; margin: 20px 0 8px 0; text-transform: uppercase; page-break-after: avoid; }
-                        h3 { font-size: 11pt; margin: 15px 0 5px 0; font-style: italic; }
+                        h1 { font-size: 16pt; text-align: center; font-weight: bold; margin: 10px 0 15px 0; text-transform: uppercase;}
+                        .subtitle { text-align: center; font-size: 11pt; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; line-height: 1.5; }
+                        h2 { font-size: 12pt; border-bottom: 1px solid #000; padding-bottom: 2px; margin: 25px 0 10px 0; text-transform: uppercase; page-break-after: avoid; font-weight: bold; }
+                        h3 { font-size: 11pt; margin: 15px 0 5px 0; font-weight: bold; font-style: italic; background-color: #f8f9fa; padding: 4px;}
                         table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 11pt; page-break-inside: avoid; }
                         th, td { border: 1px solid #000; padding: 5px 8px; vertical-align: middle; }
                         th { background-color: #e5e5e5; text-align: left; font-weight: bold; }
-                        .img-container { text-align: center; margin: 15px 0; background-color: #fff; padding: 10px; border: 1px solid #000; page-break-inside: avoid; }
+                        .img-container { text-align: center; margin: 15px 0; padding: 10px; border: 1px solid #000; page-break-inside: avoid; }
                         img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
-                        .calc-log { background-color: #fcfcfc; border: 1px solid #000; padding: 15px; font-family: 'Cambria Math', 'Cambria', serif; font-size: 11pt; margin-bottom: 15px; }
+                        .calc-log { border: 1px solid #000; padding: 15px; font-family: 'Cambria Math', 'Cambria', serif; font-size: 11pt; margin-bottom: 15px; }
                         .calc-log p { margin-bottom: 6px; margin-left: 10px; }
                         .calc-log b { font-weight: bold; }
                     </style>
@@ -1609,15 +1928,15 @@
                             </tr>
                             <tr>
                                 <td>Jumlah Tiang</td><td>${val('pile_count')} buah</td>
-                                <td></td><td></td>
+                                <td colspan="2"></td>
                             </tr>
                             <tr>
                                 <td>Bentuk</td><td>${pTypeStr}</td>
-                                <td></td><td></td>
+                                <td colspan="2"></td>
                             </tr>
                             <tr>
                                 <td>Dimensi Tiang</td><td>${val('pile_dim')} m</td>
-                                <td></td><td></td>
+                                <td colspan="2"></td>
                             </tr>
                             <tr>
                                 <th colspan="2">Parameter Penurunan & Konsolidasi</th>
@@ -1657,8 +1976,8 @@
                             <tr><th>Kebutuhan Tulangan Utama</th><td>${steel}</td></tr>
                         </table>
                         
-                        <h3>Saran Rekomendasi AI:</h3>
-                        <p style="text-align: justify; margin-bottom: 20px;">${sumText}</p>
+                        <h2>5. Saran Rekomendasi:</h2>
+                        ${conclusionHTML}
 
                         <!-- Page numbers layout for MS Word -->
                         <table style="width:100%; border:none; border-top: 1px solid #000; margin-top: 20px;">
@@ -1708,13 +2027,13 @@
             labelRenderer.setSize(container.clientWidth, container.clientHeight);
             labelRenderer.domElement.style.position = 'absolute';
             labelRenderer.domElement.style.top = '0px';
-            labelRenderer.domElement.style.pointerEvents = 'none';
+            labelRenderer.domElement.style.pointerEvents = 'none'; // allow click through to canvas
             container.appendChild(labelRenderer.domElement);
             
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true; controls.target.set(0, -2, 0); 
 
-            // --- RAYCASTER FOR DOUBLE CLICK EDIT ---
+            // --- RAYCASTER FOR DOUBLE CLICK EDIT MESH SOIL ---
             const raycaster = new THREE.Raycaster();
             const mouse = new THREE.Vector2();
 
@@ -1731,14 +2050,7 @@
                     if(obj.userData && obj.userData.isSoil) {
                         const idx = obj.userData.layerIndex;
                         const oldSpt = obj.userData.spt;
-                        const newSpt = prompt(`Edit N-SPT untuk Lapis Tanah ${idx+1}:`, oldSpt);
-                        if(newSpt !== null && newSpt.trim() !== "" && !isNaN(newSpt)) {
-                            const rows = document.getElementById('soil-body').children;
-                            if(rows[idx]) {
-                                rows[idx].querySelector('.layer-spt').value = newSpt;
-                                runAnalysis(); // re-calculate & re-render
-                            }
-                        }
+                        openEditSptModal(idx, oldSpt); // Open New Modal
                         break; // Hanya edit layer terdepan yang di-klik
                     }
                 }
@@ -1761,7 +2073,8 @@
             animate3D(); runAnalysis();
         }
 
-        function createDimension(start, end, labelText, offset) {
+        // Updated CreateDimension to support Interactive Labels
+        function createDimension(start, end, labelText, offset, isSoilLabel = false, layerIdx = null, sptVal = null) {
             const s = start.clone().add(offset); const e = end.clone().add(offset);
             const material = new THREE.LineBasicMaterial({ color: 0x06b6d4, depthTest: false });
             
@@ -1777,7 +2090,19 @@
 
             // HTML Label
             const div = document.createElement('div');
-            div.className = 'text-[10px] text-cyan-300 font-mono bg-slate-900/90 px-1.5 py-0.5 rounded border border-cyan-700 whitespace-nowrap shadow-md mt-1 z-10';
+            div.className = 'text-[10px] text-cyan-300 font-mono bg-slate-900/90 px-1.5 py-0.5 rounded border border-cyan-700 whitespace-nowrap shadow-md mt-1 z-10 transition-all';
+            
+            // Add interactivity logic exclusively for soil dimension texts
+            if (isSoilLabel) {
+                div.style.pointerEvents = 'auto'; // allow clicking the label itself
+                div.title = "Klik 2x untuk edit N-SPT";
+                div.classList.add('hover:border-emerald-400', 'hover:bg-emerald-900/90', 'hover:text-emerald-300', 'cursor-pointer');
+                div.ondblclick = (e) => {
+                    e.stopPropagation(); // prevent raycaster from firing doubly
+                    openEditSptModal(layerIdx, sptVal);
+                };
+            }
+
             div.textContent = labelText;
             const label = new THREE.CSS2DObject(div);
             label.position.copy(s).lerp(e, 0.5);
@@ -1842,12 +2167,15 @@
                     soil.add(edges);
                     foundationGroup.add(soil);
 
-                    // Soil Layer Dimension Label
+                    // Soil Layer Dimension Label (Made Interactive)
                     createDimension(
                         new THREE.Vector3(soilW/2, currentDepth, 0),
                         new THREE.Vector3(soilW/2, currentDepth - layer.thk, 0),
                         `Lapis ${idx+1}: ${layer.thk}m (N=${layer.spt})`,
-                        new THREE.Vector3(0.4, 0, 0)
+                        new THREE.Vector3(0.4, 0, 0),
+                        true,       // isSoilLabel
+                        idx,        // layerIndex for Modal
+                        layer.spt   // sptValue for Modal
                     );
 
                     currentDepth -= layer.thk;
