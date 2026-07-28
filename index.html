@@ -113,212 +113,211 @@
     <!-- WRAPPER UNTUK TEMA -->
     <div id="theme-wrapper" class="w-full min-h-screen transition-colors duration-300 bg-[#020617]">
         
-        <!-- HEADER -->
-        <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40 px-4 py-3 shadow-lg flex items-center">
-            <div class="w-full mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
+        <!-- HEADER (Date & Time Disatukan di Sini) -->
+        <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40 px-4 py-2 shadow-lg flex items-center">
+            <div class="w-full mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
                 <div class="flex items-center gap-3">
-                    <div class="bg-gradient-to-br from-cyan-500 to-blue-600 text-slate-950 p-2.5 rounded-xl font-black text-lg cyber-font shadow-[0_0_10px_rgba(6,182,212,0.6)]">
+                    <div class="bg-gradient-to-br from-cyan-500 to-blue-600 text-slate-950 p-2 rounded-xl font-black text-base cyber-font shadow-[0_0_10px_rgba(6,182,212,0.6)]">
                         <i class="fa-solid fa-cubes"></i> APN
                     </div>
                     <div>
-                        <h1 class="text-sm md:text-lg font-black tracking-widest cyber-font text-white">ANALISIS PONDASI TELAPAK DAN TIANG PANCANG</h1>
-                        <p class="text-[10px] md:text-xs text-cyan-400 font-mono flex items-center gap-2">
-                            <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span> INTEGRATED AI GEOSTRUCTURAL ENGINE
+                        <h1 class="text-sm md:text-base font-black tracking-widest cyber-font text-white leading-tight">ANALISIS PONDASI TELAPAK & TIANG</h1>
+                        <p class="text-[9px] md:text-[10px] text-cyan-400 font-mono flex items-center gap-1.5 mt-0.5">
+                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span> INTEGRATED AI GEOSTRUCTURAL ENGINE
                         </p>
                     </div>
                 </div>
                 
-                <div class="flex flex-wrap items-center justify-center gap-2">
-                    <button onclick="toggleTheme()" class="no-invert bg-slate-800 border border-slate-600 text-xs font-mono px-3 py-2 rounded hover:bg-slate-700 text-white flex items-center gap-1 shadow-md transition-colors" title="Dark/Light Mode">
+                <div class="flex flex-wrap items-center justify-center gap-2 mt-2 md:mt-0">
+                    <!-- DATE & TIME PANEL IN HEADER -->
+                    <div class="hidden lg:flex items-center gap-2 bg-slate-900/80 border border-slate-700/50 px-3 py-1.5 rounded-lg shadow-inner mr-1">
+                        <i class="fa-regular fa-clock text-cyan-500 text-xs"></i>
+                        <span id="mainDashboardDate" class="text-[10px] font-bold text-slate-300 font-mono tracking-wide uppercase"></span>
+                        <span class="text-slate-600 text-xs">|</span>
+                        <span id="mainDashboardTime" class="text-xs font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 cyber-font tracking-widest"></span>
+                    </div>
+
+                    <button onclick="toggleTheme()" class="no-invert bg-slate-800 border border-slate-600 text-[11px] font-mono px-2.5 py-1.5 rounded hover:bg-slate-700 text-white flex items-center gap-1 shadow-md transition-colors" title="Dark/Light Mode">
                         <i class="fa-solid fa-moon" id="themeIcon"></i>
                     </button>
                     
-                    <button onclick="openProjectModal()" class="bg-indigo-900/80 border border-indigo-500/60 text-xs font-mono font-bold px-3 py-2 rounded hover:bg-indigo-800 text-indigo-300 flex items-center gap-1 shadow-md transition-colors">
+                    <button onclick="openProjectModal()" class="bg-indigo-900/80 border border-indigo-500/60 text-[11px] font-mono font-bold px-2.5 py-1.5 rounded hover:bg-indigo-800 text-indigo-300 flex items-center gap-1 shadow-md transition-colors">
                         <i class="fa-solid fa-database"></i> Data Project
                     </button>
 
-                    <button onclick="exportToWord(this)" class="bg-blue-900/80 border border-blue-500/60 text-xs font-mono font-bold px-3 py-2 rounded hover:bg-blue-800 text-blue-300 flex items-center gap-1 transition-colors">
-                        <i class="fa-solid fa-floppy-disk"></i> Save to Word
+                    <button onclick="exportToWord(this)" class="bg-blue-900/80 border border-blue-500/60 text-[11px] font-mono font-bold px-2.5 py-1.5 rounded hover:bg-blue-800 text-blue-300 flex items-center gap-1 transition-colors">
+                        <i class="fa-solid fa-floppy-disk"></i> Word
                     </button>
-                    <button onclick="document.getElementById('helpModal').classList.remove('hidden')" class="bg-amber-900/80 border border-amber-500/60 text-xs font-mono font-bold px-3 py-2 rounded hover:bg-amber-800 text-amber-300 flex items-center gap-1 shadow-md transition-colors">
-                        <i class="fa-solid fa-circle-info"></i> Help & System
+                    
+                    <button onclick="document.getElementById('helpModal').classList.remove('hidden')" class="bg-amber-900/80 border border-amber-500/60 text-[11px] font-mono font-bold px-2.5 py-1.5 rounded hover:bg-amber-800 text-amber-300 flex items-center gap-1 shadow-md transition-colors">
+                        <i class="fa-solid fa-circle-info"></i> Info
                     </button>
                 </div>
             </div>
         </header>
 
-        <!-- MAIN GRID (Ini yang akan di-capture untuk Word Export) -->
-        <main id="main-dashboard-app" class="w-full mx-auto px-4 py-6 relative z-10">
-            
-            <!-- PANEL HARI & WAKTU (TOP CENTER) -->
-            <div class="w-full mb-6 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-cyan-500/30 rounded-xl p-3 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 shadow-[0_0_20px_rgba(6,182,212,0.15)] backdrop-blur-md relative overflow-hidden">
-                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-20 pointer-events-none"></div>
-                <div class="flex items-center gap-2 text-cyan-400 font-black cyber-font tracking-widest text-xs uppercase z-10">
-                    <i class="fa-solid fa-satellite-dish animate-pulse"></i> LIVE SERVER
-                </div>
-                <div class="hidden sm:block h-6 w-px bg-slate-600 z-10"></div>
-                <div class="flex items-center gap-3 z-10">
-                    <span id="mainDashboardDate" class="text-sm md:text-base font-bold text-slate-300 font-mono tracking-wide"></span>
-                    <span class="text-cyan-500 font-bold">|</span>
-                    <span id="mainDashboardTime" class="text-xl md:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 cyber-font tracking-widest drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 xl:grid-cols-12 gap-5">
+        <!-- MAIN GRID -->
+        <main id="main-dashboard-app" class="w-full mx-auto px-4 py-4 relative z-10">
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-3">
                 
                 <!-- LEFT PANEL: INPUTS -->
-                <div class="xl:col-span-3 flex flex-col gap-4 xl:sticky xl:top-[90px] xl:h-[calc(100vh-120px)] z-20 overflow-y-auto custom-scroll pr-2">
+                <div class="xl:col-span-3 flex flex-col gap-3 xl:sticky xl:top-[70px] xl:h-[calc(100vh-90px)] z-20 overflow-y-auto custom-scroll pr-1.5">
+                    
                     <!-- Data Projek -->
-                    <section class="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
-                        <h2 class="text-sm font-black text-fuchsia-400 cyber-font uppercase mb-3 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-building"></i> Informasi Projek</h2>
-                        <div class="grid grid-cols-1 gap-3 font-mono text-sm">
-                            <div><label class="block text-slate-400 mb-1">Nama Projek</label><input type="text" id="proj_name" value="Gudang Logistik Bulog Lembar" class="w-full p-2 rounded font-bold"></div>
-                            <div><label class="block text-slate-400 mb-1">Lokasi Projek</label><input type="text" id="proj_loc" value="Lembar Lombok NTB" class="w-full p-2 rounded font-bold"></div>
-                            <div><label class="block text-slate-400 mb-1">Kapasitas Gudang</label><input type="text" id="proj_cap" value="3500 Ton" class="w-full p-2 rounded font-bold"></div>
+                    <section class="bg-[var(--bg-card)] p-3 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
+                        <h2 class="text-xs font-black text-fuchsia-400 cyber-font uppercase mb-2 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-building"></i> Informasi Projek</h2>
+                        <div class="grid grid-cols-1 gap-2 font-mono text-[11px]">
+                            <div><label class="block text-slate-400 mb-0.5">Nama Projek</label><input type="text" id="proj_name" value="Gudang Logistik Bulog Lembar" class="w-full p-1.5 rounded font-bold"></div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div><label class="block text-slate-400 mb-0.5">Lokasi Projek</label><input type="text" id="proj_loc" value="Lembar NTB" class="w-full p-1.5 rounded font-bold"></div>
+                                <div><label class="block text-slate-400 mb-0.5">Kapasitas</label><input type="text" id="proj_cap" value="3500 Ton" class="w-full p-1.5 rounded font-bold"></div>
+                            </div>
                         </div>
                     </section>
+                    
                     <!-- Beban & Kolom -->
-                    <section class="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
-                        <h2 class="text-sm font-black text-cyan-400 cyber-font uppercase mb-3 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-weight-hanging"></i> Beban & Kolom</h2>
-                        <div class="grid grid-cols-2 gap-3 font-mono text-sm">
-                            <div><label class="block text-slate-400 mb-1">Aksial Pu [kN]</label><input type="number" id="pu" value="25.486" class="w-full p-2 rounded font-bold"></div>
-                            <div><label class="block text-slate-400 mb-1">Momen Mu [kNm]</label><input type="number" id="mu" value="20.711" class="w-full p-2 rounded font-bold"></div>
-                            <div><label class="block text-slate-400 mb-1">Lbr Kol(bc) [m]</label><input type="number" id="col_b" value="0.6" step="0.05" class="w-full p-2 rounded font-bold"></div>
-                            <div><label class="block text-slate-400 mb-1">Pjg Kol(D) [m]</label><input type="number" id="col_d" value="0.6" step="0.05" class="w-full p-2 rounded font-bold"></div>
+                    <section class="bg-[var(--bg-card)] p-3 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
+                        <h2 class="text-xs font-black text-cyan-400 cyber-font uppercase mb-2 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-weight-hanging"></i> Beban & Kolom</h2>
+                        <div class="grid grid-cols-2 gap-2 font-mono text-[11px]">
+                            <div><label class="block text-slate-400 mb-0.5">Aksial Pu [kN]</label><input type="number" id="pu" value="25.486" class="w-full p-1.5 rounded font-bold"></div>
+                            <div><label class="block text-slate-400 mb-0.5">Momen Mu [kNm]</label><input type="number" id="mu" value="20.711" class="w-full p-1.5 rounded font-bold"></div>
+                            <div><label class="block text-slate-400 mb-0.5">Lbr Kol(bc) [m]</label><input type="number" id="col_b" value="0.6" step="0.05" class="w-full p-1.5 rounded font-bold"></div>
+                            <div><label class="block text-slate-400 mb-0.5">Pjg Kol(D) [m]</label><input type="number" id="col_d" value="0.6" step="0.05" class="w-full p-1.5 rounded font-bold"></div>
                         </div>
                     </section>
                     
                     <!-- Material & Telapak -->
-                    <section class="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
-                        <h2 class="text-sm font-black text-blue-400 cyber-font uppercase mb-3 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-layer-group"></i> Dimensi & Material</h2>
-                        <div class="grid grid-cols-3 gap-3 font-mono text-sm mb-3">
-                            <div><label class="block text-slate-400 mb-1">Pjg(L) [m]</label><input type="number" id="f_len" value="1.1" class="w-full p-2 rounded font-bold"></div>
-                            <div><label class="block text-slate-400 mb-1">Lbr(B) [m]</label><input type="number" id="f_wid" value="0.7" class="w-full p-2 rounded font-bold"></div>
-                            <div><label class="block text-slate-400 mb-1">Tbl(Df) [m]</label><input type="number" id="f_thk" value="0.50" step="0.05" class="w-full p-2 rounded font-bold"></div>
+                    <section class="bg-[var(--bg-card)] p-3 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
+                        <h2 class="text-xs font-black text-blue-400 cyber-font uppercase mb-2 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-layer-group"></i> Dimensi & Material</h2>
+                        <div class="grid grid-cols-3 gap-2 font-mono text-[11px] mb-2">
+                            <div><label class="block text-slate-400 mb-0.5">Pjg(L)[m]</label><input type="number" id="f_len" value="1.1" class="w-full p-1.5 rounded font-bold"></div>
+                            <div><label class="block text-slate-400 mb-0.5">Lbr(B)[m]</label><input type="number" id="f_wid" value="0.7" class="w-full p-1.5 rounded font-bold"></div>
+                            <div><label class="block text-slate-400 mb-0.5">Tbl(Df)[m]</label><input type="number" id="f_thk" value="0.50" step="0.05" class="w-full p-1.5 rounded font-bold"></div>
                         </div>
-                        <div class="grid grid-cols-2 gap-3 font-mono text-sm">
-                            <div><label class="block text-slate-400 mb-1">Mutu Beton fck</label><input type="number" id="fck" value="25" class="w-full p-2 rounded font-bold"></div>
-                            <div><label class="block text-slate-400 mb-1">Mutu Baja fy</label><input type="number" id="fy" value="415" class="w-full p-2 rounded font-bold"></div>
+                        <div class="grid grid-cols-2 gap-2 font-mono text-[11px]">
+                            <div><label class="block text-slate-400 mb-0.5">Mutu Beton fck</label><input type="number" id="fck" value="25" class="w-full p-1.5 rounded font-bold"></div>
+                            <div><label class="block text-slate-400 mb-0.5">Mutu Baja fy</label><input type="number" id="fy" value="415" class="w-full p-1.5 rounded font-bold"></div>
                         </div>
                     </section>
 
                     <!-- Penurunan & Konsolidasi -->
-                    <section class="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
-                        <h2 class="text-sm font-black text-pink-400 cyber-font uppercase mb-3 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-arrow-down-up-across-line"></i> Penurunan & Konsolidasi</h2>
-                        <div class="grid grid-cols-3 gap-3 font-mono text-sm mb-3">
-                            <div><label class="block text-slate-400 mb-1" title="Modulus Elastisitas Tanah">Es [kPa]</label><input type="number" id="set_es" value="85000" class="w-full p-2 rounded font-bold"></div>
-                            <div><label class="block text-slate-400 mb-1" title="Poisson Ratio">Poisson ν</label><input type="number" id="set_v" value="0.3" step="0.05" class="w-full p-2 rounded font-bold"></div>
-                            <div><label class="block text-slate-400 mb-1" title="Faktor Pengaruh Bentuk Pondasi">Faktor Iw</label><input type="number" id="set_iw" value="1.0" step="0.1" class="w-full p-2 rounded font-bold"></div>
+                    <section class="bg-[var(--bg-card)] p-3 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
+                        <h2 class="text-xs font-black text-pink-400 cyber-font uppercase mb-2 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-arrow-down-up-across-line"></i> Settlement</h2>
+                        <div class="grid grid-cols-3 gap-2 font-mono text-[11px] mb-2">
+                            <div><label class="block text-slate-400 mb-0.5" title="Modulus Elastisitas">Es[kPa]</label><input type="number" id="set_es" value="85000" class="w-full p-1.5 rounded font-bold"></div>
+                            <div><label class="block text-slate-400 mb-0.5" title="Poisson Ratio">P. ν</label><input type="number" id="set_v" value="0.3" step="0.05" class="w-full p-1.5 rounded font-bold"></div>
+                            <div><label class="block text-slate-400 mb-0.5" title="Faktor Pengaruh">Fk Iw</label><input type="number" id="set_iw" value="1.0" step="0.1" class="w-full p-1.5 rounded font-bold"></div>
                         </div>
-                        <div class="grid grid-cols-3 gap-3 font-mono text-sm">
-                            <div><label class="block text-slate-400 mb-1" title="Indeks Kompresi Lempung">Indeks Cc</label><input type="number" id="set_cc" value="0.02" step="0.05" class="w-full p-2 rounded font-bold"></div>
-                            <div><label class="block text-slate-400 mb-1" title="Angka Pori Awal">Pori (e0)</label><input type="number" id="set_e0" value="0.5" step="0.1" class="w-full p-2 rounded font-bold"></div>
-                            <div><label class="block text-slate-400 mb-1" title="Tebal Lapisan Lempung">Tebal Hc[m]</label><input type="number" id="set_hc" value="0.5" step="0.5" class="w-full p-2 rounded font-bold"></div>
+                        <div class="grid grid-cols-3 gap-2 font-mono text-[11px]">
+                            <div><label class="block text-slate-400 mb-0.5" title="Indeks Kompresi Lempung">Id Cc</label><input type="number" id="set_cc" value="0.02" step="0.05" class="w-full p-1.5 rounded font-bold"></div>
+                            <div><label class="block text-slate-400 mb-0.5" title="Angka Pori Awal">Pori e0</label><input type="number" id="set_e0" value="0.5" step="0.1" class="w-full p-1.5 rounded font-bold"></div>
+                            <div><label class="block text-slate-400 mb-0.5" title="Tebal Lapisan Lempung">Hc[m]</label><input type="number" id="set_hc" value="0.5" step="0.5" class="w-full p-1.5 rounded font-bold"></div>
                         </div>
                     </section>
 
                     <!-- Lapisan Tanah -->
-                    <section class="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0">
-                        <div class="flex justify-between items-center mb-2 border-b border-slate-700 pb-1.5">
-                            <h2 class="text-sm font-black text-emerald-400 cyber-font uppercase"><i class="fa-solid fa-earth-americas"></i> Tanah N-SPT</h2>
-                            <button onclick="addLayer()" class="text-xs bg-emerald-900 text-emerald-400 px-3 py-1.5 rounded border border-emerald-600 hover:bg-emerald-800 transition-colors"><i class="fa-solid fa-plus"></i> Tambah</button>
+                    <section class="bg-[var(--bg-card)] p-3 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0 flex flex-col max-h-60">
+                        <div class="flex justify-between items-center mb-1.5 border-b border-slate-700 pb-1.5">
+                            <h2 class="text-xs font-black text-emerald-400 cyber-font uppercase"><i class="fa-solid fa-earth-americas"></i> Lapis N-SPT</h2>
+                            <button onclick="addLayer()" class="text-[10px] bg-emerald-900 text-emerald-400 px-2 py-1 rounded border border-emerald-600 hover:bg-emerald-800 transition-colors"><i class="fa-solid fa-plus"></i> Add</button>
                         </div>
-                        <div class="w-full font-mono text-sm">
+                        <div class="overflow-y-auto flex-grow custom-scroll pr-1 font-mono text-[11px]">
                             <table class="w-full text-left border-collapse" id="soil-table">
-                                <thead class="sticky top-0 bg-slate-900 z-10">
+                                <thead class="sticky top-0 bg-slate-900 z-10 text-[10px]">
                                     <tr>
-                                        <th class="p-1.5 border-b border-slate-700 text-cyan-400">Tebal(m)</th>
-                                        <th class="p-1.5 border-b border-slate-700 text-cyan-400">N-SPT</th>
-                                        <th class="p-1.5 border-b border-slate-700 text-center">X</th>
+                                        <th class="p-1 border-b border-slate-700 text-cyan-400">Tebal(m)</th>
+                                        <th class="p-1 border-b border-slate-700 text-cyan-400">N-SPT</th>
+                                        <th class="p-1 border-b border-slate-700 text-center">Del</th>
                                     </tr>
                                 </thead>
                                 <tbody id="soil-body">
-                                    <tr><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td><td class="p-1.5 border-b border-slate-800"><input type="number" value="20" class="w-full p-1.5 rounded layer-spt font-bold"></td><td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
-                                    <tr><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td><td class="p-1.5 border-b border-slate-800"><input type="number" value="35" class="w-full p-1.5 rounded layer-spt font-bold"></td><td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
-                                    <tr><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td><td class="p-1.5 border-b border-slate-800"><input type="number" value="30" class="w-full p-1.5 rounded layer-spt font-bold"></td><td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
-                                    <tr><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td><td class="p-1.5 border-b border-slate-800"><input type="number" value="25" class="w-full p-1.5 rounded layer-spt font-bold"></td><td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
-                                    <tr><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td><td class="p-1.5 border-b border-slate-800"><input type="number" value="15" class="w-full p-1.5 rounded layer-spt font-bold"></td><td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
-                                    <tr><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td><td class="p-1.5 border-b border-slate-800"><input type="number" value="5" class="w-full p-1.5 rounded layer-spt font-bold"></td><td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
-                                    <tr><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td><td class="p-1.5 border-b border-slate-800"><input type="number" value="7.5" class="w-full p-1.5 rounded layer-spt font-bold"></td><td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
-                                    <tr><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td><td class="p-1.5 border-b border-slate-800"><input type="number" value="10" class="w-full p-1.5 rounded layer-spt font-bold"></td><td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
-                                    <tr><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td><td class="p-1.5 border-b border-slate-800"><input type="number" value="5" class="w-full p-1.5 rounded layer-spt font-bold"></td><td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
-                                    <tr><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td><td class="p-1.5 border-b border-slate-800"><input type="number" value="2" class="w-full p-1.5 rounded layer-spt font-bold"></td><td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
-                                    <tr><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.5" class="w-full p-1.5 rounded layer-spt font-bold"></td><td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
-                                    <tr><td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td><td class="p-1.5 border-b border-slate-800"><input type="number" value="1" class="w-full p-1.5 rounded layer-spt font-bold"></td><td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td><td class="p-1 border-b border-slate-800"><input type="number" value="20" class="w-full p-1 rounded layer-spt font-bold"></td><td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td><td class="p-1 border-b border-slate-800"><input type="number" value="35" class="w-full p-1 rounded layer-spt font-bold"></td><td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td><td class="p-1 border-b border-slate-800"><input type="number" value="30" class="w-full p-1 rounded layer-spt font-bold"></td><td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td><td class="p-1 border-b border-slate-800"><input type="number" value="25" class="w-full p-1 rounded layer-spt font-bold"></td><td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td><td class="p-1 border-b border-slate-800"><input type="number" value="15" class="w-full p-1 rounded layer-spt font-bold"></td><td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td><td class="p-1 border-b border-slate-800"><input type="number" value="5" class="w-full p-1 rounded layer-spt font-bold"></td><td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td><td class="p-1 border-b border-slate-800"><input type="number" value="7.5" class="w-full p-1 rounded layer-spt font-bold"></td><td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td><td class="p-1 border-b border-slate-800"><input type="number" value="10" class="w-full p-1 rounded layer-spt font-bold"></td><td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td><td class="p-1 border-b border-slate-800"><input type="number" value="5" class="w-full p-1 rounded layer-spt font-bold"></td><td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td><td class="p-1 border-b border-slate-800"><input type="number" value="2" class="w-full p-1 rounded layer-spt font-bold"></td><td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td><td class="p-1 border-b border-slate-800"><input type="number" value="1.5" class="w-full p-1 rounded layer-spt font-bold"></td><td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td><td class="p-1 border-b border-slate-800"><input type="number" value="1" class="w-full p-1 rounded layer-spt font-bold"></td><td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </section>
                     
                     <!-- Tiang Pancang & Tombol Eksekusi -->
-                    <section class="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0 mb-8">
-                        <h2 class="text-sm font-black text-amber-400 cyber-font uppercase mb-3 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-bars-staggered"></i> Opsi Tiang Pancang</h2>
-                        <div class="grid grid-cols-3 gap-3 font-mono text-sm mb-4">
-                            <div><label class="block text-slate-400 mb-1">Jml (0=Dgl)</label><input type="number" id="pile_count" value="2" class="w-full p-2 rounded font-bold accent-amber-500"></div>
-                            <div><label class="block text-slate-400 mb-1">Bentuk</label><select id="pile_type" class="w-full p-2 rounded font-bold"><option value="square">Persegi</option><option value="circle">Bulat</option></select></div>
-                            <div><label class="block text-slate-400 mb-1">Dim [m]</label><input type="number" id="pile_dim" value="0.3" step="0.05" class="w-full p-2 rounded font-bold"></div>
+                    <section class="bg-[var(--bg-card)] p-3 rounded-xl border border-[var(--border-color)] shadow-lg flex-shrink-0 mb-8">
+                        <h2 class="text-xs font-black text-amber-400 cyber-font uppercase mb-2 border-b border-slate-700 pb-1.5"><i class="fa-solid fa-bars-staggered"></i> Opsi Tiang Pancang</h2>
+                        <div class="grid grid-cols-3 gap-2 font-mono text-[11px] mb-3">
+                            <div><label class="block text-slate-400 mb-0.5">Jml(0=Dgl)</label><input type="number" id="pile_count" value="2" class="w-full p-1.5 rounded font-bold accent-amber-500"></div>
+                            <div><label class="block text-slate-400 mb-0.5">Bentuk</label><select id="pile_type" class="w-full p-1.5 rounded font-bold"><option value="square">Persegi</option><option value="circle">Bulat</option></select></div>
+                            <div><label class="block text-slate-400 mb-0.5">Dim[m]</label><input type="number" id="pile_dim" value="0.3" step="0.05" class="w-full p-1.5 rounded font-bold"></div>
                         </div>
-                        <button onclick="runAnalysis()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-black py-3.5 rounded-lg cyber-font text-sm tracking-widest shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all transform active:scale-95">
-                            <i class="fa-solid fa-microchip"></i> AI PROCESS ANALYSIS
+                        <button onclick="runAnalysis()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-black py-2.5 rounded cyber-font text-[11px] tracking-widest shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all transform active:scale-95">
+                            <i class="fa-solid fa-microchip"></i> PROCESS ANALYSIS
                         </button>
                     </section>
                 </div>
 
                 <!-- RIGHT PANEL: RESULTS & VISUALS -->
-                <div class="xl:col-span-9 flex flex-col gap-5">
+                <div class="xl:col-span-9 flex flex-col gap-3">
                     
                     <!-- Top Results Cards -->
-                    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
-                        <div class="bg-slate-900 border border-emerald-500 p-4 rounded-xl shadow-md flex flex-col justify-center">
-                            <span class="text-xs font-mono text-emerald-400 font-bold block uppercase mb-1">Kapasitas (Qall)</span>
-                            <span id="out-qall" class="text-3xl font-black text-white cyber-font block">0.0 kN</span>
+                    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2">
+                        <div class="bg-slate-900 border border-emerald-500 p-3 rounded-xl shadow-md flex flex-col justify-center">
+                            <span class="text-[10px] font-mono text-emerald-400 font-bold block uppercase mb-1">Kapasitas (Qall)</span>
+                            <span id="out-qall" class="text-2xl font-black text-white cyber-font block leading-none">0.0 kN</span>
                         </div>
-                        <div class="bg-slate-900 border border-slate-700 p-4 rounded-xl shadow-md flex flex-col justify-center">
-                            <span class="text-xs font-mono text-slate-400 font-bold block uppercase mb-1">Eksentrisitas (e)</span>
-                            <span id="out-e" class="text-3xl font-black text-white cyber-font block">0.0 m</span>
-                            <span id="out-e-stat" class="text-xs font-bold text-amber-400 mt-1 block">-</span>
+                        <div class="bg-slate-900 border border-slate-700 p-3 rounded-xl shadow-md flex flex-col justify-center">
+                            <span class="text-[10px] font-mono text-slate-400 font-bold block uppercase mb-1">Eksentrisitas (e)</span>
+                            <span id="out-e" class="text-2xl font-black text-white cyber-font block leading-none">0.0 m</span>
+                            <span id="out-e-stat" class="text-[9px] font-bold text-amber-400 mt-1 block">-</span>
                         </div>
-                        <div class="bg-slate-900 border border-blue-500 p-4 rounded-xl shadow-md flex flex-col justify-center">
-                            <span class="text-xs font-mono text-blue-400 font-bold block uppercase mb-1">Tul. Utama (Ast)</span>
-                            <span id="out-steel" class="text-2xl font-black text-white cyber-font block">-</span>
-                            <span id="out-steel-req" class="text-xs font-bold text-slate-400 mt-1 block">-</span>
+                        <div class="bg-slate-900 border border-blue-500 p-3 rounded-xl shadow-md flex flex-col justify-center">
+                            <span class="text-[10px] font-mono text-blue-400 font-bold block uppercase mb-1">Tul. Utama (Ast)</span>
+                            <span id="out-steel" class="text-xl font-black text-white cyber-font block leading-none mt-1">-</span>
+                            <span id="out-steel-req" class="text-[9px] font-bold text-slate-400 mt-1 block">-</span>
                         </div>
-                        <div class="bg-slate-900 border border-slate-700 p-4 rounded-xl shadow-md flex flex-col justify-center">
-                            <span class="text-xs font-mono text-slate-400 font-bold block uppercase mb-1">Safety Factor</span>
-                            <span id="out-fos" class="text-3xl font-black text-white cyber-font block">0.0</span>
+                        <div class="bg-slate-900 border border-slate-700 p-3 rounded-xl shadow-md flex flex-col justify-center">
+                            <span class="text-[10px] font-mono text-slate-400 font-bold block uppercase mb-1">Safety Factor</span>
+                            <span id="out-fos" class="text-2xl font-black text-white cyber-font block leading-none">0.0</span>
                         </div>
-                        <div class="bg-slate-900 border border-slate-700 p-4 rounded-xl shadow-md flex flex-col justify-center">
-                            <span class="text-xs font-mono text-slate-300 font-bold block uppercase mb-1">Geser Pons 2-Arah</span>
-                            <span id="out-shear-status" class="text-2xl font-black text-white cyber-font block">-</span>
+                        <div class="bg-slate-900 border border-slate-700 p-3 rounded-xl shadow-md flex flex-col justify-center">
+                            <span class="text-[10px] font-mono text-slate-300 font-bold block uppercase mb-1">Geser Pons 2-Arah</span>
+                            <span id="out-shear-status" class="text-xl font-black text-white cyber-font block leading-none mt-1">-</span>
                         </div>
-                        <div class="bg-slate-900 border border-pink-500 p-4 rounded-xl shadow-md flex flex-col justify-center">
-                            <span class="text-xs font-mono text-pink-400 font-bold block uppercase mb-1">Penurunan (S)</span>
-                            <span id="out-settlement" class="text-3xl font-black text-white cyber-font block">0.0 mm</span>
-                            <span id="out-set-stat" class="text-xs font-bold text-slate-400 mt-1 block">-</span>
+                        <div class="bg-slate-900 border border-pink-500 p-3 rounded-xl shadow-md flex flex-col justify-center">
+                            <span class="text-[10px] font-mono text-pink-400 font-bold block uppercase mb-1">Penurunan (S)</span>
+                            <span id="out-settlement" class="text-2xl font-black text-white cyber-font block leading-none">0.0 mm</span>
+                            <span id="out-set-stat" class="text-[9px] font-bold text-slate-400 mt-1 block">-</span>
                         </div>
                     </div>
 
                     <!-- Middle Section: 3D Canvas & Chart & Log -->
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
                         <!-- Canvas & Chart -->
-                        <div class="lg:col-span-7 xl:col-span-8 bg-[var(--bg-card)] p-3 rounded-xl border border-cyan-500 shadow-xl flex flex-col relative h-[500px]">
-                            <h3 class="text-sm font-black font-mono text-cyan-400 uppercase mb-2 flex-shrink-0 z-10 bg-slate-950/90 px-3 py-1.5 rounded shadow-lg border border-cyan-800 self-start">
+                        <div class="lg:col-span-7 xl:col-span-8 bg-[var(--bg-card)] p-2.5 rounded-xl border border-cyan-500 shadow-xl flex flex-col relative h-[500px]">
+                            <h3 class="text-xs font-black font-mono text-cyan-400 uppercase mb-2 flex-shrink-0 z-10 bg-slate-950/90 px-3 py-1.5 rounded shadow-lg border border-cyan-800 self-start">
                                 <i class="fa-solid fa-cube"></i> Visual 3D HUD & Grafik N-SPT
                             </h3>
                             
                             <div id="export-visual-container" class="flex-grow flex flex-row w-full gap-2 transition-colors duration-200 rounded overflow-hidden">
                                 <div id="canvas-container" class="w-[70%] relative border border-slate-800 rounded bg-slate-950/50 transition-colors duration-200">
                                     <!-- Panduan Kontrol 3D -->
-                                    <div class="absolute bottom-4 left-4 z-10 bg-slate-950/80 p-2.5 rounded-lg border border-slate-700 font-mono text-[10px] text-slate-300 space-y-1.5 shadow-lg pointer-events-none">
+                                    <div class="absolute bottom-3 left-3 z-10 bg-slate-950/80 p-2 rounded-lg border border-slate-700 font-mono text-[9px] text-slate-300 space-y-1 shadow-lg pointer-events-none">
                                         <p><b class="text-cyan-400"><i class="fa-solid fa-hand-pointer"></i> KIRI + GESER:</b> Putar Visual</p>
                                         <p><b class="text-cyan-400"><i class="fa-solid fa-arrows-up-down-left-right"></i> KANAN + GESER:</b> Pindah/Pan</p>
                                         <p><b class="text-cyan-400"><i class="fa-solid fa-magnifying-glass"></i> SCROLL:</b> Zoom In/Out</p>
-                                        <p><b class="text-emerald-400"><i class="fa-solid fa-pen-to-square"></i> KLIK 2x (TEXT/BLOK):</b> Edit N-SPT</p>
+                                        <p><b class="text-emerald-400"><i class="fa-solid fa-pen-to-square"></i> KLIK 2x (BLOK LAPIS):</b> Edit N-SPT</p>
+                                        <p><b class="text-blue-400"><i class="fa-solid fa-pen-to-square"></i> KLIK 2x (TEKS UKURAN):</b> Edit Dimensi/Beban</p>
                                     </div>
                                 </div>
                                 <!-- Grafik Chart N-SPT -->
                                 <div id="chart-bg-container" class="w-[30%] relative border border-slate-800 rounded bg-slate-950/80 p-2 flex flex-col transition-colors duration-200">
-                                    <h4 class="text-[10px] text-emerald-400 font-bold font-mono text-center mb-1 uppercase tracking-widest border-b border-slate-700 pb-1">Boring Log N-SPT</h4>
+                                    <h4 class="text-[9px] text-emerald-400 font-bold font-mono text-center mb-1 uppercase tracking-widest border-b border-slate-700 pb-1">Boring Log N-SPT</h4>
                                     <div class="relative flex-1 w-full h-full">
                                         <canvas id="sptChart"></canvas>
                                     </div>
@@ -327,22 +326,22 @@
                         </div>
                         
                         <!-- Formula Log -->
-                        <div class="lg:col-span-5 xl:col-span-4 bg-slate-950 p-5 rounded-xl border border-[var(--border-color)] shadow-inner flex flex-col h-[500px]">
-                            <h3 class="text-sm font-black font-mono text-amber-400 uppercase mb-3 flex-shrink-0 border-b border-slate-800 pb-2">
+                        <div class="lg:col-span-5 xl:col-span-4 bg-slate-950 p-4 rounded-xl border border-[var(--border-color)] shadow-inner flex flex-col h-[500px]">
+                            <h3 class="text-xs font-black font-mono text-amber-400 uppercase mb-2 flex-shrink-0 border-b border-slate-800 pb-1.5">
                                 <i class="fa-solid fa-calculator"></i> Log Kalkulasi & Formula Teknis
                             </h3>
-                            <div id="calc-log" class="overflow-y-auto custom-scroll flex-grow font-mono text-sm text-slate-300 leading-relaxed pr-3 space-y-2">
+                            <div id="calc-log" class="overflow-y-auto custom-scroll flex-grow font-mono text-[11px] text-slate-300 leading-relaxed pr-2 space-y-2">
                                 Tekan PROCESS ANALYSIS untuk memuat perhitungan terpadu beserta rumusnya...
                             </div>
                         </div>
                     </div>
 
                     <!-- Conclusion / Saran Teknis -->
-                    <div class="bg-slate-900/90 p-6 rounded-xl border-t-4 border-cyan-500 shadow-xl mt-2 mb-10">
-                        <h3 class="text-lg font-black cyber-font text-cyan-400 uppercase mb-4 flex items-center gap-2 border-b border-slate-800 pb-2">
-                            <i class="fa-solid fa-clipboard-check text-2xl"></i> SUMMARY DESAIN & AI SARAN TEKNIS
+                    <div class="bg-slate-900/90 p-5 rounded-xl border-t-4 border-cyan-500 shadow-xl mb-10">
+                        <h3 class="text-base font-black cyber-font text-cyan-400 uppercase mb-3 flex items-center gap-2 border-b border-slate-800 pb-2">
+                            <i class="fa-solid fa-clipboard-check text-xl"></i> SUMMARY DESAIN & AI SARAN TEKNIS
                         </h3>
-                        <div id="conclusion-text" class="text-base text-slate-200 font-sans">
+                        <div id="conclusion-text" class="text-sm text-slate-200 font-sans">
                             <p class="text-slate-400 italic">Pesan analisis AI dan rekomendasi teknis akan ditampilkan di sini.</p>
                         </div>
                     </div>
@@ -352,8 +351,7 @@
         </main>
     </div> <!-- END OF THEME WRAPPER -->
 
-    <!-- FLOATING CHATBOT PANEL & CONTROLS (OUTSIDE THEME WRAPPER TO PREVENT POSITION:FIXED BUG) -->
-    
+    <!-- FLOATING CHATBOT PANEL & CONTROLS -->
     <!-- Panel Chat (Hidden by Default) -->
     <div id="floatingChatPanel" class="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-[9998] w-[340px] sm:w-[420px] max-w-[calc(100vw-2rem)] bg-slate-950/95 backdrop-blur-xl border border-cyan-500 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] overflow-hidden flex-col h-[550px] max-h-[75vh] font-mono no-invert" style="display: none;">
         <!-- Chat Header -->
@@ -366,7 +364,7 @@
                     <h4 class="text-xs font-black tracking-wider cyber-font text-white uppercase">JARVIS AI</h4>
                     <p class="text-[9px] hacker-font text-emerald-400 uppercase tracking-widest flex items-center gap-1 mt-0.5">
                         <i class="fa-regular fa-clock text-cyan-500"></i>
-                        <span id="chatDate" class="text-emerald-300 font-sans"></span>&nbsp;
+                        <span id="chatDate" class="text-emerald-300 font-sans uppercase"></span>&nbsp;
                         <span id="chatTime" class="text-cyan-200 font-bold font-sans"></span>
                         <span class="text-slate-500 mx-1">|</span> 
                         <span class="animate-pulse">ONLINE</span>
@@ -416,7 +414,7 @@
                 <button type="button" onclick="runAnalysis()" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white border border-fuchsia-400 h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-[0_0_20px_rgba(192,38,211,0.6)] flex items-center justify-center transition-transform hover:scale-110 shrink-0" title="Proses Analisis Aktual">
                     <i class="fa-solid fa-calculator text-base sm:text-lg"></i>
                 </button>
-                <button type="button" onclick="activateScreensaverManual()" class="bg-blue-600 hover:bg-blue-500 text-white border border-blue-400 h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-[0_0_20px_rgba(37,99,235,0.6)] flex items-center justify-center transition-transform hover:scale-110 shrink-0" title="Aktifkan Screensaver Monitor">
+                <button type="button" onclick="activateScreensaverManual(event)" class="bg-blue-600 hover:bg-blue-500 text-white border border-blue-400 h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-[0_0_20px_rgba(37,99,235,0.6)] flex items-center justify-center transition-transform hover:scale-110 shrink-0" title="Aktifkan Screensaver Monitor">
                     <i class="fa-solid fa-desktop text-base sm:text-lg"></i>
                 </button>
                 <button type="button" onclick="toggleFloatingChatbot()" class="bg-gradient-to-tr from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white border border-cyan-300 h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-[0_0_25px_rgba(6,182,212,0.8)] flex items-center justify-center transition-transform hover:scale-110 relative cursor-pointer shrink-0" title="Buka Jarvis AI">
@@ -428,6 +426,26 @@
             <button type="button" onclick="toggleFloatingButtons()" class="absolute right-0 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 h-9 w-9 sm:h-10 sm:w-10 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.5)] flex items-center justify-center transition-transform hover:scale-110 z-50 shrink-0">
                 <i id="toggleFloatingIcon" class="fa-solid fa-angles-right text-xs sm:text-base"></i>
             </button>
+        </div>
+    </div>
+
+    <!-- GENERIC EDIT VALUE MODAL (Untuk Pu, Mu, Dimensi) -->
+    <div id="editValueModal" class="fixed inset-0 z-[10010] hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 pointer-events-auto no-invert">
+        <div class="bg-slate-900 border-2 border-cyan-500 rounded-2xl w-full max-w-sm p-6 shadow-[0_0_30px_rgba(6,182,212,0.5)] relative flex flex-col font-sans">
+            <button onclick="closeEditValueModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors cursor-pointer z-10"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h3 class="text-cyan-400 text-base sm:text-lg font-black cyber-font mb-2 flex items-center gap-2 mt-2 sm:mt-0 tracking-widest uppercase"><i class="fa-solid fa-pen-to-square"></i> Edit Parameter</h3>
+            <p class="text-sm text-slate-400 mb-4 font-mono">Ubah nilai untuk <span id="editValueLabel" class="text-white font-bold"></span>.</p>
+            
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-6">
+                <label id="editValueUnit" class="block text-slate-400 mb-2 text-xs font-bold font-mono">Nilai Baru</label>
+                <input type="number" id="editValueInput" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-base text-white outline-none focus:border-cyan-400 font-bold" step="any" onkeydown="if(event.key === 'Enter') saveEditValue()">
+                <input type="hidden" id="editValueTargetId">
+            </div>
+            
+            <div class="flex gap-3">
+                <button onclick="closeEditValueModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-black py-3 rounded-xl uppercase cyber-font text-xs transition-all active:scale-95 border border-slate-600">Batal</button>
+                <button onclick="saveEditValue()" class="flex-1 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-black py-3 rounded-xl uppercase cyber-font text-xs shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all active:scale-95">Update Data</button>
+            </div>
         </div>
     </div>
 
@@ -495,72 +513,70 @@
     <div id="helpModal" class="fixed inset-0 z-[10005] hidden flex items-center justify-center p-4 pointer-events-auto no-invert">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="document.getElementById('helpModal').classList.add('hidden')"></div>
         <div class="bg-slate-900 border-2 border-amber-500 rounded-2xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-[0_0_40px_rgba(245,158,11,0.5)] relative z-10">
-            <div class="p-5 bg-slate-950 border-b border-amber-900 flex justify-between items-center rounded-t-xl">
-                <div class="flex items-center gap-3 text-amber-400 font-black cyber-font text-lg uppercase">
-                    <i class="fa-solid fa-microchip text-2xl"></i> SYSTEM INFO & PANDUAN
+            <div class="p-4 bg-slate-950 border-b border-amber-900 flex justify-between items-center rounded-t-xl">
+                <div class="flex items-center gap-3 text-amber-400 font-black cyber-font text-base uppercase">
+                    <i class="fa-solid fa-microchip text-xl"></i> SYSTEM INFO & PANDUAN
                 </div>
-                <button onclick="document.getElementById('helpModal').classList.add('hidden')" class="text-slate-400 hover:text-red-400 transition-colors"><i class="fa-solid fa-xmark text-3xl"></i></button>
+                <button onclick="document.getElementById('helpModal').classList.add('hidden')" class="text-slate-400 hover:text-red-400 transition-colors"><i class="fa-solid fa-xmark text-2xl"></i></button>
             </div>
             
-            <div class="p-6 overflow-y-auto custom-scroll flex flex-col lg:flex-row gap-8 h-full font-sans">
+            <div class="p-6 overflow-y-auto custom-scroll flex flex-col lg:flex-row gap-6 h-full font-sans">
                 <!-- Panduan & Metrik -->
-                <div class="flex-grow space-y-4 text-base text-slate-300 text-justify">
+                <div class="flex-grow space-y-4 text-sm text-slate-300 text-justify">
                     <p>Sistem <b>APN Geostructural AI</b> mengevaluasi interaksi struktur atas (Kolom) dan bawah (Telapak & Tanah/Tiang) secara terpadu. Visualisasi memodelkan litologi (lapisan) dan struktur secara empiris.</p>
                     
-                    <div class="bg-indigo-950/50 border border-indigo-500/50 p-3 rounded-lg text-sm mb-4">
+                    <div class="bg-indigo-950/50 border border-indigo-500/50 p-3 rounded-lg text-xs mb-4">
                         <h4 class="text-indigo-400 font-bold mb-1"><i class="fa-solid fa-star"></i> Fitur Terbaru:</h4>
                         <ul class="list-disc pl-5 space-y-1 text-slate-300">
                             <li><b>Estimasi Penurunan & Konsolidasi:</b> Analisis komprehensif <i>Immediate Settlement</i> & <i>Primary Consolidation</i>.</li>
                             <li><b>Data Project Manager:</b> Fitur ekspor/impor state project ke format JSON (Backup/Restore).</li>
-                            <li><b>Interaksi 3D Lanjutan:</b> Klik Kiri (Putar), Klik Kanan (Geser/Pan), Scroll (Zoom), dan <b>Double-Click</b> pada lapisan tanah atau teks notasi label untuk mengedit N-SPT secara langsung melalui Interface UI khusus.</li>
-                            <li><b>Grafik Boring Log:</b> Menampilkan grafik <i>Scatter Line</i> dari nilai uji N-SPT lapangan secara Real-time.</li>
-                            <li><b>Ekspor Laporan Cerdas:</b> Ekspor tangkapan keseluruhan antarmuka sistem secara utuh (Landscape A4) dan merender grafik+3D sebagai gambar HD murni.</li>
-                            <li><b>Antarmuka Floating (Melayang):</b> Tombol akses cepat Chatbot, Screensaver, dan Analisis yang responsif.</li>
+                            <li><b>Interaksi 3D Lanjutan:</b> Klik 2x pada <b>lapisan tanah</b> atau <b>label gaya & dimensi (Pu/Mu/Ukuran)</b> di visual 3D untuk mengedit parameter secara langsung melalui Interface UI khusus.</li>
+                            <li><b>Grafik Boring Log:</b> Menampilkan grafik <i>Scatter Line</i> nilai uji N-SPT secara Real-time.</li>
                         </ul>
                     </div>
 
-                    <table class="w-full text-left border-collapse mt-4 font-mono text-sm shadow-md">
+                    <table class="w-full text-left border-collapse mt-4 font-mono text-[11px] shadow-md">
                         <thead>
                             <tr>
-                                <th class="border-b border-amber-700 p-3 text-cyan-400 bg-slate-950 rounded-tl-lg">Metrik Kritis</th>
-                                <th class="border-b border-amber-700 p-3 text-emerald-400 bg-slate-950 rounded-tr-lg">Solusi Sistematis Berbasis AI</th>
+                                <th class="border-b border-amber-700 p-2 text-cyan-400 bg-slate-950 rounded-tl-lg">Metrik Kritis</th>
+                                <th class="border-b border-amber-700 p-2 text-emerald-400 bg-slate-950 rounded-tr-lg">Solusi Sistematis Berbasis AI</th>
                             </tr>
                         </thead>
                         <tbody class="bg-slate-900">
                             <tr>
-                                <td class="border-b border-slate-700 p-3 text-rose-400 font-bold">Geser Pons Gagal</td>
-                                <td class="border-b border-slate-700 p-3 text-slate-300">Gunakan Opsi Tiang Pancang, Perbesar Ketebalan Telapak (Df), atau Pasang Sengkang Pons.</td>
+                                <td class="border-b border-slate-700 p-2 text-rose-400 font-bold">Geser Pons Gagal</td>
+                                <td class="border-b border-slate-700 p-2 text-slate-300">Gunakan Opsi Tiang Pancang, Perbesar Ketebalan Telapak (Df), atau Pasang Sengkang Pons.</td>
                             </tr>
                             <tr>
-                                <td class="border-b border-slate-700 p-3 text-amber-400 font-bold">e > L/6 (Guling)</td>
-                                <td class="border-b border-slate-700 p-3 text-slate-300">Momen lentur ekstrem. <b>Wajib</b> Pakai Tiang Pancang untuk meredam gaya cabut (pull-out).</td>
+                                <td class="border-b border-slate-700 p-2 text-amber-400 font-bold">e > L/6 (Guling)</td>
+                                <td class="border-b border-slate-700 p-2 text-slate-300">Momen lentur ekstrem. <b>Wajib</b> Pakai Tiang Pancang untuk meredam gaya cabut.</td>
                             </tr>
                             <tr>
-                                <td class="border-b border-slate-700 p-3 text-red-400 font-bold">FoS Tanah < 2.5</td>
-                                <td class="border-b border-slate-700 p-3 text-slate-300">Tambah kuantitas tiang, perdalam elevasi ujung tiang ke lapisan tanah keras, atau besarkan dimensi penampang.</td>
+                                <td class="border-b border-slate-700 p-2 text-red-400 font-bold">FoS Tanah < 2.5</td>
+                                <td class="border-b border-slate-700 p-2 text-slate-300">Tambah kuantitas tiang, perdalam elevasi ujung tiang ke lapisan keras, atau perbesar dimensi penampang.</td>
                             </tr>
                             <tr>
-                                <td class="border-b border-slate-700 p-3 text-pink-400 font-bold">S_total > 50mm</td>
-                                <td class="border-b border-slate-700 p-3 text-slate-300">Penurunan tanah berlebih. Revisi dimensi fondasi, perbaiki tanah, atau terapkan tiang pancang.</td>
+                                <td class="border-b border-slate-700 p-2 text-pink-400 font-bold">S_total > 50mm</td>
+                                <td class="border-b border-slate-700 p-2 text-slate-300">Penurunan tanah berlebih. Revisi dimensi fondasi, perbaiki tanah, atau terapkan tiang pancang.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Programmer Info -->
-                <div class="w-full lg:w-80 bg-slate-950 border border-cyan-800 rounded-2xl p-6 flex-shrink-0 flex flex-col items-center text-center shadow-xl">
-                    <div class="h-24 w-24 bg-gradient-to-tr from-cyan-500 to-emerald-400 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.6)] mb-4">
+                <div class="w-full lg:w-72 bg-slate-950 border border-cyan-800 rounded-2xl p-5 flex-shrink-0 flex flex-col items-center text-center shadow-xl">
+                    <div class="h-20 w-20 bg-gradient-to-tr from-cyan-500 to-emerald-400 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.6)] mb-3">
                         <div class="w-[90%] h-[90%] bg-slate-900 rounded-full flex items-center justify-center text-cyan-400">
-                            <i class="fa-solid fa-user-astronaut text-4xl animate-pulse"></i>
+                            <i class="fa-solid fa-user-astronaut text-3xl animate-pulse"></i>
                         </div>
                     </div>
-                    <h4 class="text-xl font-black cyber-font text-cyan-400 tracking-wider">MOHAMAD HARTADI</h4>
-                    <p class="text-xs font-mono text-emerald-400 font-bold mb-5 uppercase tracking-widest">Geotechnical & Civil Engineer</p>
+                    <h4 class="text-lg font-black cyber-font text-cyan-400 tracking-wider">MOHAMAD HARTADI</h4>
+                    <p class="text-[10px] font-mono text-emerald-400 font-bold mb-4 uppercase tracking-widest">Geotechnical & Civil Engineer</p>
                     
-                    <div class="w-full space-y-3 text-sm font-mono font-bold text-left bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-inner">
-                        <a href="https://www.facebook.com/m.hartadi" target="_blank" class="flex items-center gap-3 text-slate-300 hover:text-blue-400 transition-colors"><i class="fa-brands fa-facebook text-blue-500 text-xl w-6 text-center"></i> m.hartadi</a>
-                        <a href="https://wa.me/6282231036047" target="_blank" class="flex items-center gap-3 text-slate-300 hover:text-emerald-400 transition-colors"><i class="fa-brands fa-whatsapp text-emerald-400 text-xl w-6 text-center"></i> 082231036047</a>
-                        <a href="https://newbieonline7.blogspot.com/" target="_blank" class="flex items-center gap-3 text-slate-300 hover:text-pink-400 transition-colors"><i class="fa-solid fa-globe text-pink-500 text-xl w-6 text-center"></i> newbieonline7</a>
+                    <div class="w-full space-y-2.5 text-xs font-mono font-bold text-left bg-slate-900 p-3 rounded-xl border border-slate-800 shadow-inner">
+                        <a href="https://www.facebook.com/m.hartadi" target="_blank" class="flex items-center gap-2 text-slate-300 hover:text-blue-400 transition-colors"><i class="fa-brands fa-facebook text-blue-500 text-lg w-5 text-center"></i> m.hartadi</a>
+                        <a href="https://wa.me/6282231036047" target="_blank" class="flex items-center gap-2 text-slate-300 hover:text-emerald-400 transition-colors"><i class="fa-brands fa-whatsapp text-emerald-400 text-lg w-5 text-center"></i> 082231036047</a>
+                        <a href="https://newbieonline7.blogspot.com/" target="_blank" class="flex items-center gap-2 text-slate-300 hover:text-pink-400 transition-colors"><i class="fa-solid fa-globe text-pink-500 text-lg w-5 text-center"></i> newbieonline7</a>
                     </div>
                 </div>
             </div>
@@ -568,16 +584,16 @@
     </div>
 
     <!-- SCREENSAVER (3D Earth & Siri Wisdom Quotes) -->
-    <div id="screensaverScreen" class="bg-slate-950/95 transition-all duration-500 cursor-pointer backdrop-blur-md p-4 pointer-events-auto no-invert" onclick="document.getElementById('screensaverScreen').style.display='none'">
+    <div id="screensaverScreen" class="bg-slate-950/95 transition-all duration-500 cursor-pointer backdrop-blur-md p-4 pointer-events-auto no-invert" onclick="deactivateScreensaver()">
         <div class="relative z-10 flex flex-col items-center justify-center text-center w-full h-full max-w-4xl mx-auto">
             
             <!-- Waktu & Tanggal (Melayang di atas bumi) -->
             <div class="absolute top-10 flex flex-col items-center justify-center w-full z-20">
                 <div class="cyber-font font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-cyan-500 drop-shadow-[0_0_15px_rgba(6,182,212,0.8)] text-6xl sm:text-8xl mb-2" id="scTime">00:00:00</div>
-                <div class="font-mono text-emerald-400 font-bold text-xl sm:text-2xl tracking-widest bg-slate-900/60 px-6 py-2 rounded-full border border-emerald-500/30 backdrop-blur-sm" id="scDate">Hari, Tanggal</div>
+                <div class="font-mono text-emerald-400 font-bold text-xl sm:text-2xl tracking-widest bg-slate-900/60 px-6 py-2 rounded-full border border-emerald-500/30 backdrop-blur-sm uppercase" id="scDate">HARI, TANGGAL</div>
             </div>
 
-            <!-- 3D Earth Container (Diperbesar) -->
+            <!-- 3D Earth Container -->
             <div id="earth-container" class="w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] mb-8 flex items-center justify-center relative drop-shadow-[0_0_40px_rgba(14,165,233,0.3)] z-10 mt-20">
             </div>
             
@@ -629,7 +645,7 @@
             "from-rose-900/80 to-red-900/80 border-rose-400 text-rose-100"
         ];
 
-        // --- N-SPT Edit Modal Logic ---
+        // --- N-SPT & VALUE Edit Modal Logic ---
         let currentEditLayerIdx = null;
 
         function openEditSptModal(idx, oldSpt) {
@@ -652,15 +668,46 @@
                 const rows = document.getElementById('soil-body').children;
                 if (rows[currentEditLayerIdx]) {
                     rows[currentEditLayerIdx].querySelector('.layer-spt').value = newSpt;
-                    runAnalysis(); // re-calculate, re-render chart & 3D automatically
+                    runAnalysis(); 
                     if(typeof speakBot === 'function') speakBot("Sistem telah memperbarui nilai N SPT. Grafik dan Analisis Geostruktur telah disesuaikan otomatis.");
                 }
             }
             closeEditSptModal();
         }
 
-        // --- Live Date Time Update ---
-        function updateDateTime() {
+        function openEditValueModal(targetId, labelName, unit) {
+            document.getElementById('editValueLabel').innerText = labelName;
+            document.getElementById('editValueUnit').innerText = `Nilai Baru (${unit})`;
+            document.getElementById('editValueInput').value = document.getElementById(targetId).value;
+            document.getElementById('editValueTargetId').value = targetId;
+            document.getElementById('editValueModal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('editValueInput').focus(), 150);
+        }
+
+        function closeEditValueModal() {
+            document.getElementById('editValueModal').classList.add('hidden');
+        }
+
+        function saveEditValue() {
+            const targetId = document.getElementById('editValueTargetId').value;
+            const newVal = document.getElementById('editValueInput').value;
+            if (newVal !== null && newVal.trim() !== "" && !isNaN(newVal)) {
+                const el = document.getElementById(targetId);
+                if(el) {
+                    el.value = newVal;
+                    runAnalysis();
+                    if(typeof speakBot === 'function') speakBot(`Sistem telah memperbarui kalkulasi untuk nilai referensi gaya dan dimensi ${document.getElementById('editValueLabel').innerText}.`);
+                }
+            }
+            closeEditValueModal();
+        }
+
+
+        // --- SCREENSAVER TIMERS & Clocks ---
+        let idleTime = 0;
+        let ssLock = false; 
+        
+        function updateClocks() {
             const now = new Date();
             const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
             const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -671,34 +718,100 @@
             const year = now.getFullYear();
             
             const timeStr = now.toLocaleTimeString('id-ID');
-            const dateStr = `${dayName}, ${date} ${monthName} ${year}`;
+            const dateStr = `${dayName}, ${date} ${monthName} ${year}`.toUpperCase(); 
             
-            // Initial Loader update
             const ldTime = document.getElementById('loaderTime');
             if(ldTime) ldTime.innerText = timeStr;
             const ldDate = document.getElementById('loaderDate');
             if(ldDate) ldDate.innerText = dateStr;
             
-            // Main Dashboard Update
             const mainTime = document.getElementById('mainDashboardTime');
             if(mainTime) mainTime.innerText = timeStr;
             const mainDate = document.getElementById('mainDashboardDate');
             if(mainDate) mainDate.innerText = dateStr;
 
-            // Screensaver update
             const scTime = document.getElementById('scTime');
             if(scTime) scTime.innerText = timeStr;
             const scDate = document.getElementById('scDate');
             if(scDate) scDate.innerText = dateStr;
 
-            // Chat update
             const chatTime = document.getElementById('chatTime');
             if(chatTime) chatTime.innerText = timeStr;
             const chatDateElem = document.getElementById('chatDate');
             if(chatDateElem) chatDateElem.innerText = dateStr;
         }
-        setInterval(updateDateTime, 1000);
-        updateDateTime(); // Call immediately
+
+        setInterval(updateClocks, 1000);
+        updateClocks(); 
+
+        function resetTimer(e) { 
+            if(ssLock) return; 
+            idleTime = 0; 
+            const ss = document.getElementById('screensaverScreen');
+            if(ss.style.display !== 'none') {
+                ss.style.opacity = 0;
+                setTimeout(() => { ss.style.display = 'none'; }, 500); 
+                if(wisdomInterval) clearInterval(wisdomInterval);
+                if(synth) synth.cancel();
+            }
+        }
+        
+        const events = ['mousemove', 'keypress', 'click', 'scroll', 'touchstart'];
+        events.forEach(e => window.addEventListener(e, resetTimer));
+
+        setInterval(() => {
+            idleTime++;
+            if (idleTime > 60) {
+                const ss = document.getElementById('screensaverScreen');
+                if (ss.style.display !== 'flex') {
+                    ss.style.display = 'flex';
+                    setTimeout(() => ss.style.opacity = 1, 50);
+                    
+                    if(wisdomInterval) clearInterval(wisdomInterval);
+                    cycleWisdomQuote();
+                    wisdomInterval = setInterval(cycleWisdomQuote, 10000);
+                }
+            }
+        }, 1000);
+
+        function deactivateScreensaver() {
+            if(ssLock) return;
+            resetTimer();
+        }
+
+        function activateScreensaverManual(e) {
+            if(e) e.stopPropagation(); 
+            
+            ssLock = true; 
+            setTimeout(() => { ssLock = false; }, 1500); 
+
+            idleTime = 61; 
+            const ss = document.getElementById('screensaverScreen');
+            ss.style.display = 'flex';
+            setTimeout(() => ss.style.opacity = 1, 50);
+            
+            if(wisdomInterval) clearInterval(wisdomInterval);
+            cycleWisdomQuote();
+            wisdomInterval = setInterval(cycleWisdomQuote, 10000); 
+        }
+
+        function cycleWisdomQuote() {
+            const quoteContainer = document.getElementById('wisdomQuoteContainer');
+            const quoteText = document.getElementById('wisdomQuoteText');
+            
+            const randomQuote = wisdomQuotes[Math.floor(Math.random() * wisdomQuotes.length)];
+            const randomColorClass = wisdomColors[Math.floor(Math.random() * wisdomColors.length)];
+            
+            quoteContainer.classList.remove('wisdom-active');
+            void quoteContainer.offsetWidth; 
+            
+            quoteContainer.className = `text-xl sm:text-3xl font-black font-sans leading-relaxed tracking-wide min-h-[100px] flex items-center justify-center drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)] px-4 py-6 rounded-2xl backdrop-blur-md border-t-2 border-b-2 bg-gradient-to-r wisdom-active ${randomColorClass}`;
+            quoteText.innerText = `"${randomQuote}"`;
+            
+            if(!isMuted && document.getElementById('screensaverScreen').style.display !== 'none') {
+                speakBot(randomQuote);
+            }
+        }
 
         // --- Dark / Light Mode Toggle ---
         let isDarkMode = true;
@@ -716,61 +829,12 @@
             }
         }
 
-        // --- Screensaver Logic ---
-        function activateScreensaverManual() {
-            const ss = document.getElementById('screensaverScreen');
-            ss.style.display = 'flex';
-            setTimeout(() => ss.style.opacity = 1, 50);
-            
-            // Start Wisdom Quote Cycle
-            if(wisdomInterval) clearInterval(wisdomInterval);
-            cycleWisdomQuote(); // Call immediately
-            wisdomInterval = setInterval(cycleWisdomQuote, 10000); // Change every 10 seconds
-        }
-
-        function cycleWisdomQuote() {
-            const quoteContainer = document.getElementById('wisdomQuoteContainer');
-            const quoteText = document.getElementById('wisdomQuoteText');
-            
-            // Random Quote & Color
-            const randomQuote = wisdomQuotes[Math.floor(Math.random() * wisdomQuotes.length)];
-            const randomColorClass = wisdomColors[Math.floor(Math.random() * wisdomColors.length)];
-            
-            // Reset Animation
-            quoteContainer.classList.remove('wisdom-active');
-            void quoteContainer.offsetWidth; // Trigger reflow
-            
-            // Apply new styling and text
-            quoteContainer.className = `text-xl sm:text-3xl font-black font-sans leading-relaxed tracking-wide min-h-[100px] flex items-center justify-center drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)] px-4 py-6 rounded-2xl backdrop-blur-md border-t-2 border-b-2 bg-gradient-to-r wisdom-active ${randomColorClass}`;
-            quoteText.innerText = `"${randomQuote}"`;
-            
-            // Speak Quote using Siri
-            if(!isMuted && document.getElementById('screensaverScreen').style.display !== 'none') {
-                speakBot(randomQuote);
-            }
-        }
-
-        // Disable Wisdom Cycle when Screensaver closes
-        const ssElement = document.getElementById('screensaverScreen');
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (ssElement.style.display === 'none') {
-                    if(wisdomInterval) clearInterval(wisdomInterval);
-                    if(synth) synth.cancel(); // Stop talking
-                }
-            });
-        });
-        observer.observe(ssElement, { attributes: true, attributeFilter: ['style'] });
-
-
         window.addEventListener('load', () => {
             setTimeout(() => { 
                 document.getElementById('initialLoader').style.opacity = '0'; 
                 setTimeout(() => { document.getElementById('initialLoader').style.display = 'none'; }, 1000); 
             }, 1500);
-            setTimeout(loadVoices, 500); // Load Siri voices for Chatbot
-            
-            // Initialize Earth for Screensaver
+            setTimeout(loadVoices, 500); 
             initEarth();
         });
 
@@ -797,7 +861,6 @@
             const container = document.getElementById('earth-container');
             if(!container) return;
             
-            // Fixed initial dimensions for reliable rendering
             const W = 500;
             const H = 500;
             
@@ -808,7 +871,6 @@
             earthRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             earthRenderer.setSize(W, H);
             
-            // Use ResizeObserver for perfect responsive scaling
             const resizeObserver = new ResizeObserver(entries => {
                 for (let entry of entries) {
                     const { width, height } = entry.contentRect;
@@ -826,7 +888,6 @@
             earthGroup = new THREE.Group();
             earthScene.add(earthGroup);
 
-            // Realistic Ocean/Earth Sphere using reliable CDN unpkg
             const tl = new THREE.TextureLoader();
             tl.setCrossOrigin('anonymous'); 
             
@@ -846,7 +907,6 @@
             earthMesh = new THREE.Mesh(earthGeo, earthMat);
             earthGroup.add(earthMesh);
 
-            // Cloud Layer
             const cloudGeo = new THREE.SphereGeometry(1.52, 64, 64);
             const cloudMat = new THREE.MeshPhongMaterial({
                 map: cloudTex,
@@ -859,7 +919,6 @@
             cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
             earthGroup.add(cloudMesh);
 
-            // Lighting
             const ambient = new THREE.AmbientLight(0xffffff, 0.4);
             earthScene.add(ambient);
             const spotLight = new THREE.SpotLight(0xffffff, 2.5);
@@ -992,18 +1051,17 @@
                         data.soilLayers.forEach(layer => {
                             const tr = document.createElement('tr');
                             tr.innerHTML = `
-                                <td class="p-1.5 border-b border-slate-800"><input type="number" value="${layer.thk}" class="w-full p-1.5 rounded layer-thk font-bold"></td>
-                                <td class="p-1.5 border-b border-slate-800"><input type="number" value="${layer.spt}" class="w-full p-1.5 rounded layer-spt font-bold"></td>
-                                <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                                <td class="p-1 border-b border-slate-800"><input type="number" value="${layer.thk}" class="w-full p-1 rounded layer-thk font-bold"></td>
+                                <td class="p-1 border-b border-slate-800"><input type="number" value="${layer.spt}" class="w-full p-1 rounded layer-spt font-bold"></td>
+                                <td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
                             `;
                             tbody.appendChild(tr);
                         });
                     }
                     alert("Data proyek berhasil dimuat ulang!");
                     closeProjectModal();
-                    runAnalysis(); // auto refresh analysis
+                    runAnalysis(); 
                     
-                    // Reset file input so same file can be selected again
                     event.target.value = '';
                 } catch (err) {
                     alert("Gagal membaca file backup. Pastikan file JSON valid.");
@@ -1013,14 +1071,13 @@
         }
 
         /* --- DYNAMIC SOIL TABLE --- */
-
         function addLayer() {
             const tbody = document.getElementById('soil-body');
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td class="p-1.5 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1.5 rounded layer-thk font-bold"></td>
-                <td class="p-1.5 border-b border-slate-800"><input type="number" value="30" class="w-full p-1.5 rounded layer-spt font-bold"></td>
-                <td class="p-1.5 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                <td class="p-1 border-b border-slate-800"><input type="number" value="1.0" class="w-full p-1 rounded layer-thk font-bold"></td>
+                <td class="p-1 border-b border-slate-800"><input type="number" value="30" class="w-full p-1 rounded layer-spt font-bold"></td>
+                <td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
             `;
             tbody.appendChild(tr);
         }
@@ -1155,11 +1212,9 @@
                 else if (action === 'programmer') userText = "Berikan informasi tentang Programmer / Developer aplikasi ini.";
                 else if (action === 'my_aplikasi') userText = "Tampilkan direktori portofolio My Aplikasi.";
 
-                // 1. Tampilkan pesan user di chatbox seperti fungsi chat normal
                 chatBox.innerHTML += `<div class="flex justify-end mt-3"><div class="bg-cyan-700 text-white p-3 rounded-l-xl rounded-br-xl text-xs shadow-md max-w-[85%] font-bold">${userText}</div></div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
 
-                // 2. Tampilkan animasi typing robot
                 const typingId = 'typ' + Date.now();
                 chatBox.innerHTML += `<div id="${typingId}" class="flex gap-2.5 mt-3">
                             <div class="bg-cyan-950 border border-cyan-600/50 h-7 w-7 rounded flex items-center justify-center flex-shrink-0 text-cyan-400"><i class="fa-solid fa-robot text-xs fa-spin"></i></div>
@@ -1169,13 +1224,11 @@
                         </div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
 
-                // 3. Eksekusi jawaban setelah jeda animasi
                 setTimeout(() => {
                     document.getElementById(typingId)?.remove();
                     
                     let reply = ""; let ttsOutput = "";
                     if(action === 'analisis_detail') {
-                        // Update data terbaru dengan menjalankan analisis di belakang layar
                         try { runAnalysis(); } catch(e) { console.error(e); }
                         
                         const qall = document.getElementById('out-qall')?.innerText || "-";
@@ -1183,7 +1236,6 @@
                         const ecc = (document.getElementById('out-e')?.innerText || "") + " (" + (document.getElementById('out-e-stat')?.innerText || "") + ")";
                         const shear = document.getElementById('out-shear-status')?.innerText || "-";
                         const set = (document.getElementById('out-settlement')?.innerText || "") + " (" + (document.getElementById('out-set-stat')?.innerText || "") + ")";
-                        const conc = document.getElementById('conclusion-text')?.innerText || "Sistem merekomendasikan peninjauan ulang parameter desain.";
                         
                         const fosVal = parseFloat(fos);
                         let conclusionTxt = fosVal >= 2.5 ? 
@@ -1246,7 +1298,6 @@
                         ttsOutput = `Menampilkan seluruh ${myAppsDir.length} daftar ekosistem My Aplikasi dari portofolio pengembangan Anda.`;
                     }
                     
-                    // 4. Print jawaban bot
                     chatBox.innerHTML += `<div class="flex gap-2.5 mt-3">
                         <div class="bg-cyan-950 border border-cyan-600/50 h-7 w-7 rounded flex items-center justify-center flex-shrink-0 text-cyan-400"><i class="fa-solid fa-robot text-xs"></i></div>
                         <div class="bg-slate-900 border border-slate-800 p-3 rounded-r-xl rounded-bl-xl text-slate-200 text-xs w-full shadow-md leading-relaxed font-sans">
@@ -1257,7 +1308,7 @@
                     chatBox.scrollTop = chatBox.scrollHeight;
                     if(ttsOutput) speakBot(ttsOutput);
                     
-                }, 800); // Jeda animasi agar tampak memproses real-time
+                }, 800); 
 
             } catch(error) {
                 console.error("Chat shortcut error:", error);
@@ -1420,10 +1471,9 @@
             const rows = document.getElementById('soil-body').children;
             
             let logText = "";
-            let wordLogText = ""; // Khusus MS Word
+            let wordLogText = ""; 
             let htmlSummary = `<div class="space-y-4">`; 
 
-            // COLLECT SOIL DATA FOR 3D
             let soilData = [];
             for(let i=0; i<rows.length; i++) {
                 soilData.push({
@@ -1431,12 +1481,10 @@
                     spt: parseFloat(rows[i].querySelector('.layer-spt').value) || 0
                 });
             }
-
-            // Draw Chart 
             drawSptChart(soilData);
 
             // 1. GEOTECHNICAL
-            logText += `<div class="mb-4 border-b border-slate-800 pb-3"><span class="text-emerald-400 font-bold block mb-2 text-base">>>> TAHAP 1: ANALISIS GEOTEKNIK (N-SPT)</span>`;
+            logText += `<div class="mb-4 border-b border-slate-800 pb-3"><span class="text-emerald-400 font-bold block mb-2 text-sm">>>> TAHAP 1: ANALISIS GEOTEKNIK (N-SPT)</span>`;
             wordLogText += `<h3>>>> TAHAP 1: ANALISIS GEOTEKNIK (N-SPT)</h3>`;
             
             let totalDepth = 0; let Rs_ult = 0; let N_tip = 0;
@@ -1458,7 +1506,7 @@
                 logText += `<br>Kapasitas Daya Dukung Tiang Pancang dihitung berdasarkan Tahanan Friksi dan End-Bearing:<br>`;
                 logText += `\\[ Q_{ult} = (A_p \\times 40N) + \\sum (As_i \\times 2N_i) \\]<br>`;
                 logText += `\\[ Q_{all} = \\frac{Q_{ult} \\times n}{SF} = \\frac{${Q_single.toFixed(1)} \\times ${nPiles}}{2.5} = ${Q_all.toFixed(1)} \\text{ kN} \\]<br>`;
-                logText += `<div class="bg-emerald-950/40 border-l-4 border-emerald-500 p-3 rounded-r-lg text-xs leading-relaxed text-emerald-100 mt-4 mb-3 shadow-md"><b class="text-emerald-400 uppercase tracking-widest block mb-1.5"><i class="fa-solid fa-tags"></i> Keterangan Notasi:</b> \\(Q_{ult}\\): Kap. Ultimit Tiang Tunggal, \\(A_p\\): Luas Ujung Tiang, \\(N\\): Nilai N-SPT, \\(As_i\\): Luas Selimut Tiang per Lapis, \\(Q_{all}\\): Kap. Izin Kelompok Tiang, \\(n\\): Jml Tiang, \\(SF\\): Safety Factor.</div>`;
+                logText += `<div class="bg-emerald-950/40 border-l-4 border-emerald-500 p-3 rounded-r-lg text-[10px] leading-relaxed text-emerald-100 mt-4 mb-3 shadow-md"><b class="text-emerald-400 uppercase tracking-widest block mb-1.5"><i class="fa-solid fa-tags"></i> Keterangan Notasi:</b> \\(Q_{ult}\\): Kap. Ultimit Tiang Tunggal, \\(A_p\\): Luas Ujung Tiang, \\(N\\): Nilai N-SPT, \\(As_i\\): Luas Selimut Tiang per Lapis, \\(Q_{all}\\): Kap. Izin Kelompok Tiang, \\(n\\): Jml Tiang, \\(SF\\): Safety Factor.</div>`;
                 
                 wordLogText += `<p>Kapasitas Daya Dukung Tiang Pancang dihitung berdasarkan Tahanan Friksi dan End-Bearing:</p>`;
                 wordLogText += `<p>Q<sub>ult</sub> = (A<sub>p</sub> &times; 40N) + &Sigma;(As<sub>i</sub> &times; 2N<sub>i</sub>)</p>`;
@@ -1469,10 +1517,10 @@
                 document.getElementById('out-fos').innerText = FoS.toFixed(2);
                 
                 if (FoS >= 2.5) {
-                    document.getElementById('out-fos').className = "text-3xl font-black text-emerald-400 cyber-font block mt-1";
+                    document.getElementById('out-fos').className = "text-2xl font-black text-emerald-400 cyber-font block leading-none mt-1";
                     geoColor = "text-emerald-400"; geoBorder = "border-emerald-500"; geoStatus = "Kapasitas Aman";
                 } else {
-                    document.getElementById('out-fos').className = "text-3xl font-black text-red-500 cyber-font block mt-1 animate-pulse";
+                    document.getElementById('out-fos').className = "text-2xl font-black text-red-500 cyber-font block leading-none mt-1 animate-pulse";
                     geoColor = "text-red-400"; geoBorder = "border-red-500"; geoStatus = "Kapasitas KRITIS";
                 }
                 wordLogText += `<p><b>Status:</b> Kapasitas Daya Dukung <b>${FoS >= 2.5 ? 'Aman' : 'Kritis'}</b> (FoS = ${FoS.toFixed(2)})</p>`;
@@ -1484,7 +1532,7 @@
                 logText += `<br>Kapasitas Tanah (SBC) diestimasi dari parameter N-SPT Dangkal (Terzaghi & Meyerhof):<br>`;
                 logText += `\\[ q_{net} = \\frac{P_u}{B \\times L} = \\frac{${Pu}}{${B} \\times ${L}} = ${qnet.toFixed(1)} \\text{ kPa} \\]<br>`;
                 logText += `\\[ SBC \\approx 12.5 \\times N_{spt} = ${SBC_soil.toFixed(1)} \\text{ kPa} \\]<br>`;
-                logText += `<div class="bg-emerald-950/40 border-l-4 border-emerald-500 p-3 rounded-r-lg text-xs leading-relaxed text-emerald-100 mt-4 mb-3 shadow-md"><b class="text-emerald-400 uppercase tracking-widest block mb-1.5"><i class="fa-solid fa-tags"></i> Keterangan Notasi:</b> \\(q_{net}\\): Tegangan Kontak Netto, \\(P_u\\): Gaya Aksial Terfaktor, \\(B\\): Lebar Pondasi, \\(L\\): Panjang Pondasi, \\(SBC\\): Safe Bearing Capacity (Kapasitas Izin), \\(N_{spt}\\): Nilai N-SPT Rata-rata.</div>`;
+                logText += `<div class="bg-emerald-950/40 border-l-4 border-emerald-500 p-3 rounded-r-lg text-[10px] leading-relaxed text-emerald-100 mt-4 mb-3 shadow-md"><b class="text-emerald-400 uppercase tracking-widest block mb-1.5"><i class="fa-solid fa-tags"></i> Keterangan Notasi:</b> \\(q_{net}\\): Tegangan Kontak Netto, \\(P_u\\): Gaya Aksial Terfaktor, \\(B\\): Lebar Pondasi, \\(L\\): Panjang Pondasi, \\(SBC\\): Safe Bearing Capacity (Kapasitas Izin), \\(N_{spt}\\): Nilai N-SPT Rata-rata.</div>`;
                 
                 wordLogText += `<p>Kapasitas Tanah (SBC) diestimasi dari parameter N-SPT Dangkal (Terzaghi & Meyerhof):</p>`;
                 wordLogText += `<p>q<sub>net</sub> = P<sub>u</sub> / (B &times; L) = ${Pu} / (${B} &times; ${L}) = ${qnet.toFixed(1)} kPa</p>`;
@@ -1495,10 +1543,10 @@
                 document.getElementById('out-fos').innerText = FoS.toFixed(2);
                 
                 if (FoS >= 1.0) {
-                    document.getElementById('out-fos').className = "text-3xl font-black text-emerald-400 cyber-font block mt-1";
+                    document.getElementById('out-fos').className = "text-2xl font-black text-emerald-400 cyber-font block leading-none mt-1";
                     geoColor = "text-emerald-400"; geoBorder = "border-emerald-500"; geoStatus = "SBC Tanah Memadai";
                 } else {
-                    document.getElementById('out-fos').className = "text-3xl font-black text-red-500 cyber-font block mt-1 animate-pulse";
+                    document.getElementById('out-fos').className = "text-2xl font-black text-red-500 cyber-font block leading-none mt-1 animate-pulse";
                     geoColor = "text-red-400"; geoBorder = "border-red-500"; geoStatus = "Tegangan Dasar KRITIS";
                 }
                 wordLogText += `<p><b>Status:</b> Tegangan Dasar <b>${FoS >= 1.0 ? 'Aman' : 'Kritis'}</b> (FoS = ${FoS.toFixed(2)})</p>`;
@@ -1506,18 +1554,17 @@
             }
             logText += `</div>`;
 
-            // Append Geotech Summary
             htmlSummary += `
-            <div class="flex gap-4 bg-slate-950/80 border-l-4 ${geoBorder} p-4 rounded-lg shadow-md">
-                <div class="${geoColor} text-3xl"><i class="fa-solid fa-earth-americas"></i></div>
+            <div class="flex gap-3 bg-slate-950/80 border-l-4 ${geoBorder} p-3 rounded-lg shadow-md">
+                <div class="${geoColor} text-2xl"><i class="fa-solid fa-earth-americas"></i></div>
                 <div>
-                    <h4 class="font-black ${geoColor} text-base uppercase tracking-wider mb-1">${geoStatus} (Geoteknik)</h4>
-                    <p class="text-slate-300 text-sm leading-relaxed">${geoDesc}</p>
+                    <h4 class="font-black ${geoColor} text-sm uppercase tracking-wider mb-1">${geoStatus} (Geoteknik)</h4>
+                    <p class="text-slate-300 text-[11px] leading-relaxed">${geoDesc}</p>
                 </div>
             </div>`;
 
             // 2. EKSENTRISITAS
-            logText += `<div class="mb-4 border-b border-slate-800 pb-3"><span class="text-amber-400 font-bold block mb-2 text-base">>>> TAHAP 2: EKSENTRISITAS (GULING)</span>`;
+            logText += `<div class="mb-4 border-b border-slate-800 pb-3"><span class="text-amber-400 font-bold block mb-2 text-sm">>>> TAHAP 2: EKSENTRISITAS (GULING)</span>`;
             wordLogText += `<h3>>>> TAHAP 2: EKSENTRISITAS (GULING)</h3>`;
             
             const e = Pu > 0 ? (Mu / Pu) : 0;
@@ -1525,7 +1572,7 @@
             logText += `<br>Pengendalian stabilitas zona tekan (<i>Middle-Third Rule</i>):<br>`;
             logText += `\\[ e = \\frac{M_u}{P_u} = \\frac{${Mu}}{${Pu}} = ${e.toFixed(3)} \\text{ m} \\]<br>`;
             logText += `\\[ \\text{Batas } e_{max} = \\frac{L}{6} = \\frac{${L}}{6} = ${L6.toFixed(3)} \\text{ m} \\]<br>`;
-            logText += `<div class="bg-amber-950/40 border-l-4 border-amber-500 p-3 rounded-r-lg text-xs leading-relaxed text-amber-100 mt-4 mb-3 shadow-md"><b class="text-amber-400 uppercase tracking-widest block mb-1.5"><i class="fa-solid fa-tags"></i> Keterangan Notasi:</b> \\(e\\): Eksentrisitas Beban, \\(M_u\\): Momen Lentur Terfaktor, \\(P_u\\): Gaya Aksial Terfaktor, \\(e_{max}\\): Batas Eksentrisitas Maksimum (Middle-Third Rule), \\(L\\): Panjang Pondasi Searah Momen.</div>`;
+            logText += `<div class="bg-amber-950/40 border-l-4 border-amber-500 p-3 rounded-r-lg text-[10px] leading-relaxed text-amber-100 mt-4 mb-3 shadow-md"><b class="text-amber-400 uppercase tracking-widest block mb-1.5"><i class="fa-solid fa-tags"></i> Keterangan Notasi:</b> \\(e\\): Eksentrisitas Beban, \\(M_u\\): Momen Lentur Terfaktor, \\(P_u\\): Gaya Aksial Terfaktor, \\(e_{max}\\): Batas Eksentrisitas Maksimum (Middle-Third Rule), \\(L\\): Panjang Pondasi Searah Momen.</div>`;
             
             wordLogText += `<p>Pengendalian stabilitas zona tekan (Middle-Third Rule):</p>`;
             wordLogText += `<p>e = M<sub>u</sub> / P<sub>u</sub> = ${Mu} / ${Pu} = ${e.toFixed(3)} m</p>`;
@@ -1537,31 +1584,30 @@
             let eccStatus = ""; let eccDesc = ""; let eccColor = ""; let eccBorder = "";
             if(e > L6) {
                 document.getElementById('out-e-stat').innerText = "RAWAN GULING (e > L/6)";
-                document.getElementById('out-e-stat').className = "text-xs font-bold text-red-500 mt-1 block";
+                document.getElementById('out-e-stat').className = "text-[9px] font-bold text-red-500 mt-1 block";
                 eccColor = "text-amber-500"; eccBorder = "border-amber-500"; eccStatus = "Peringatan Eksentrisitas Tinggi";
                 eccDesc = `Momen lentur eksternal terlalu ekstrem (<b>e &gt; L/6</b>). Fondasi mengalami tegangan tarik (uplift) di area pinggir. <b>Instruksi AI:</b> Wajib alihkan beban dengan Opsi Tiang Pancang untuk memaku fondasi.`;
                 wordLogText += `<p><b>Status:</b> RAWAN GULING (e &gt; L/6)</p>`;
             } else {
                 document.getElementById('out-e-stat').innerText = "AMAN (e < L/6)";
-                document.getElementById('out-e-stat').className = "text-xs font-bold text-emerald-500 mt-1 block";
+                document.getElementById('out-e-stat').className = "text-[9px] font-bold text-emerald-500 mt-1 block";
                 eccColor = "text-emerald-400"; eccBorder = "border-emerald-500"; eccStatus = "Stabilitas Momen Terjaga";
                 eccDesc = `Resultan pembebanan (<b>e &le; L/6</b>) terkonsentrasi aman di sepertiga tengah penampang (<i>Middle-Third Core</i>). Struktur tidak akan mengalami rotasi fatal.`;
                 wordLogText += `<p><b>Status:</b> AMAN GULING (e &le; L/6)</p>`;
             }
             logText += `</div>`;
 
-            // Append Eccentricity Summary
             htmlSummary += `
-            <div class="flex gap-4 bg-slate-950/80 border-l-4 ${eccBorder} p-4 rounded-lg shadow-md">
-                <div class="${eccColor} text-3xl"><i class="fa-solid fa-arrows-down-to-line"></i></div>
+            <div class="flex gap-3 bg-slate-950/80 border-l-4 ${eccBorder} p-3 rounded-lg shadow-md">
+                <div class="${eccColor} text-2xl"><i class="fa-solid fa-arrows-down-to-line"></i></div>
                 <div>
-                    <h4 class="font-black ${eccColor} text-base uppercase tracking-wider mb-1">${eccStatus}</h4>
-                    <p class="text-slate-300 text-sm leading-relaxed">${eccDesc}</p>
+                    <h4 class="font-black ${eccColor} text-sm uppercase tracking-wider mb-1">${eccStatus}</h4>
+                    <p class="text-slate-300 text-[11px] leading-relaxed">${eccDesc}</p>
                 </div>
             </div>`;
 
             // 3. GESER PONS & TULANGAN
-            logText += `<div class="mb-4 border-b border-slate-800 pb-3"><span class="text-fuchsia-400 font-bold block mb-2 text-base">>>> TAHAP 3: STRUKTUR BETON (IS 456)</span>`;
+            logText += `<div class="mb-4 border-b border-slate-800 pb-3"><span class="text-fuchsia-400 font-bold block mb-2 text-sm">>>> TAHAP 3: STRUKTUR BETON (IS 456)</span>`;
             wordLogText += `<h3>>>> TAHAP 3: STRUKTUR BETON (IS 456)</h3>`;
             
             const d = (Df * 1000) - 50 - 6; 
@@ -1586,14 +1632,14 @@
             let shearStatus = ""; let shearDesc = ""; let shearColor = ""; let shearBorder = "";
             if(tau_v2 <= tau_c) {
                 document.getElementById('out-shear-status').innerText = "SAFE (AMAN)";
-                document.getElementById('out-shear-status').className = "text-2xl font-black text-emerald-400 cyber-font block mt-1";
+                document.getElementById('out-shear-status').className = "text-xl font-black text-emerald-400 cyber-font block leading-none mt-1";
                 shearColor = "text-emerald-400"; shearBorder = "border-emerald-500"; shearStatus = "Integritas Geser Lolos";
                 shearDesc = `Kapasitas geser material beton murni mengungguli tegangan geser terfaktor (<b>&tau;<sub>v</sub> &le; &tau;<sub>c</sub></b>) tanpa perlu desain sengkang (shear reinforcement) di zona pilar.`;
                 wordLogText += `<p><b>Status Geser Pons:</b> SAFE / AMAN (&tau;<sub>v</sub> &le; &tau;<sub>c</sub>)</p>`;
             } else {
                 let d_needed = Math.ceil((Vu_2 * 1000) / (perimeter_bo * tau_c * 1000)) * 1000;
                 document.getElementById('out-shear-status').innerText = "FAIL (KRITIS)";
-                document.getElementById('out-shear-status').className = "text-2xl font-black text-rose-500 cyber-font block mt-1 animate-pulse";
+                document.getElementById('out-shear-status').className = "text-xl font-black text-rose-500 cyber-font block leading-none mt-1 animate-pulse";
                 shearColor = "text-rose-400"; shearBorder = "border-rose-500"; shearStatus = "Bahaya Retak Pons (Punching)";
                 shearDesc = `Tegangan geser melampaui kemampuan plat beton murni (<b>&tau;<sub>v</sub> &gt; &tau;<sub>c</sub></b>). <b>Saran Resolusi AI:</b> Wajib menambahkan tebal Df minimum menjadi <b>${(d_needed+56)} mm</b> atau rakit sengkang khusus di perbatasan muka kolom.`;
                 wordLogText += `<p><b>Status Geser Pons:</b> FAIL / KRITIS (&tau;<sub>v</sub> &gt; &tau;<sub>c</sub>)</p>`;
@@ -1606,7 +1652,7 @@
             
             logText += `<br>Kebutuhan Luas Penampang Tulangan (Steel Area):<br>`;
             logText += `\\[ A_{st} = \\frac{M_u}{0.87 f_y z} = \\frac{${(Mu_steel*1000000).toFixed(0)}}{0.87 \\times ${fy} \\times ${z.toFixed(0)}} = ${Ast_req.toFixed(0)} \\text{ mm}^2/\\text{m} \\]<br>`;
-            logText += `<div class="bg-blue-950/40 border-l-4 border-blue-500 p-3 rounded-r-lg text-xs leading-relaxed text-blue-100 mt-4 mb-3 shadow-md"><b class="text-blue-400 uppercase tracking-widest block mb-1.5"><i class="fa-solid fa-tags"></i> Keterangan Notasi:</b> \\(V_u\\): Gaya Geser Pons, \\(q_{net}\\): Teg. Tanah, \\(b_o\\): Keliling Kritis, \\(d\\): Tebal Efektif Pelat, \\(\\tau_v\\): Tegangan Geser Pons Aktual, \\(\\tau_c\\): Kuat Geser Beton, \\(f_{ck}\\): Kuat Tekan Beton, \\(A_{st}\\): Luas Tulangan Tarik, \\(f_y\\): Tegangan Leleh Baja, \\(z\\): Lengan Momen Internal.</div></div>`;
+            logText += `<div class="bg-blue-950/40 border-l-4 border-blue-500 p-3 rounded-r-lg text-[10px] leading-relaxed text-blue-100 mt-4 mb-3 shadow-md"><b class="text-blue-400 uppercase tracking-widest block mb-1.5"><i class="fa-solid fa-tags"></i> Keterangan Notasi:</b> \\(V_u\\): Gaya Geser Pons, \\(q_{net}\\): Teg. Tanah, \\(b_o\\): Keliling Kritis, \\(d\\): Tebal Efektif Pelat, \\(\\tau_v\\): Tegangan Geser Pons Aktual, \\(\\tau_c\\): Kuat Geser Beton, \\(f_{ck}\\): Kuat Tekan Beton, \\(A_{st}\\): Luas Tulangan Tarik, \\(f_y\\): Tegangan Leleh Baja, \\(z\\): Lengan Momen Internal.</div></div>`;
             
             wordLogText += `<p>Kebutuhan Luas Penampang Tulangan (Steel Area):</p>`;
             wordLogText += `<p>A<sub>st</sub> = M<sub>u</sub> / (0.87 &times; f<sub>y</sub> &times; z) = ${(Mu_steel*1000000).toFixed(0)} / (0.87 &times; ${fy} &times; ${z.toFixed(0)}) = <b>${Ast_req.toFixed(0)} mm&sup2;/m</b></p>`;
@@ -1615,22 +1661,21 @@
             document.getElementById('out-steel').innerText = `φ16 @ 150`;
             document.getElementById('out-steel-req').innerText = `Req: ${Ast_req.toFixed(0)} mm²/m`;
 
-            // Append Structural & Rebar Summary
             htmlSummary += `
-            <div class="flex gap-4 bg-slate-950/80 border-l-4 ${shearBorder} p-4 rounded-lg shadow-md">
-                <div class="${shearColor} text-3xl"><i class="fa-solid fa-layer-group"></i></div>
+            <div class="flex gap-3 bg-slate-950/80 border-l-4 ${shearBorder} p-3 rounded-lg shadow-md">
+                <div class="${shearColor} text-2xl"><i class="fa-solid fa-layer-group"></i></div>
                 <div>
-                    <h4 class="font-black ${shearColor} text-base uppercase tracking-wider mb-1">${shearStatus} & Spesifikasi Tulangan</h4>
-                    <p class="text-slate-300 text-sm leading-relaxed">${shearDesc}</p>
-                    <p class="text-blue-300 text-sm leading-relaxed mt-2"><i class="fa-solid fa-circle-check text-blue-500"></i> Area penulangan pelat minimum <b>Ast = ${Ast_req.toFixed(0)} mm&sup2;/m</b>. Silakan gunakan kombinasi batang besi utama &phi;16-150mm dua arah.</p>
+                    <h4 class="font-black ${shearColor} text-sm uppercase tracking-wider mb-1">${shearStatus} & Spesifikasi Tulangan</h4>
+                    <p class="text-slate-300 text-[11px] leading-relaxed">${shearDesc}</p>
+                    <p class="text-blue-300 text-[11px] leading-relaxed mt-1"><i class="fa-solid fa-circle-check text-blue-500"></i> Area penulangan pelat minimum <b>Ast = ${Ast_req.toFixed(0)} mm&sup2;/m</b>. Silakan gunakan kombinasi batang besi utama &phi;16-150mm dua arah.</p>
                 </div>
             </div>`;
 
             // 4. PENURUNAN (SETTLEMENT) & KONSOLIDASI
-            logText += `<div class="mb-2"><span class="text-pink-400 font-bold block mb-2 text-base">>>> TAHAP 4: ESTIMASI PENURUNAN (SETTLEMENT) & KONSOLIDASI</span>`;
+            logText += `<div class="mb-2"><span class="text-pink-400 font-bold block mb-2 text-sm">>>> TAHAP 4: ESTIMASI PENURUNAN (SETTLEMENT) & KONSOLIDASI</span>`;
             wordLogText += `<h3>>>> TAHAP 4: ESTIMASI PENURUNAN (SETTLEMENT) & KONSOLIDASI</h3>`;
 
-            const po = 18 * (Df + (Hc/2)); // Asumsi berat volume tanah γ = 18 kN/m3
+            const po = 18 * (Df + (Hc/2)); 
             const delta_p = Pu / ((B + Hc/2) * (L + Hc/2));
             const Si = (qnet * B * (1 - Math.pow(v, 2)) / Es) * Iw * 1000;
             const Sc = ((Cc * Hc) / (1 + e0)) * Math.log10((po + delta_p) / po) * 1000;
@@ -1646,7 +1691,7 @@
             logText += `\\[ S_c = \\frac{C_c \\cdot H_c}{1 + e_0} \\log_{10} \\left( \\frac{p_o' + \\Delta p}{p_o'} \\right) \\]<br>`;
             logText += `\\[ S_c = \\frac{${Cc} \\times ${Hc}}{1 + ${e0}} \\log_{10} \\left( \\frac{${po.toFixed(1)} + ${delta_p.toFixed(2)}}{${po.toFixed(1)}} \\right) = ${Sc.toFixed(2)} \\text{ mm} \\]<br>`;
             logText += `\\[ S_{total} = S_i + S_c = ${Si.toFixed(2)} + ${Sc.toFixed(2)} = ${Stotal.toFixed(2)} \\text{ mm} \\]<br>`;
-            logText += `<div class="bg-pink-950/40 border-l-4 border-pink-500 p-3 rounded-r-lg text-xs leading-relaxed text-pink-100 mt-4 mb-3 shadow-md"><b class="text-pink-400 uppercase tracking-widest block mb-1.5"><i class="fa-solid fa-tags"></i> Keterangan Notasi:</b> \\(S_i\\): Penurunan Segera, \\(E_s\\): Modulus Elastisitas Tanah, \\(\\nu\\): Poisson's Ratio, \\(I_w\\): Faktor Pengaruh Bentuk, \\(S_c\\): Penurunan Konsolidasi Primer, \\(p_o'\\): Tegangan Efektif Awal, \\(\\gamma\\): Berat Volume Tanah, \\(D_f\\): Kedalaman Pondasi, \\(\\Delta p\\): Tambahan Tegangan (Boussinesq), \\(C_c\\): Indeks Kompresi, \\(H_c\\): Tebal Lapisan Tanah Lunak, \\(e_0\\): Angka Pori Awal.</div></div>`;
+            logText += `<div class="bg-pink-950/40 border-l-4 border-pink-500 p-3 rounded-r-lg text-[10px] leading-relaxed text-pink-100 mt-4 mb-3 shadow-md"><b class="text-pink-400 uppercase tracking-widest block mb-1.5"><i class="fa-solid fa-tags"></i> Keterangan Notasi:</b> \\(S_i\\): Penurunan Segera, \\(E_s\\): Modulus Elastisitas Tanah, \\(\\nu\\): Poisson's Ratio, \\(I_w\\): Faktor Pengaruh Bentuk, \\(S_c\\): Penurunan Konsolidasi Primer, \\(p_o'\\): Tegangan Efektif Awal, \\(\\gamma\\): Berat Volume Tanah, \\(D_f\\): Kedalaman Pondasi, \\(\\Delta p\\): Tambahan Tegangan (Boussinesq), \\(C_c\\): Indeks Kompresi, \\(H_c\\): Tebal Lapisan Tanah Lunak, \\(e_0\\): Angka Pori Awal.</div></div>`;
 
             wordLogText += `<p><b>A. Penurunan Segera (Immediate Settlement):</b></p>`;
             wordLogText += `<p>S<sub>i</sub> = q<sub>net</sub> &times; B &times; ((1 - &nu;&sup2;) / E<sub>s</sub>) &times; I<sub>w</sub></p>`;
@@ -1662,7 +1707,7 @@
 
             document.getElementById('out-settlement').innerText = Stotal.toFixed(1) + " mm";
             document.getElementById('out-set-stat').innerText = Stotal > 50 ? "Batas Kritis (>50mm)" : "Aman (<50mm)";
-            document.getElementById('out-set-stat').className = Stotal > 50 ? "text-xs font-bold text-rose-400 mt-1 block" : "text-xs font-bold text-emerald-400 mt-1 block";
+            document.getElementById('out-set-stat').className = Stotal > 50 ? "text-[9px] font-bold text-rose-400 mt-1 block" : "text-[9px] font-bold text-emerald-400 mt-1 block";
             
             let setStatus = Stotal > 50 ? "Penurunan Ekstrem" : "Penurunan Toleransi Normal";
             let setDesc = `Kalkulasi konsolidasi dan penurunan elastik menghasilkan estimasi S_total = <b>${Stotal.toFixed(1)} mm</b>. ${Stotal > 50 ? 'Fondasi berisiko mengalami penurunan struktural melebihi batas wajar 50mm. Sangat disarankan meninjau ulang kedalaman telapak atau menambah kuantitas tiang pancang.' : 'Nilai pergerakan pondasi sangat kecil dan masih berada dalam toleransi stabil yang sangat aman dengan batas risiko terendah.'}`;
@@ -1670,31 +1715,29 @@
             let setBorder = Stotal > 50 ? "border-rose-500" : "border-pink-500";
 
             htmlSummary += `
-            <div class="flex gap-4 bg-slate-950/80 border-l-4 ${setBorder} p-4 rounded-lg shadow-md">
-                <div class="${setColor} text-3xl"><i class="fa-solid fa-arrow-down-up-across-line"></i></div>
+            <div class="flex gap-3 bg-slate-950/80 border-l-4 ${setBorder} p-3 rounded-lg shadow-md">
+                <div class="${setColor} text-2xl"><i class="fa-solid fa-arrow-down-up-across-line"></i></div>
                 <div>
-                    <h4 class="font-black ${setColor} text-base uppercase tracking-wider mb-1">${setStatus}</h4>
-                    <p class="text-slate-300 text-sm leading-relaxed">${setDesc}</p>
+                    <h4 class="font-black ${setColor} text-sm uppercase tracking-wider mb-1">${setStatus}</h4>
+                    <p class="text-slate-300 text-[11px] leading-relaxed">${setDesc}</p>
                 </div>
             </div>`;
 
             // Add Standard Reference
             htmlSummary += `
-            <div class="bg-cyan-950/40 border border-cyan-800 p-4 rounded-lg mt-5 shadow-inner">
-                <h4 class="text-cyan-400 font-black text-sm uppercase mb-1 flex items-center gap-2"><i class="fa-solid fa-robot text-lg"></i> AI Diagnostic Reference</h4>
-                <p class="text-slate-300 text-xs leading-relaxed">
+            <div class="bg-cyan-950/40 border border-cyan-800 p-3 rounded-lg mt-3 shadow-inner">
+                <h4 class="text-cyan-400 font-black text-xs uppercase mb-1 flex items-center gap-2"><i class="fa-solid fa-robot text-base"></i> AI Diagnostic Reference</h4>
+                <p class="text-slate-300 text-[10px] leading-relaxed">
                     Estimasi cerdas di atas mengekstraksi teori <i>Terzaghi-Meyerhof Bearing Capacity</i> untuk rasionalisasi parameter litologi geoteknik. Verifikasi komponen gaya dan reduksi bahan pelat divalidasi langsung melalui referensi struktur bangunan global <b>Standar IS 456:2000 (Klausul 31.6)</b>. Modul Penurunan mengeksekusi integrasi prinsip konsolidasi 1D primer.
                 </p>
             </div>
             </div>`; 
 
-            // Simpan log HTML standar untuk Word Document agar tidak rusak/berantakan
             window.rawCalcLog = wordLogText;
 
             document.getElementById('calc-log').innerHTML = logText;
             document.getElementById('conclusion-text').innerHTML = htmlSummary;
             
-            // Re-render MathJax
             if(window.MathJax) {
                 MathJax.typesetPromise([document.getElementById('calc-log')]).catch(err => console.log(err));
             }
@@ -1705,14 +1748,12 @@
         /* --- EXPORT DOC W/ HTML2CANVAS --- */
         async function exportToWord(btnElement) {
             const originalHTML = btnElement.innerHTML;
-            btnElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Mengekspor...`;
+            btnElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Load...`;
             
             try {
-                // Temporarily change Three.js background to white
                 const oldBg = scene.background;
                 scene.background = new THREE.Color(0xffffff);
                 
-                // Adjust chart for print if exists
                 if(sptChartInstance) {
                     sptChartInstance.options.scales.x.ticks.color = '#000000';
                     sptChartInstance.options.scales.y.ticks.color = '#000000';
@@ -1723,7 +1764,6 @@
                     sptChartInstance.update('none');
                 }
                 
-                // Change 3D text labels to black text on white background
                 const labels = document.querySelectorAll('#canvas-container div[style*="position: absolute"]');
                 const oldLabelStyles = [];
                 labels.forEach(label => {
@@ -1739,13 +1779,11 @@
                 
                 renderer.render(scene, camera);
                 
-                // Capture Container including HTML labels
                 const container = document.getElementById('export-visual-container');
                 const c1 = document.getElementById('canvas-container');
                 const c2 = document.getElementById('chart-bg-container');
                 const c2Title = c2.querySelector('h4');
                 
-                // Force container styling to pure white temporarily
                 const originalBgColor = container.style.backgroundColor;
                 const originalClass = container.className;
                 container.style.backgroundColor = '#ffffff';
@@ -1764,7 +1802,6 @@
                 const origTitleCol = c2Title.style.color;
                 c2Title.style.color = '#000000';
                 
-                // BULLETPROOF CANVAS TO IMAGE (FIX FOR WEBGL/CHART MISSING)
                 const canvases = container.querySelectorAll('canvas');
                 const canvasReplacements = [];
                 canvases.forEach(c => {
@@ -1777,11 +1814,10 @@
                     img.style.top = window.getComputedStyle(c).top;
                     img.className = c.className;
                     c.parentNode.insertBefore(img, c);
-                    c.style.display = 'none'; // Hide canvas
+                    c.style.display = 'none'; 
                     canvasReplacements.push({ canvas: c, img: img });
                 });
 
-                // Tunggu sebentar agar DOM selesai me-render image pengganti
                 await new Promise(r => setTimeout(r, 150));
 
                 const canvasCapture = await html2canvas(container, {
@@ -1791,7 +1827,6 @@
                     allowTaint: true
                 });
                 
-                // RESTORE CANVASES & STYLES
                 canvasReplacements.forEach(r => {
                     r.canvas.style.display = '';
                     r.img.remove();
@@ -1826,7 +1861,6 @@
 
                 let canvasDataUrl = canvasCapture.toDataURL('image/png');
 
-                // Extract Input Value Data
                 const val = id => document.getElementById(id) ? document.getElementById(id).value : '';
                 const txt = id => document.getElementById(id) ? document.getElementById(id).innerText : '';
                 
@@ -1846,7 +1880,6 @@
                 
                 let logHtml = window.rawCalcLog || "Silakan jalankan fungsi (AI PROCESS ANALYSIS) terlebih dahulu untuk memuat log kalkulasi.";
                 
-                // Get conclusions text
                 const conclusionTextRaw = document.getElementById('conclusion-text').innerText;
                 const conclusionHTML = conclusionTextRaw.split('\n').map(p => {
                     if (p.trim() === '') return '';
@@ -1979,7 +2012,6 @@
                         <h2>5. Saran Rekomendasi:</h2>
                         ${conclusionHTML}
 
-                        <!-- Page numbers layout for MS Word -->
                         <table style="width:100%; border:none; border-top: 1px solid #000; margin-top: 20px;">
                             <tr>
                                 <td style="border:none; text-align:right; font-size:10pt;">
@@ -2027,7 +2059,7 @@
             labelRenderer.setSize(container.clientWidth, container.clientHeight);
             labelRenderer.domElement.style.position = 'absolute';
             labelRenderer.domElement.style.top = '0px';
-            labelRenderer.domElement.style.pointerEvents = 'none'; // allow click through to canvas
+            labelRenderer.domElement.style.pointerEvents = 'none'; 
             container.appendChild(labelRenderer.domElement);
             
             controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -2038,6 +2070,8 @@
             const mouse = new THREE.Vector2();
 
             container.addEventListener('dblclick', (event) => {
+                if (event.target.tagName === 'DIV' || event.target.tagName === 'I') return;
+                
                 const rect = container.getBoundingClientRect();
                 mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
                 mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -2050,8 +2084,8 @@
                     if(obj.userData && obj.userData.isSoil) {
                         const idx = obj.userData.layerIndex;
                         const oldSpt = obj.userData.spt;
-                        openEditSptModal(idx, oldSpt); // Open New Modal
-                        break; // Hanya edit layer terdepan yang di-klik
+                        openEditSptModal(idx, oldSpt);
+                        break; 
                     }
                 }
             });
@@ -2073,37 +2107,46 @@
             animate3D(); runAnalysis();
         }
 
-        // Updated CreateDimension to support Interactive Labels
-        function createDimension(start, end, labelText, offset, isSoilLabel = false, layerIdx = null, sptVal = null) {
+        // Updated CreateDimension to support Customizable Interactive Labels
+        function createDimension(start, end, labelText, offset, isSoilLabel = false, layerIdx = null, sptVal = null, inputId = null, labelName = "") {
             const s = start.clone().add(offset); const e = end.clone().add(offset);
             const material = new THREE.LineBasicMaterial({ color: 0x06b6d4, depthTest: false });
             
-            // Draw Main Line
             foundationGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([s, e]), material));
 
-            // Draw Tick Marks
             const dir = new THREE.Vector3().subVectors(e, s).normalize();
             const tickDir = Math.abs(dir.y) > 0.9 ? new THREE.Vector3(1, 0, 0) : new THREE.Vector3(0, 1, 0);
             const tickLen = 0.15;
             foundationGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([s.clone().add(tickDir.clone().multiplyScalar(tickLen)), s.clone().add(tickDir.clone().multiplyScalar(-tickLen))]), material));
             foundationGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([e.clone().add(tickDir.clone().multiplyScalar(tickLen)), e.clone().add(tickDir.clone().multiplyScalar(-tickLen))]), material));
 
-            // HTML Label
             const div = document.createElement('div');
-            div.className = 'text-[10px] text-cyan-300 font-mono bg-slate-900/90 px-1.5 py-0.5 rounded border border-cyan-700 whitespace-nowrap shadow-md mt-1 z-10 transition-all';
             
-            // Add interactivity logic exclusively for soil dimension texts
+            // Konfigurasi CSS Default (Bisa diperbesar)
+            div.className = 'text-[11px] font-bold text-cyan-50 font-mono bg-cyan-900/90 px-2 py-1 rounded border border-cyan-400 whitespace-nowrap shadow-md mt-1 z-10 transition-all';
+            
             if (isSoilLabel) {
-                div.style.pointerEvents = 'auto'; // allow clicking the label itself
+                div.style.pointerEvents = 'auto'; 
                 div.title = "Klik 2x untuk edit N-SPT";
-                div.classList.add('hover:border-emerald-400', 'hover:bg-emerald-900/90', 'hover:text-emerald-300', 'cursor-pointer');
+                div.className = 'text-[11px] font-bold text-emerald-100 font-mono bg-emerald-900/90 px-2 py-1 rounded border border-emerald-500 whitespace-nowrap shadow-md mt-1 z-10 transition-all pointer-events-auto cursor-pointer hover:bg-emerald-700 hover:border-emerald-300';
                 div.ondblclick = (e) => {
-                    e.stopPropagation(); // prevent raycaster from firing doubly
+                    e.stopPropagation(); 
                     openEditSptModal(layerIdx, sptVal);
                 };
+                div.innerHTML = `<i class="fa-solid fa-pen-to-square mr-1 opacity-70"></i>${labelText}`;
+            } else if (inputId) {
+                div.style.pointerEvents = 'auto'; 
+                div.title = `Klik 2x untuk edit ${labelName}`;
+                div.className = 'text-[11px] font-bold text-blue-50 font-mono bg-blue-900/90 px-2 py-1 rounded border border-blue-400 whitespace-nowrap shadow-md mt-1 z-10 transition-all pointer-events-auto cursor-pointer hover:bg-blue-700 hover:border-blue-300';
+                div.ondblclick = (e) => {
+                    e.stopPropagation(); 
+                    openEditValueModal(inputId, labelName, 'm');
+                };
+                div.innerHTML = `<i class="fa-solid fa-pen-to-square mr-1 opacity-70"></i>${labelText}`;
+            } else {
+                div.textContent = labelText;
             }
 
-            div.textContent = labelText;
             const label = new THREE.CSS2DObject(div);
             label.position.copy(s).lerp(e, 0.5);
             foundationGroup.add(label);
@@ -2142,7 +2185,6 @@
                     foundationGroup.add(pile);
                 });
 
-                // Pile Depth Dimension Label
                 createDimension(new THREE.Vector3(-fl/2, 0, -fw/2), new THREE.Vector3(-fl/2, -pDepth, -fw/2), `D_tiang = ${pDepth.toFixed(1)} m`, new THREE.Vector3(-0.6, 0, -0.6));
             }
 
@@ -2151,7 +2193,7 @@
                 let currentDepth = 0;
                 const soilW = Math.max(fl * 2, 4.5);
                 const soilL = Math.max(fw * 2, 4.5);
-                const colors = [0x78350f, 0x92400e, 0xb45309, 0xd97706, 0xf59e0b]; // Earth tones
+                const colors = [0x78350f, 0x92400e, 0xb45309, 0xd97706, 0xf59e0b]; 
                 
                 soilData.forEach((layer, idx) => {
                     if(layer.thk <= 0) return;
@@ -2167,52 +2209,70 @@
                     soil.add(edges);
                     foundationGroup.add(soil);
 
-                    // Soil Layer Dimension Label (Made Interactive)
                     createDimension(
                         new THREE.Vector3(soilW/2, currentDepth, 0),
                         new THREE.Vector3(soilW/2, currentDepth - layer.thk, 0),
                         `Lapis ${idx+1}: ${layer.thk}m (N=${layer.spt})`,
                         new THREE.Vector3(0.4, 0, 0),
-                        true,       // isSoilLabel
-                        idx,        // layerIndex for Modal
-                        layer.spt   // sptValue for Modal
+                        true,       
+                        idx,        
+                        layer.spt   
                     );
 
                     currentDepth -= layer.thk;
                 });
             }
 
-            // GAYA BEBAN (FORCES)
+            // GAYA BEBAN (FORCES) Pu & Mu
             const colTopY = ft + colHeight;
             if (Pu > 0) {
-                // Tanda Panah Merah untuk Beban Aksial (Pu)
                 const dir = new THREE.Vector3(0, -1, 0);
                 const origin = new THREE.Vector3(0, colTopY + 1.5, 0);
                 const arrowHelper = new THREE.ArrowHelper(dir, origin, 1.5, 0xef4444, 0.3, 0.2);
                 foundationGroup.add(arrowHelper);
                 
-                // Label Teks Pu
+                // Label Teks Pu yang Bisa di-edit (Diperbesar font)
                 const divPu = document.createElement('div');
-                divPu.className = 'text-[11px] font-black text-rose-400 font-mono bg-slate-950/80 px-2 py-1 rounded border border-rose-500/50 whitespace-nowrap shadow-lg mt-1 z-20';
-                divPu.innerHTML = `<i class="fa-solid fa-arrow-down"></i> Pu = ${Pu} kN`;
+                divPu.className = 'text-xs font-black text-white font-mono bg-rose-700/90 px-2.5 py-1.5 rounded border-2 border-rose-400 whitespace-nowrap shadow-lg mt-1 z-20 pointer-events-auto cursor-pointer hover:bg-rose-600 transition-colors';
+                divPu.innerHTML = `<i class="fa-solid fa-arrow-down"></i> Pu = ${Pu} kN <i class="fa-solid fa-pen-to-square ml-1 text-[10px]"></i>`;
+                divPu.title = "Klik 2x untuk edit Gaya Aksial (Pu)";
+                divPu.ondblclick = (e) => { e.stopPropagation(); openEditValueModal('pu', 'Gaya Aksial (Pu)', 'kN'); };
                 const labelPu = new THREE.CSS2DObject(divPu);
                 labelPu.position.set(0, colTopY + 1.7, 0);
                 foundationGroup.add(labelPu);
             }
             if (Mu > 0) {
-                // Label Teks untuk Momen (Mu)
+                // Label Teks Mu yang bisa di-edit (Diperbesar font)
                 const divMu = document.createElement('div');
-                divMu.className = 'text-[11px] font-black text-amber-400 font-mono bg-slate-950/80 px-2 py-1 rounded border border-amber-500/50 whitespace-nowrap shadow-lg z-20';
-                divMu.innerHTML = `<i class="fa-solid fa-rotate-right"></i> Mu = ${Mu} kNm`;
+                divMu.className = 'text-xs font-black text-white font-mono bg-amber-600/90 px-2.5 py-1.5 rounded border-2 border-amber-300 whitespace-nowrap shadow-lg z-20 pointer-events-auto cursor-pointer hover:bg-amber-500 transition-colors';
+                divMu.innerHTML = `<i class="fa-solid fa-rotate-right"></i> Mu = ${Mu} kNm <i class="fa-solid fa-pen-to-square ml-1 text-[10px]"></i>`;
+                divMu.title = "Klik 2x untuk edit Momen Lentur (Mu)";
+                divMu.ondblclick = (e) => { e.stopPropagation(); openEditValueModal('mu', 'Momen Lentur (Mu)', 'kNm'); };
                 const labelMu = new THREE.CSS2DObject(divMu);
                 labelMu.position.set(cb/2 + 0.4, colTopY + 0.5, 0);
                 foundationGroup.add(labelMu);
             }
 
-            // DIMENSIONS FOR FOOTING
-            createDimension(new THREE.Vector3(-fl/2, ft, fw/2), new THREE.Vector3(fl/2, ft, fw/2), `L = ${fl} m`, new THREE.Vector3(0, 0, 0.6));
-            createDimension(new THREE.Vector3(fl/2, ft, -fw/2), new THREE.Vector3(fl/2, ft, fw/2), `B = ${fw} m`, new THREE.Vector3(0.6, 0, 0));
-            createDimension(new THREE.Vector3(fl/2, 0, fw/2), new THREE.Vector3(fl/2, ft, fw/2), `Df = ${ft} m`, new THREE.Vector3(0.6, 0, 0.6));
+            // DIMENSI KOLOM (Kini dapat diklik)
+            createDimension(
+                new THREE.Vector3(-cb/2, ft + colHeight, cd/2), 
+                new THREE.Vector3(cb/2, ft + colHeight, cd/2), 
+                `bc = ${cb} m`, 
+                new THREE.Vector3(0, 0.2, 0.2), 
+                false, null, null, 'col_b', 'Lebar Kolom (bc)'
+            );
+            createDimension(
+                new THREE.Vector3(cb/2, ft + colHeight, -cd/2), 
+                new THREE.Vector3(cb/2, ft + colHeight, cd/2), 
+                `D = ${cd} m`, 
+                new THREE.Vector3(0.2, 0.2, 0), 
+                false, null, null, 'col_d', 'Panjang Kolom (D)'
+            );
+
+            // DIMENSI TELAPAK BETON (Kini dapat diklik)
+            createDimension(new THREE.Vector3(-fl/2, ft, fw/2), new THREE.Vector3(fl/2, ft, fw/2), `L = ${fl} m`, new THREE.Vector3(0, 0, 0.6), false, null, null, 'f_len', 'Panjang Telapak (L)');
+            createDimension(new THREE.Vector3(fl/2, ft, -fw/2), new THREE.Vector3(fl/2, ft, fw/2), `B = ${fw} m`, new THREE.Vector3(0.6, 0, 0), false, null, null, 'f_wid', 'Lebar Telapak (B)');
+            createDimension(new THREE.Vector3(fl/2, 0, fw/2), new THREE.Vector3(fl/2, ft, fw/2), `Df = ${ft} m`, new THREE.Vector3(0.6, 0, 0.6), false, null, null, 'f_thk', 'Tebal Telapak (Df)');
         }
 
         function animate3D() { 
