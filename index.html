@@ -117,13 +117,13 @@
         <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40 px-4 py-2 shadow-lg flex items-center">
             <div class="w-full mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
                 <div class="flex items-center gap-3">
-                    <div class="bg-gradient-to-br from-cyan-500 to-blue-600 text-slate-950 p-2 rounded-xl font-black text-base cyber-font shadow-[0_0_10px_rgba(6,182,212,0.6)] flex-shrink-0">
+                    <div class="bg-gradient-to-br from-cyan-500 to-blue-600 text-slate-950 p-2 rounded-xl font-black text-base cyber-font shadow-[0_0_10px_rgba(6,182,212,0.6)]">
                         <i class="fa-solid fa-cubes"></i> APN
                     </div>
                     <div>
-                        <h1 class="text-[11px] sm:text-sm md:text-base font-black tracking-wider md:tracking-widest cyber-font text-white leading-tight">ANALISIS PONDASI TELAPAK &amp; TIANG PANCANG</h1>
+                        <h1 class="text-sm md:text-base font-black tracking-widest cyber-font text-white leading-tight">ANALISIS PONDASI TELAPAK & TIANG</h1>
                         <p class="text-[9px] md:text-[10px] text-cyan-400 font-mono flex items-center gap-1.5 mt-0.5">
-                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span> INTEGRATED AI GEOSTRUCTURAL ENGINE
+                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span> INTEGRATED AI GEOSTRUCTURAL ENGINE
                         </p>
                     </div>
                 </div>
@@ -429,7 +429,7 @@
         </div>
     </div>
 
-    <!-- GENERIC EDIT VALUE MODAL (Untuk Pu, Mu, Dimensi) -->
+    <!-- GENERIC EDIT VALUE MODAL -->
     <div id="editValueModal" class="fixed inset-0 z-[10010] hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 pointer-events-auto no-invert">
         <div class="bg-slate-900 border-2 border-cyan-500 rounded-2xl w-full max-w-sm p-6 shadow-[0_0_30px_rgba(6,182,212,0.5)] relative flex flex-col font-sans">
             <button onclick="closeEditValueModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors cursor-pointer z-10"><i class="fa-solid fa-xmark text-xl"></i></button>
@@ -468,28 +468,36 @@
         </div>
     </div>
 
-    <!-- PROJECT MANAGER MODAL -->
+    <!-- PROJECT MANAGER MODAL (TELAH DIPERBARUI DENGAN DIREKTORI) -->
     <div id="projectModal" class="fixed inset-0 z-[10005] hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 pointer-events-auto no-invert">
-        <div class="bg-slate-900 border-2 border-indigo-500 rounded-2xl w-full max-w-md p-6 shadow-[0_0_30px_rgba(99,102,241,0.5)] relative flex flex-col font-sans">
+        <div class="bg-slate-900 border-2 border-indigo-500 rounded-2xl w-full max-w-lg p-6 shadow-[0_0_30px_rgba(99,102,241,0.5)] relative flex flex-col font-sans max-h-[90vh]">
             <button onclick="closeProjectModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors cursor-pointer z-10"><i class="fa-solid fa-xmark text-xl"></i></button>
             
             <h3 class="text-indigo-400 text-base sm:text-lg font-black cyber-font mb-2 flex items-center gap-2 mt-2 sm:mt-0 tracking-widest uppercase"><i class="fa-solid fa-database text-indigo-400"></i> Data Project Manager</h3>
-            <p class="text-sm text-slate-400 mb-5 font-mono">Simpan (Export) state project saat ini, atau Muat (Import) data file project sebelumnya.</p>
+            <p class="text-sm text-slate-400 mb-4 font-mono">Simpan/Muat file project, atau pilih langsung dari <b>Direktori Worksheet Proyek</b> yang telah disematkan di bawah.</p>
             
-            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-5">
-                <label class="block text-slate-400 mb-2 text-xs font-bold font-mono">Nama File Backup (Tanpa .json)</label>
-                <input type="text" id="exportFileName" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-white outline-none focus:border-indigo-500 font-mono" placeholder="Backup_Project_1">
-            </div>
-            
-            <div class="flex flex-col sm:flex-row gap-3">
-                <button onclick="executeExport()" class="flex-1 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-black py-3 rounded-xl uppercase cyber-font text-xs flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95">
-                    <i class="fa-solid fa-download"></i> EXPORT DATA
-                </button>
+            <div class="flex flex-col sm:flex-row gap-3 mb-5">
+                <div class="flex-1 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <label class="block text-slate-400 mb-1.5 text-xs font-bold font-mono">Nama File Backup (Tanpa .json)</label>
+                    <input type="text" id="exportFileName" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white outline-none focus:border-indigo-500 font-mono" placeholder="Backup_Project_1">
+                </div>
                 
-                <label class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black py-3 rounded-xl uppercase cyber-font text-xs flex items-center justify-center gap-2 shadow-lg cursor-pointer transition-all active:scale-95">
-                    <i class="fa-solid fa-upload"></i> IMPORT DATA
-                    <input type="file" id="importFile" class="hidden" accept=".json" onchange="restoreProject(event)">
-                </label>
+                <div class="flex-1 flex flex-col gap-2 justify-end">
+                    <button onclick="executeExport()" class="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-black py-2 rounded-lg uppercase cyber-font text-[10px] flex items-center justify-center gap-2 shadow-md transition-all active:scale-95">
+                        <i class="fa-solid fa-download"></i> EXPORT DATA
+                    </button>
+                    
+                    <label class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black py-2 rounded-lg uppercase cyber-font text-[10px] flex items-center justify-center gap-2 shadow-md cursor-pointer transition-all active:scale-95 m-0">
+                        <i class="fa-solid fa-upload"></i> IMPORT DATA
+                        <input type="file" id="importFile" class="hidden" accept=".json" onchange="restoreProject(event)">
+                    </label>
+                </div>
+            </div>
+
+            <!-- Direktori Worksheet Proyek -->
+            <h4 class="text-indigo-300 font-bold text-xs uppercase mb-2 border-b border-indigo-900/50 pb-1.5"><i class="fa-solid fa-folder-tree"></i> Direktori Worksheet Proyek (Database)</h4>
+            <div id="project-directory" class="overflow-y-auto custom-scroll flex-grow pr-1 space-y-2 border border-slate-800 bg-slate-950/50 p-2 rounded-xl min-h-[150px]">
+                <!-- Item di-inject otomatis via JavaScript -->
             </div>
         </div>
     </div>
@@ -529,7 +537,7 @@
                         <h4 class="text-indigo-400 font-bold mb-1"><i class="fa-solid fa-star"></i> Fitur Terbaru:</h4>
                         <ul class="list-disc pl-5 space-y-1 text-slate-300">
                             <li><b>Estimasi Penurunan & Konsolidasi:</b> Analisis komprehensif <i>Immediate Settlement</i> & <i>Primary Consolidation</i>.</li>
-                            <li><b>Data Project Manager:</b> Fitur ekspor/impor state project ke format JSON (Backup/Restore).</li>
+                            <li><b>Data Project Manager:</b> Fitur ekspor/impor state project ke format JSON (Backup/Restore) terintegrasi dengan Database Multi-Lokasi.</li>
                             <li><b>Interaksi 3D Lanjutan:</b> Klik 2x pada <b>lapisan tanah</b> atau <b>label gaya & dimensi (Pu/Mu/Ukuran)</b> di visual 3D untuk mengedit parameter secara langsung melalui Interface UI khusus.</li>
                             <li><b>Grafik Boring Log:</b> Menampilkan grafik <i>Scatter Line</i> nilai uji N-SPT secara Real-time.</li>
                         </ul>
@@ -612,6 +620,90 @@
     <div class="signature-text w-full">Newbie AI editing <span class="leaf-icon">🌿</span></div>
 
     <script>
+        // --- DATA WORKSHEET PROYEK DATABASE ---
+        const projectDatabase = [
+            {"projName":"Gudang Logistik Bulog Timika","projLoc":"Mimika Papua","projCap":"3500 Ton","pu":"25.486","mu":"20.711","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"1.0","spt":"0"},{"thk":"1.0","spt":"5"},{"thk":"1.0","spt":"9"},{"thk":"1.0","spt":"12"},{"thk":"1.0","spt":"15"},{"thk":"1.0","spt":"60"},{"thk":"1.0","spt":"35"},{"thk":"1.0","spt":"35"},{"thk":"1.0","spt":"5"},{"thk":"1.0","spt":"2"},{"thk":"1.0","spt":"39"},{"thk":"1.0","spt":"60"}]},
+            {"projName":"Gudang Logistik Bulog Bojonegoro","projLoc":"Bojonegoro Jawa Timur","projCap":"3500 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"1.0","spt":"0"},{"thk":"1.0","spt":"19"},{"thk":"1.0","spt":"60"},{"thk":"1.0","spt":"60"},{"thk":"1.0","spt":"60"},{"thk":"1.0","spt":"60"},{"thk":"1.0","spt":"60"},{"thk":"1.0","spt":"60"},{"thk":"1.0","spt":"60"},{"thk":"1.0","spt":"60"},{"thk":"1.0","spt":"60"},{"thk":"1.0","spt":"60"}]},
+            {"projName":"Gudang Logistik Bulog Bolo","projLoc":"Bolo Bima","projCap":"1000 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"1","spt":"0"},{"thk":"2","spt":"60"},{"thk":"1","spt":"60"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"}]},
+            {"projName":"Gudang Logistik Bulog Bone (Apala)","projLoc":"Bone (Apala) Sulselbar","projCap":"3500 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"2","spt":"0"},{"thk":"2","spt":"5"},{"thk":"2","spt":"15"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"}]},
+            {"projName":"Gudang Logistik Bulog Jember","projLoc":"Jember Jawa Timur","projCap":"3500 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"2","spt":"0"},{"thk":"2","spt":"10"},{"thk":"2","spt":"26"},{"thk":"2","spt":"10"},{"thk":"2","spt":"13"},{"thk":"2","spt":"54"}]},
+            {"projName":"Gudang Logistik Bulog Konawe","projLoc":"Konawe Sultra","projCap":"1000 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"1","spt":"0"},{"thk":"2","spt":"15"},{"thk":"1","spt":"30"},{"thk":"2","spt":"45"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"}]},
+            {"projName":"Gudang Logistik Bulog Lamusung","projLoc":"Lamusung Sumba Barat","projCap":"3500 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"1","spt":"0"},{"thk":"2","spt":"26"},{"thk":"1","spt":"60"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"}]},
+            {"projName":"Gudang Logistik Bulog Lembar","projLoc":"Lembar NTB","projCap":"3500 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"2","spt":"0"},{"thk":"2","spt":"35"},{"thk":"2","spt":"27"},{"thk":"2","spt":"14"},{"thk":"2","spt":"10"},{"thk":"2","spt":"3"},{"thk":"2","spt":"1"},{"thk":"1.0","spt":"10"},{"thk":"1.0","spt":"5"},{"thk":"1.0","spt":"2"},{"thk":"1.0","spt":"1.5"},{"thk":"1.0","spt":"1"},{"thk":"1.0","spt":"30"},{"thk":"1.0","spt":"30"}]},
+            {"projName":"Gudang Logistik Bulog Mariorennu","projLoc":"Mariorennu Bulukumba","projCap":"3500 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"2","spt":"0"},{"thk":"2","spt":"23"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"}]},
+            {"projName":"Gudang Logistik Bulog Semayan","projLoc":"Semayan Lombok Tengah","projCap":"1000 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"1","spt":"5"},{"thk":"2","spt":"30"},{"thk":"1","spt":"50"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"}]},
+            {"projName":"Gudang Logistik Bulog Sengkol","projLoc":"Sengkol Lombok Tengah","projCap":"1000 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"1","spt":"0"},{"thk":"2","spt":"60"},{"thk":"1","spt":"60"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"}]},
+            {"projName":"Gudang Logistik Bulog Merauke","projLoc":"Merauke Papua","projCap":"3500 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"2","spt":"0"},{"thk":"2","spt":"20"},{"thk":"2","spt":"17"},{"thk":"2","spt":"16"},{"thk":"2","spt":"13"},{"thk":"2","spt":"15"}]},
+            {"projName":"Gudang Logistik Bulog Pogotena","projLoc":"Pogotena Sumba Barat Daya","projCap":"3500 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"2","spt":"0"},{"thk":"2","spt":"10"},{"thk":"2","spt":"12"},{"thk":"2","spt":"15"},{"thk":"2","spt":"18"},{"thk":"2","spt":"20"}]},
+            {"projName":"Gudang Logistik Bulog Sakra","projLoc":"Sakra Lombok Timur","projCap":"1000 Ton","pu":"123.291","mu":"335.938","colB":"0.6","colD":"0.6","fLen":"1.1","fWid":"0.7","fThk":"0.50","fck":"25","fy":"415","setEs":"85000","setV":"0.3","setIw":"1.0","setCc":"0.02","setE0":"0.5","setHc":"0.5","pileCount":"2","pileType":"square","pileDim":"0.3","soilLayers":[{"thk":"1","spt":"5"},{"thk":"2","spt":"20"},{"thk":"1","spt":"50"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"},{"thk":"2","spt":"60"}]}
+        ];
+
+        // Memuat daftar direktori proyek
+        function renderProjectDirectory() {
+            const container = document.getElementById('project-directory');
+            if(!container) return;
+            container.innerHTML = '';
+            projectDatabase.forEach((proj, idx) => {
+                container.innerHTML += `
+                    <div class="bg-slate-900 p-2.5 rounded border border-slate-700 hover:border-indigo-400 cursor-pointer flex justify-between items-center transition-all shadow-sm group" onclick="loadWorksheet(${idx})">
+                        <div>
+                            <div class="text-xs font-bold text-indigo-300 group-hover:text-indigo-200 transition-colors">${proj.projName}</div>
+                            <div class="text-[10px] text-slate-400 mt-0.5"><i class="fa-solid fa-location-dot"></i> ${proj.projLoc} | <i class="fa-solid fa-weight-hanging"></i> ${proj.projCap}</div>
+                        </div>
+                        <button class="bg-indigo-900/60 border border-indigo-700 text-indigo-200 px-3 py-1.5 rounded text-[10px] font-bold group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-folder-open"></i> Buka
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        // Fungsi memuat Data Worksheet ke dalam Aplikasi
+        function loadWorksheet(idx) {
+            const data = projectDatabase[idx];
+            document.getElementById('proj_name').value = data.projName || "";
+            document.getElementById('proj_loc').value = data.projLoc || "";
+            document.getElementById('proj_cap').value = data.projCap || "";
+            document.getElementById('pu').value = data.pu || "";
+            document.getElementById('mu').value = data.mu || "";
+            document.getElementById('col_b').value = data.colB || "";
+            document.getElementById('col_d').value = data.colD || "";
+            document.getElementById('f_len').value = data.fLen || "";
+            document.getElementById('f_wid').value = data.fWid || "";
+            document.getElementById('f_thk').value = data.fThk || "";
+            document.getElementById('fck').value = data.fck || "";
+            document.getElementById('fy').value = data.fy || "";
+            
+            document.getElementById('set_es').value = data.setEs || "";
+            document.getElementById('set_v').value = data.setV || "";
+            document.getElementById('set_iw').value = data.setIw || "";
+            document.getElementById('set_cc').value = data.setCc || "";
+            document.getElementById('set_e0').value = data.setE0 || "";
+            document.getElementById('set_hc').value = data.setHc || "";
+            
+            document.getElementById('pile_count').value = data.pileCount || "";
+            document.getElementById('pile_type').value = data.pileType || "";
+            document.getElementById('pile_dim').value = data.pileDim || "";
+
+            if(data.soilLayers && data.soilLayers.length > 0) {
+                const tbody = document.getElementById('soil-body');
+                tbody.innerHTML = '';
+                data.soilLayers.forEach(layer => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="p-1 border-b border-slate-800"><input type="number" value="${layer.thk}" class="w-full p-1 rounded layer-thk font-bold"></td>
+                        <td class="p-1 border-b border-slate-800"><input type="number" value="${layer.spt}" class="w-full p-1 rounded layer-spt font-bold"></td>
+                        <td class="p-1 border-b border-slate-800 text-center"><button onclick="removeLayer(this)" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            closeProjectModal();
+            runAnalysis();
+            if(typeof speakBot === 'function') speakBot(`Worksheet untuk proyek ${data.projName} berhasil dimuat.`);
+        }
+
         // --- 20 Kata Bijak (Wisdom Quotes) ---
         const wisdomQuotes = [
             "Ilmu adalah jembatan emas menuju peradaban yang kokoh.",
@@ -701,7 +793,6 @@
             }
             closeEditValueModal();
         }
-
 
         // --- SCREENSAVER TIMERS & Clocks ---
         let idleTime = 0;
@@ -836,6 +927,7 @@
             }, 1500);
             setTimeout(loadVoices, 500); 
             initEarth();
+            renderProjectDirectory(); 
         });
 
         // --- TOGGLE FLOATING BUTTONS (>> / <<) ---
@@ -2122,7 +2214,7 @@
 
             const div = document.createElement('div');
             
-            // Konfigurasi CSS Default (Bisa diperbesar)
+            // Konfigurasi CSS Default
             div.className = 'text-[11px] font-bold text-cyan-50 font-mono bg-cyan-900/90 px-2 py-1 rounded border border-cyan-400 whitespace-nowrap shadow-md mt-1 z-10 transition-all';
             
             if (isSoilLabel) {
@@ -2209,11 +2301,12 @@
                     soil.add(edges);
                     foundationGroup.add(soil);
 
+                    // Offset ditingkatkan dari 0.4 menjadi 1.8 agar teks N-SPT tidak menabrak pondasi
                     createDimension(
                         new THREE.Vector3(soilW/2, currentDepth, 0),
                         new THREE.Vector3(soilW/2, currentDepth - layer.thk, 0),
                         `Lapis ${idx+1}: ${layer.thk}m (N=${layer.spt})`,
-                        new THREE.Vector3(0.4, 0, 0),
+                        new THREE.Vector3(1.8, 0, 0),
                         true,       
                         idx,        
                         layer.spt   
@@ -2231,7 +2324,7 @@
                 const arrowHelper = new THREE.ArrowHelper(dir, origin, 1.5, 0xef4444, 0.3, 0.2);
                 foundationGroup.add(arrowHelper);
                 
-                // Label Teks Pu yang Bisa di-edit (Diperbesar font)
+                // Label Teks Pu
                 const divPu = document.createElement('div');
                 divPu.className = 'text-xs font-black text-white font-mono bg-rose-700/90 px-2.5 py-1.5 rounded border-2 border-rose-400 whitespace-nowrap shadow-lg mt-1 z-20 pointer-events-auto cursor-pointer hover:bg-rose-600 transition-colors';
                 divPu.innerHTML = `<i class="fa-solid fa-arrow-down"></i> Pu = ${Pu} kN <i class="fa-solid fa-pen-to-square ml-1 text-[10px]"></i>`;
@@ -2242,7 +2335,7 @@
                 foundationGroup.add(labelPu);
             }
             if (Mu > 0) {
-                // Label Teks Mu yang bisa di-edit (Diperbesar font)
+                // Label Teks Mu
                 const divMu = document.createElement('div');
                 divMu.className = 'text-xs font-black text-white font-mono bg-amber-600/90 px-2.5 py-1.5 rounded border-2 border-amber-300 whitespace-nowrap shadow-lg z-20 pointer-events-auto cursor-pointer hover:bg-amber-500 transition-colors';
                 divMu.innerHTML = `<i class="fa-solid fa-rotate-right"></i> Mu = ${Mu} kNm <i class="fa-solid fa-pen-to-square ml-1 text-[10px]"></i>`;
@@ -2253,7 +2346,7 @@
                 foundationGroup.add(labelMu);
             }
 
-            // DIMENSI KOLOM (Kini dapat diklik)
+            // DIMENSI KOLOM
             createDimension(
                 new THREE.Vector3(-cb/2, ft + colHeight, cd/2), 
                 new THREE.Vector3(cb/2, ft + colHeight, cd/2), 
@@ -2269,7 +2362,7 @@
                 false, null, null, 'col_d', 'Panjang Kolom (D)'
             );
 
-            // DIMENSI TELAPAK BETON (Kini dapat diklik)
+            // DIMENSI TELAPAK BETON
             createDimension(new THREE.Vector3(-fl/2, ft, fw/2), new THREE.Vector3(fl/2, ft, fw/2), `L = ${fl} m`, new THREE.Vector3(0, 0, 0.6), false, null, null, 'f_len', 'Panjang Telapak (L)');
             createDimension(new THREE.Vector3(fl/2, ft, -fw/2), new THREE.Vector3(fl/2, ft, fw/2), `B = ${fw} m`, new THREE.Vector3(0.6, 0, 0), false, null, null, 'f_wid', 'Lebar Telapak (B)');
             createDimension(new THREE.Vector3(fl/2, 0, fw/2), new THREE.Vector3(fl/2, ft, fw/2), `Df = ${ft} m`, new THREE.Vector3(0.6, 0, 0.6), false, null, null, 'f_thk', 'Tebal Telapak (Df)');
